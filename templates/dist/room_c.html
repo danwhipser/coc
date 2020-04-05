@@ -1,5 +1,6 @@
 {% include 'dist/header.html' %}
 <!-- Head -->
+<style>.modal-backdrop{z-index:1019;}</style>
     <body>
 
         <div class="layout">
@@ -68,11 +69,6 @@
                                     <!-- Chat toolbar -->
                                     <div class="col-3 col-xl-6 text-right">
                                         <ul class="nav justify-content-end">
-                                            <li class="nav-item list-inline-item d-none d-xl-block mr-3">
-                                                <a class="nav-link text-muted px-3" href="roommap?rid={{group_id}}" title="显示图片">
-                                                    <i class="icon-md fe-image"></i>
-                                                </a>
-                                            </li>
                                             <li class="nav-item list-inline-item d-none d-xl-block mr-0">
                                                 <a class="nav-link text-muted px-3" href="#" data-chat-sidebar-toggle="#chat-1-info" title="房间信息">
                                                     <i class="icon-md fe-more-vertical"></i>
@@ -243,31 +239,25 @@
 
                                                 <!-- Emoji button -->
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-ico btn-secondary btn-minimal btn-sm bg-transparent border-0" type="button" data-emoji-btn="" title="表情包">
+                                                    <button id="emo" class="btn btn-ico btn-secondary btn-minimal btn-sm bg-transparent border-0" type="button" data-emoji-btn="" title="表情包">
                                                         <img src="static/assets/images/xiaolian.svg" data-inject-svg="" alt="">
                                                     </button>
                                                 </div>
                                                 <!-- shu button -->
                                                 <div class="input-group-append">
-                                                    <button id="listother" class="btn btn-ico btn-secondary btn-minimal btn-sm bg-transparent border-0" type="button" title="特殊骰子" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <button id="listother" class="btn btn-ico btn-secondary btn-minimal btn-sm bg-transparent border-0" type="button" title="其他" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         <img src="static/assets/images/shu.svg" data-inject-svg="" alt="">
                                                     </button>
 <!--                                                    筛子数字-->
                                                     <div class="dropdown-menu" aria-labelledby="cussaizi">
+                                                        <a id="showo_imgi" onclick="showo_img()" class="dropdown-item d-flex align-items-center rp_getinfo" href="#" data-toggle="modal" data-target="#dshowimg">
+                                                            显示图片 <span class="ml-auto fe-image"></span>
+                                                        </a>
                                                         <a class="dropdown-item d-flex align-items-center rp_getinfo" href="#" data-toggle="modal" data-target="#dnotebook">
-                                                                    调查员笔记 <span class="ml-auto fe-book-open"></span>
-                                                                </a>
-                                                         <a class="dropdown-item d-flex align-items-center rp_getinfo" href="#">
-                                                                    显示图片 <span class="ml-auto fe-image"></span>
-                                                                </a>
+                                                            调查员笔记 <span class="ml-auto fe-book-open"></span>
+                                                        </a>
                                                     </div>
                                                 </div>
-<!--                                                <div class="input-group-append">-->
-<!--                                                    <button class="btn btn-ico btn-secondary btn-minimal btn-sm bg-transparent border-0" type="button" title="调查员笔记" data-toggle="modal" data-target="#dnotebook">-->
-<!--                                                        <img src="static/assets/images/shu.svg" data-inject-svg="" alt="">-->
-<!--                                                    </button>-->
-<!--                                                </div>-->
-                                                <!-- shaizi button -->
                                                 <div class="input-group-append">
                                                     <button id="cussaizi" class="btn btn-ico btn-secondary btn-minimal btn-sm bg-transparent border-0" type="button" title="特殊骰子" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         <img src="static/assets/images/saizi.svg" data-inject-svg="" alt="">
@@ -305,6 +295,16 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button onclick="send_note()" type="button" class="btn btn-primary">保存笔记</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+<!--                                            图片上传-->
+                                            <div class="modal fade" id="dshowimg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                               <a href="#!" id="map-display-1"><img src="" class="img-fluid" alt="等待主持人上传图片..."></a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -361,13 +361,17 @@
 <!--                                                        编辑房间-->
 <!--                                                        <span class="ml-auto fe-edit"></span>-->
 <!--                                                    </a>-->
-                                                    <a onclick="delet_room({{group_id}})" class="dropdown-item d-flex align-items-center" href="#">
-                                                        删除房间
-                                                        <span class="ml-auto fe-trash-2"></span>
+                                                    <a onclick="" class="dropdown-item d-flex align-items-center" href="#" data-chat-sidebar-toggle="#chat-2-info">
+                                                        上传图片
+                                                        <span class="ml-auto fe-map"></span>
                                                     </a>
                                                     <a onclick="clear_msg({{group_id}})" class="dropdown-item d-flex align-items-center" href="#">
                                                         清除对话
                                                         <span class="ml-auto fe-inbox"></span>
+                                                    </a>
+                                                    <a onclick="delet_room({{group_id}})" class="dropdown-item d-flex align-items-center" href="#">
+                                                        删除房间
+                                                        <span class="ml-auto fe-trash-2"></span>
                                                     </a>
                                                 </div>
                                             </div>
@@ -1013,6 +1017,27 @@
             $("#delet_room_list").hide();
             {% endif %}
             //获取用户数据
+
+
+            //获取显示图片列表
+            show_imgs();
+            //显示已标记显示的图片
+
+            $(document).on("click",".file-list-template-display",function () {
+              var displayimgurl = $(this).parent().attr("imgurl");
+              //need：后台根据图片名称 显示给其他玩家 对应的图片 $post
+              $("#map-display-1").find("img").attr("src",displayimgurl)
+            });
+
+
+           $(document).on("click",".file-list-template-delete",function () {
+             var deleteimgurl = $(this).parent().attr("imgurl");
+             //need：后台根据文件名 删除对应文件 $post
+             console.log(deleteimgurl);
+             del_img(deleteimgurl);
+             $(this).parent().parent().parent().parent().parent().remove();
+
+           });
         });
 
         //获取职业描述
@@ -1817,6 +1842,188 @@
             }
 
         }
-    </script>
+
+
+
+
+
+
+        if ( document.querySelector('#dropzone-template-js') ) {
+            var template = document.querySelector('#dropzone-template-js');
+            var template_element = document.querySelector('#dropzone-template-js');
+            template_element.parentNode.removeChild(template_element);
+        }
+
+        [].forEach.call(document.querySelectorAll('.dropzone-map-js'), function (el) {
+
+            var clickable         = el.querySelector('.dropzone-button-js').id;
+            var url               = el.getAttribute('data-dz-url');
+            var previewsContainer = el.querySelector('.dropzone-previews-js');
+
+            var myDropzonemap = new Dropzone(el, {
+                url: url,
+                previewTemplate: template.innerHTML,
+                previewsContainer: previewsContainer,
+                clickable: '#' + clickable,
+                init: function() {
+
+                this.on("success", function(file, responseText) {
+                        // 回传信息 可以使用其他方法 只是测试用
+                        console.log(responseText);
+                        send_img(responseText);
+                    })
+                }
+            });
+        });
+
+        [].forEach.call(document.querySelectorAll('.dropzone-single-image'), function (el) {
+
+
+            var clickable         = el.querySelector('.dropzone-button-js').id;
+            var previewsContainer = el.querySelector('.dropzone-single-image-container');
+            var url               = el.getAttribute('data-dz-url');
+            var dropzone_avatar = new Dropzone(el, {
+                url: url,
+                previewTemplate: "<div class=\"avatar avatar mb-5\"><img src=\"#\" class=\"avatar-img\" data-dz-thumbnail=\"\" alt=\"\"></div>",
+                previewsContainer: previewsContainer,
+                clickable: "#" + clickable,
+                maxFiles: 1,
+                acceptedFiles: "image/jpeg,image/png,image/gif",
+
+                init: function() {
+                    this.on("maxfilesexceeded", function(file) {
+                        this.removeAllFiles();
+                        this.addFile(file);
+                    }),
+
+                    this.on("complete", function(file) {
+                        el.querySelector(".dropzone-single-image-prew").style.display = "none";
+                    }),
+
+                    this.on("success", function(file, responseText) {
+                        // 回传信息 可以使用其他方法 只是测试用
+                        console.log(responseText);
+                    });
+                }
+            });
+        });
+
+
+        function set_imgs(arry, filelisttemplate){
+            // var filelistname=["map_1585167062_85784.gif","map_1585173659_74282.gif"];
+            //need：通过后台获得 现为测试
+            var filelistname=arry;
+            var template = filelisttemplate;
+            // console.log(template)
+            $("#chat-id-1-files .map_list").empty();
+            filelistname.forEach(function(val){
+                template = $("#file-list-template-0").clone(true);
+                template.attr('id','map_'+val[0]);
+                $("#chat-id-1-files .map_list").append(template);
+                $("#map_"+val[0]+" .map_name").text(val[2]);
+                $("#map_"+val[0]+" .map_name").attr("title",val[2]);
+                $("#map_"+val[0]+" .map_showu").attr("imgurl",val[2]);
+                $("#map_"+val[0]+" .map_showh").attr("onclick","showh_img('"+val[2]+"')");
+
+                // $("[title ='file-list-template-filename']").text(val)
+                // $("[title ='file-list-template-filename']").attr("title",val)
+                // $("[imgurl ='file-list-template-imgurl']").attr("imgurl",val)
+            });
+        }
+
+        // 将图片显示出来
+        function showo_img() {
+            $.get("/get_showimg", {
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                if(myData!="0"){
+                    $("#map-display-1").find("img").attr("src",myData)
+                    // console.log("要显示的图片"+myData);
+                }
+            });
+        }
+        // 标记显示图片
+        function showh_img(url){
+            $.post("/showh_map", {
+                url:url,
+                token: "{{token}}",
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                if(myData!="0"){
+                    showo_img();
+                    // console.log(myData);
+                }
+            });
+        }
+
+        //上传图片地址
+        function send_img(url){
+            $.post("/add_map", {
+                url:url,
+                token: "{{token}}",
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                if(myData!="1"){
+                    console.log(myData);
+                }
+                show_imgs();
+            });
+        }
+
+        // 获取图片列表
+        function show_imgs(){
+            $.post("/show_map", {
+                token: "{{token}}",
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                console.log(myData);
+                if(myData!=0){
+                    // var imglist = new Array();
+                    // for(data of myData){
+                    //     imglist.push(data[2]);
+                    // }
+                    // console.log(imglist);
+                    var filelisttemplate = $("#file-list-template-0").clone(true);
+                    var filelistname=myData;
+
+                    set_imgs(filelistname,filelisttemplate);
+                }
+
+            });
+        }
+
+        // 将图片显示出来
+        function showo_img() {
+            $.get("/get_showimg", {
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                if(myData!="0"){
+                    $("#map-display-1").find("img").attr("src",myData);
+                    $("#map-display-1").attr("href",myData);
+                    // console.log("要显示的图片"+myData);
+                }
+            });
+        }
+
+
+        //上传图片地址
+        function del_img(url){
+            $.post("/del_map", {
+                url:url,
+                token: "{{token}}",
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                if(myData!="1"){
+                    console.log(myData);
+                }
+            });
+        }
+        </script>
     </body>
 </html>
