@@ -1,0 +1,293 @@
+ <!-- User's details -->
+                    <div id="chat-1-user-profile" class="chat-sidebar">
+                        <div class="d-flex h-100 flex-column">
+
+                            <!-- Header -->
+                            <div class="border-bottom py-4 py-lg-6">
+                                <div class="container-fluid">
+
+                                    <ul class="nav justify-content-between align-items-center">
+                                        <!-- Close sidebar -->
+                                        <li class="nav-item list-inline-item">
+                                            <a class="nav-link text-muted px-0" href="#" data-chat-sidebar-close="">
+                                                <i class="icon-md fe-chevron-left"></i>
+                                            </a>
+                                        </li>
+
+                                        <!-- Title(mobile) -->
+                                        <li class="text-center d-block">
+                                            <h6 id="dt_name" class="mb-n2">名称</h6>
+                                            <small class="text-muted">详细参数</small>
+
+                                        </li>
+
+                                        <li class="nav-item list-inline-item">
+                                            <a onclick="qiehui();" class="nav-link text-muted px-0" href="#">
+                                                <i class="icon-md fe-chevron-right"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                            <!-- Header -->
+<!--                            最上面的导航-->
+                            <div>
+                                <nav id="dt_infos" class="navbar navbar-light bg-light">
+<!--                                  <a class="navbar-brand" href="#">Navbar</a>-->
+                                  <ul class="nav nav-pills">
+                                      <li class="nav-item">
+                                      <a class="nav-link" href="#dt_jibenxinxi">信息</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" href="#dt_shuxing">属性</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" href="#dt_jineng">技能</a>
+                                    </li>
+                                      <li class="nav-item">
+                                      <a class="nav-link" href="#dt_wupin">物品</a>
+                                    </li>
+
+                                  </ul>
+                                </nav>
+                                </div>
+
+                            <!-- Body -->
+                            <div class="hide-scrollbar flex-fill" data-spy="scroll" data-target="#dt_infos" data-offset="0">
+                                <div id="dt_jibenxinxi" class="border-bottom text-center py-9 px-10">
+                                    <!-- Photo -->
+                                    <div id="dt_pic" class="avatar avatar-xl mx-5 mb-5">
+                                        <img class="avatar-img dt_pica" src="static/assets/images/avatars/9.jpg" alt="">
+                                    </div>
+                                    <div id="dt_name_p" class="avatar mr-5 bg-primary text-white text-truncate rp_name_pt">
+                                                            <span class="dt_name_pa"></span>
+                                                        </div>
+<!--                                    <h5 id="dt_name">名称</h5>-->
+                                    <p id="dt_odeteil" class="text-muted">其他信息</p>
+                                    <p><a class="text-dark" data-toggle="collapse" href="#background" role="button" aria-expanded="false" aria-controls="background">
+                                        <small>调查员背景 </small></a></p>
+                                    <div class="collapse" id="background">
+                                            </div>
+                                </div>
+
+                                <div>
+                                    <input type="hidden" id="dtt_mycid" value="0" />
+                                    <input type="hidden" id="dtt_myuid" value="0" />
+                                    <input type="hidden" id="dtt_myjobname" value="0" />
+                                    <input type="hidden" id="dtt_cid" value="0" />
+                                    <input type="hidden" id="dtt_uid" value="0" />
+                                    <input type="hidden" id="dtt_jobname" value="0" />
+                                  <h4 id="dt_shuxing">属性点数:</h4>
+<!--                                技能属性点数-->
+                                    <ul id="dt_atr_list1" class="list-group list-group-flush mb-8">
+                                    </ul>
+                                    <ul id="dt_atr_list2" class="list-group list-group-flush mb-8">
+                                    </ul>
+                                  <h4 id="dt_jineng">技能点数:</h4>
+                                  <ul id="dt_skills_list" class="list-group list-group-flush">
+                                    </ul>
+                                    <h4 id="dt_wupin">携带物品:</h4>
+                                    <small>点击物品名称可获取物品更多信息</small>
+                                  <ul id="dt_objs_list" class="list-group list-group-flush">
+                                    </ul>
+                                  <ul id="dt_objs_add" class="list-group list-group-flush">
+                                      <li id="dt_skilladd" class="list-group-item py-6">
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <label class="input-group-text" >
+                                                            <span class="dt_atr_name">添加物品</span>:&nbsp;
+                                                        </label>
+                                                    </div>
+                                                        <select id="list_objs" class="form-control custom-select">
+                                                            <option value="0">物品</option>
+                                                            {% for nn in names %}
+                                                                {% if nn.1==4 %}
+                                                                <option value="{{nn.0}}">{{nn.2}}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                        <div class="input-group-append">
+                                                            <button onclick="add_obj();" type="button" class="btn btn-primary" title="确认添加">
+                                                                <i class="fe-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </li>
+                                    </ul>
+                                </div>
+
+
+
+
+
+<!--                                技能属性点数模板-->
+                                    <li style="display: none" id="dt_skill" class="list-group-item py-6">
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+
+                                                 <div class="input-group">
+                                                     <div class="input-group-prepend">
+                                                        <label class="input-group-text" >
+                                                            <span class="dt_atr_name">属性</span>:&nbsp;&nbsp;
+                                                        </label>
+                                                    </div>
+                                                    <input type="text" class="form-control dt_atr_value" placeholder="技能属性参数" aria-label="技能属性参数">
+                                                     <div class="input-group-append">
+                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_mingtou d-none d-xl-block" type="button" title="明骰">
+                                                            <i class="fe-slack"></i>
+                                                        </button>
+                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_mingtoum d-xl-none d-block" type="button" title="明骰">
+                                                            <i class="fe-slack"></i>
+                                                        </button>
+                                                         {% if page=="roomc" %}
+                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_antou" type="button" title="暗骰">
+                                                            <i class="fe-x-square"></i>
+                                                        </button>
+                                                         {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+<!--                                            <i class="text-muted icon-sm fe-globe"></i>-->
+                                        </div>
+                                    </li>
+                                <!--                                数据点数模板-->
+                                    <li style="display: none" id="dt_skill2" class="list-group-item py-6">
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+
+                                                 <div class="input-group">
+                                                     <div class="input-group-prepend">
+                                                        <label class="input-group-text" >
+                                                            <span class="dt_atr_name">属性</span>:&nbsp;&nbsp;
+                                                        </label>
+                                                    </div>
+
+                                                    <input type="text" class="form-control dt_atr_value" placeholder="技能属性参数" aria-label="技能属性参数">
+                                                     <div class="input-group-append">
+                                                         <label onclick="" class="input-group-text dt_maxx" >
+                                                            /1&nbsp;&nbsp;&nbsp;
+                                                        </label>
+                                                        <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_mingtou d-none d-xl-block" type="button" title="明骰">
+                                                            <i class="fe-slack"></i>
+                                                        </button>
+                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_mingtoum d-xl-none d-block" type="button" title="明骰">
+                                                            <i class="fe-slack"></i>
+                                                        </button>
+                                                         {% if page=="roomc" %}
+                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_antou" type="button" title="暗骰">
+                                                            <i class="fe-x-square"></i>
+                                                        </button>
+                                                         {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+<!--                                            <i class="text-muted icon-sm fe-globe"></i>-->
+                                        </div>
+                                    </li>
+                                <li style="display: none" id="dt_skill3" class="list-group-item py-6">
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+                                                 <div class="input-group">
+                                                     <div class="input-group-prepend">
+                                                        <label class="input-group-text" >
+                                                            <span class="dt_atr_name">属性</span>:&nbsp;&nbsp;
+                                                        </label>
+                                                     </div>
+
+                                                    <input type="text" class="form-control dt_atr_value" placeholder="锁定参数" aria-label="锁定参数" readonly>
+                                                </div>
+                                            </div>
+<!--                                            <i class="text-muted icon-sm fe-globe"></i>-->
+                                        </div>
+                                    </li>
+<!--                                金钱模板-->
+                                <li style="display: none" id="dt_skill4" class="list-group-item py-6">
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+                                                 <div class="input-group">
+                                                     <div class="input-group-prepend">
+                                                        <label class="input-group-text" >
+                                                            <span class="dt_atr_name">属性</span>:&nbsp;&nbsp;
+                                                        </label>
+                                                     </div>
+
+                                                    <input type="text" class="form-control dt_atr_value" placeholder="开放参数" aria-label="开放参数">
+                                                </div>
+                                            </div>
+<!--                                            <i class="text-muted icon-sm fe-globe"></i>-->
+                                        </div>
+                                    </li>
+<!--                                金钱模板-->
+<!--                                物品模板-->
+                                <li style="display: none" id="dt_obj" class="list-group-item py-6">
+                                    <div class="media text-muted">
+                                            <div class="media-body align-self-center">
+                                            <a href="javascript:;" class="text-reset dt_atr_name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                               title="伤害"
+                                            >物品名称</a>
+                                                    <div class="dropdown-menu dt_atr_sdlist">
+                                                        <a class="dropdown-item dt_atr_useskill">使用技能:</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item dt_atr_damage">伤害:</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item dt_atr_skillplu">技能加成:</a>
+                                                    </div>
+                                            </div>
+                                            <a href="javascript:;" class="dt_mingtou d-none d-xl-block" title="明骰"><i class="fe-slack"></i></a>
+                                        {% if page=="roomc" %}
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <a href="javascript:;" class="dt_antou d-none d-xl-block" title="暗骰"><i class="fe-x-square"></i><a>
+                                        {% endif %}
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <a href="javascript:;" class="dt_deltou d-none d-xl-block" title="删除"><i class="fe-trash-2"></i><a>
+
+                                            <span class="nav-item list-inline-item d-xl-none d-block">
+                                                <div class="dropdown">
+                                                    <a class="nav-link text-muted px-0 d-xl-none d-block" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="icon-md fe-more-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dt_mingtou dropdown-item d-flex align-items-center" href="#!">
+                                                            明骰 <span class="ml-auto pl-5 fe-slack"></span>
+                                                        </a>
+                                                        {% if page=="roomc" %}
+                                                        <a class="dt_antou dropdown-item d-flex align-items-center" href="#!">
+                                                            暗骰 <span class="ml-auto pl-5 fe-x-square"></span>
+                                                        </a>
+                                                        {% endif %}
+                                                        <a class="dt_deltou dropdown-item d-flex align-items-center" href="#" data-chat-sidebar-toggle="#chat-1-info">
+                                                            删除 <span class="ml-auto pl-5 fe-trash-2"></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </li>
+<!--                                物品模板-->
+<!--                                技能属性点数模板-->
+
+
+                            </div>
+                            <!-- Body -->
+
+                            <!-- Button -->
+                            <div class="border-top py-7">
+                                <div class="container-fluid">
+
+                                    <button onclick="send_ask()" class="btn btn-lg btn-block btn-primary d-flex align-items-center" type="submit">
+                                        修改参数
+                                        <span class="fe-edit ml-auto"></span>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- User's details -->

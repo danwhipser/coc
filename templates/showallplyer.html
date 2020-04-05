@@ -1,0 +1,728 @@
+{% include 'header.html' %}
+ <script>
+     var rr = new Array();
+ </script>
+<body>
+<input id='newstid' type='hidden' value='0'>
+<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">COCkit</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+          <a class="nav-item nav-link active" href="#">Top <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-item nav-link" onclick="$('#p_info').show('fast')" href="#p_info">用户信息</a>
+      </li>
+        <li class="nav-item">
+            <a class="nav-item nav-link" onclick="$('#p_skill').show('fast')" href="#p_skill">技能</a>
+      </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link"  onclick="$('#p_obj').show('fast')" href="#p_obj">物品</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-item nav-link" href="#set_52">调查员笔记</a>
+      </li>
+
+        <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          骰子
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="javascript:;" onclick="tour(3)">d3</a>
+            <a class="dropdown-item" href="javascript:;" onclick="tour(4)">d4</a>
+            <a class="dropdown-item" href="javascript:;" onclick="tour(5)">d5</a>
+            <a class="dropdown-item" href="javascript:;" onclick="tour(6)">d6</a>
+            <a class="dropdown-item" href="javascript:;" onclick="tour(7)">d7</a>
+            <a class="dropdown-item" href="javascript:;" onclick="tour(8)">d8</a>
+            <a class="dropdown-item" href="javascript:;" onclick="tour(9)">d9</a>
+            <a class="dropdown-item" href="javascript:;" onclick="tour(10)">d10</a>
+            <a class="dropdown-item" href="javascript:;" onclick="tour(15)">d15</a>
+            <a class="dropdown-item" href="javascript:;" onclick="tour(20)">d20</a>
+            <a class="dropdown-item" href="javascript:;" onclick="tour(50)">d50</a>
+            <a class="dropdown-item" href="javascript:;" onclick="tour(100)">d100</a>
+        </div>
+      </li>
+        <li class="nav-item">
+        <a class="nav-item nav-link" href="/kppage2">地图</a>
+      </li>
+    </ul>
+
+  </div>
+
+</nav>
+<p> </p>
+
+&nbsp;&nbsp;
+{% for uu in users %}
+              {% for p in players %}
+              {% if p.1 == uu.0 and p.2==1 and p.3==1 and p.5 %}
+                &nbsp;&nbsp;<a href="showallplyer?u={{uu.0}}" class="btn btn-primary">{{ p.5 }}</a>&nbsp;&nbsp;
+              {% endif %}
+              {% endfor %}
+        {% endfor %}
+<p></p>
+
+
+
+
+<div class="row">
+    <div class="col-xs-6 col-md-1"></div>
+
+  <div class="col-xs-6 col-md-10">
+
+      <div class="warp">
+    <p><button type="button" class="redu btn btn-primary">-</button> <strong class="a">120</strong>秒 <strong class="b"></strong>毫秒
+    <button type="button" class="pluu btn btn-primary">+</button> </p>
+    <p><button type="button" class="start btn btn-info">start</button> <button type="button" class="end btn btn-info">reset</button></p>
+    </div>
+
+<!--          <div id="showt" style="overflow-y:auto; height:200px;">-->
+<!--              <p> sdfgsdfgdsfgdfsg</p>-->
+<!--              <p> sdfgsdfgdsfgdfsg</p>-->
+<!--              <p> sdfgsdfgdsfgdfsg</p>-->
+<!--              <p> sdfgsdfgdsfgdfsg</p>-->
+<!--              <p> sdfgsdfgdsfgdfsg</p>-->
+<!--              <p> sdfgsdfgdsfgdfsg</p>-->
+<!--          </div>-->
+          <p> </p>
+<!--          <select id="msg_toid" class="form-control">-->
+<!--              <option value="0">所有玩家</option>-->
+<!--              {% for uu in users %}-->
+<!--              {% for p in players %}-->
+<!--              {% if p.1 == uu.0 and p.2==1 and p.3==1 and p.5 %}-->
+<!--              <option value="{{uu.0}}">{{ p.5 }}</option>-->
+<!--              {% endif %}-->
+<!--              {% endfor %}-->
+<!--                {% endfor %}-->
+
+<!--          </select>-->
+<!--          <p> </p>-->
+<!--          <textarea id="msg_con" class="form-control" rows="3"></textarea>-->
+<!--          <p> </p>-->
+<!--          <p align="right"><button class="btn btn-primary" onclick="send_msg()">消息框</button></p>-->
+      <p></p>
+      <h5 align="center" onclick="$('#p_info').toggle('fast')">用户信息</h5>
+      <hr />
+      <div id="p_info" class="row">
+          <div class="col-xs-6 col-md-6">
+
+              {% for n in atrr %}
+              {% if n.1 == 1 and n.0<16 %}
+              <p>
+                  {{n.2}}:
+                  {% for u in user %}
+                  {% if u.2==1 and u.3==n.0 %}
+                    {% if n.0==9 %}
+                    {% set vv = u.5 | int  %}
+                        {% for n1 in names %}
+                        {% if n1.0==vv %}
+                        {{n1.2}}
+                        {% endif %}
+                        {% endfor %}
+                    {% else %}
+                    {{u.5}}
+                    {% endif %}
+                  {% endif %}
+                  {% endfor %}
+              </p>
+              {% endif %}
+              {% endfor %}
+
+      </div>
+      <div class="col-xs-6 col-md-6">
+          {% for n in atrr %}
+              {% if n.1 == 1 and n.0>15 and n.0<20 %}
+              <p>
+                  {{n.2}}:
+                  {% for u in user %}
+                  {% if u.2==1 and u.3==n.0 %}
+                  {{u.5}}
+                  {% endif %}
+                  {% endfor %}
+              </p>
+              {% endif %}
+              {% endfor %}
+      </div>
+
+          {% for n in atrr %}
+              {% if n.1 == 1 and n.0>=20 and n.0<=32 %}
+                  <div class="col-xs-3 col-md-3">
+                      <p>
+
+<!--                      体力-->
+                      {% if n.0==29 %}
+                          <div class="form-inline">
+                                  {{n.2}}: &nbsp;
+                                      {% for u in user %}
+                                      {% if u.2==1 and u.3==n.0 %}
+                                      <input id="set_{{u.3}}" class="form-control" type="text" value="{{u.5}}" style="width:50px;"/> &nbsp;/
+                                      {% endif %}
+                                      {% endfor %}
+
+                                <span id="n_{{n.0}}"></span>
+                            </div>
+                          {% for u in user %}
+                          {% if u.2==1 and u.3==21 %}
+                            <script>
+                                var tizhi = parseInt({{ u.5 }});
+                            </script>
+                          {% elif u.2==1 and u.3==22 %}
+                            <script>
+                                var tixing = parseInt({{ u.5 }});
+                            </script>
+                          {% endif %}
+                          {% endfor %}
+                      <script>
+                          var tili = (tizhi+tixing)/10;
+                          tili = parseInt(tili);
+                          $("#n_{{n.0}}").html(tili);
+                          rr.push({{n.0}});
+                      </script>
+<!--                      理智-->
+                      {% elif n.0==30 %}
+                          <div class="form-inline">
+                                  {{n.2}}: &nbsp;
+                                      {% for u in user %}
+                                      {% if u.2==1 and u.3==n.0 %}
+                                      <input id="set_{{u.3}}" class="form-control" type="text" value="{{u.5}}" style="width:50px;"/> &nbsp;/
+                                      {% endif %}
+                                      {% endfor %}
+                                <span id="n_{{n.0}}"></span>
+                            </div>
+
+                            {% for u in user %}
+                            {% if u.2==1 and u.3==26 %}
+                            <script>
+                                var yizhi = parseInt({{ u.5 }});
+                                $("#n_{{n.0}}").html(yizhi);
+                                rr.push({{n.0}});
+                            </script>
+                            {% endif %}
+                            {% endfor %}
+<!--                      魔法-->
+                      {% elif n.0==32 %}
+                            <div class="form-inline">
+                                  {{n.2}}: &nbsp;
+                                      {% for u in user %}
+                                      {% if u.2==1 and u.3==n.0 %}
+                                      <input id="set_{{u.3}}" class="form-control" type="text" value="{{u.5}}" style="width:50px;"/> &nbsp;/
+                                      {% endif %}
+                                      {% endfor %}
+                                <span id="n_{{n.0}}"></span>
+                            </div>
+                            <script>
+                                var mofa = yizhi/5;
+                                $("#n_{{n.0}}").html(mofa);
+                                rr.push({{n.0}});
+                            </script>
+
+<!--                      移动力-->
+                      {% elif n.0==28 %}
+                      {{n.2}}: <span id="n_{{n.0}}">8</span>
+                      <input id="set_{{n.0}}" type="hidden" value="8" />
+                      <script>rr.push({{n.0}});</script>
+
+                      {% else %}
+                          <label for="exampleInputName2">{{n.2}}:</label>
+                          {% for u in user %}
+                          {% if u.2==1 and u.3==n.0 %}
+                            <div class="form-inline">
+                                    &nbsp;&nbsp;&nbsp;
+                                  <input id="set_{{u.3}}" class="form-control" type="text" value="{{u.5}}"  style="width:50px;"/> &nbsp;
+                                  <button type="button" class="btn btn-info" aria-label="Left Align" onclick="tou({{u.5}},'{{n.2}}')">明骰</button> &nbsp;
+                                  <button type="button" class="btn btn-dark" aria-label="Left Align" onclick="tou2({{u.5}},'{{n.2}}')">暗骰</button>
+                            </div>
+                            <script>
+                                rr.push({{n.0}});
+                            </script>
+
+                          {% endif %}
+                          {% endfor %}
+                      {% endif %}
+                      </p>
+              </div>
+              {% endif %}
+              {% endfor %}
+
+         </div>
+      <p align="right"><button onclick="subm()" type="button" class="btn btn-warning">修改参数</button></p>
+      <hr />
+<!--      技能-->
+      <h5 align="center" onclick="$('#p_skill').toggle('fast')">技能</h5>
+<!--      <p align="center"><small>这里只显示技能点30以上的技能</small></p>-->
+          <div id="p_skill" class="row">
+              <table class="table table-hover">
+                  <tr>
+                      <td>技能名称</td>
+                      <td>技能点</td>
+                  </tr>
+                  {% for u in user %}
+                  {% if u.2==3 and u.4==5 and u.5|int >10 %}
+                  <tr>
+                        <td>
+                            {% for n1 in names %}
+                            {% if n1.0==u.3 %}
+                            {{n1.2}}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <div class="form-inline">
+                                    &nbsp;&nbsp;&nbsp;
+                                  <input id="skills_{{u.3}}" class="form-control" type="text" style="width:200px;" value="{{u.5}}"/> &nbsp;
+                                {% for n1 in names %}
+                                {% if n1.0==u.3 %}
+                                <button type="button" class="btn btn-info" aria-label="Left Align" onclick="tou({{u.5}},'{{n1.2}}')">明骰</button> &nbsp;
+                                <button type="button" class="btn btn-dark" aria-label="Left Align" onclick="tou2({{u.5}},'{{n1.2}}')">暗骰</button>
+                                {% endif %}
+                                {% endfor %}
+
+                            </div>
+
+                        </td>
+                  </tr>
+                  {% endif %}
+                  {% endfor %}
+              </table>
+          </div>
+
+      <hr />
+      <h5 align="center" onclick="$('#p_obj').toggle('fast')">物品</h5>
+      <div id="p_obj">
+          <table class="table table-striped">
+
+<tr>
+    <td>物品名称</td>
+    {% for n in atrr %}
+          {% if n.1 == 4 %}
+
+      <td><input type="hidden" name="aid" value="{{n.0}}" />{{n.2}}</td>
+          {% endif %}
+    {% endfor %}
+    <td>技能检定</td>
+</tr>
+
+              {% for u in user %}
+          {% if u.2==4 %}
+              {% for n1 in names %}
+              {% if n1.0==u.3 %}
+          <tr>
+              <td>{{n1.2}} &nbsp;&nbsp;</td>
+              {% for n in atrr %}
+              {% if n.1 == 4 %}
+              <td>
+              {% for v in value %}
+              {% if v.1 == n1.0 and v.2 == n.0 %}
+              <a id="i_{{v.0}}">{{v.4}}</a>
+              {% endif %}
+              {% endfor %}
+              </td>
+              {% endif %}
+              {% endfor %}
+              <td>
+                  <button type="button" class="btn btn-info" aria-label="Left Align">明骰</button> &nbsp;
+                  <button type="button" class="btn btn-dark" aria-label="Left Align">暗骰</button>
+              </td>
+            </tr>
+              {% endif %}
+              {% endfor %}
+          {% endif %}
+          {% endfor %}
+
+</table>
+<!--      <p>-->
+
+<!--      </p>-->
+<!--      <p> <form class="form-inline"><div class="form-group"><input id="add_obj" class="form-control" type="text" style="width:200px;" value=""/>&nbsp;&nbsp;&nbsp;<button class="btn btn-warning">添加物品</button></div></form></p>-->
+      <p>
+          <form class="form-inline"><div class="form-group">
+          剩余金钱:&nbsp;&nbsp;&nbsp;
+          {% for u in user %}
+          {% if u.2==1 and u.3==55 %}
+          <input id="set_{{u.3}}" class="form-control" type="text"  style="width:100px;" value="{{u.5}}"/>
+          <script>
+              rr.push({{u.3}});
+          </script>
+      &nbsp;   &nbsp;&nbsp;
+          <button onclick="subm({{u.3}})" type="button" class="btn btn-warning">修改参数</button>
+          {% endif %}
+          {% endfor %}
+      &nbsp;&nbsp;&nbsp;
+          </div></form>
+          </p>
+        </div>
+<hr />
+            <div class="row">
+                {% for u in user %}
+                {% if u.2==1 and u.3==48 %}
+                <div class="col-xs-6 col-md-6">
+                <h5>调查员背景</h5>
+                {{u.5}}
+                </div>
+                {% elif u.2==1 and u.3==49 %}
+                <div class="col-xs-6 col-md-6">
+                <h5>调查员特质</h5>
+                {{u.5}}
+                </div>
+                {% endif %}
+                {% endfor %}
+
+            </div>
+      <p>&nbsp; </p>
+      <hr />
+            <div class="row">
+                <div class="col-xs-12 col-md-12">
+                <h5>调查员笔记</h5>
+                <textarea id="set_52" class="form-control" id="exampleFormControlTextarea1" rows="3">{% for u in user %}{% if u.2==1 and u.3==52 %}{{u.5}}{% endif %}{% endfor %}</textarea>
+                    <p>&nbsp;</p>
+                    <button onclick="subm(52)" type="button" class="btn btn-warning">提交</button>
+                </div>
+
+            </div>
+      </div>
+    <div class="col-xs-6 col-md-1"> </div>
+</div>
+<p>&nbsp; </p>
+<p>&nbsp; </p>
+<p>&nbsp; </p>
+<p>&nbsp; </p>
+
+<!--输入框-->
+<nav class="navbar fixed-bottom navbar-dark bg-dark">
+<div style="display: none" id="showtt">
+        <p align="right"><a href="javascript:;" onclick="$('#showtt').hide('fast')">收起</a></p>
+    <div id="showt" style="overflow-y:auto; height:200px;width: 100%" class="p-3 mb-2 bg-light text-dark">
+              <p> sdfgsdfgdsfgdfsg</p>
+              <p> sdfgsdfgdsfgdfsg</p>
+              <p> sdfgsdfgdsfgdfsg</p>
+              <p> sdfgsdfgdsfgdfsg</p>
+              <p> sdfgsdfgdsfgdfsg</p>
+              <p> sdfgsdfgdsfgdfsg</p>
+          </div>
+        </div>
+
+    <form class="form-inline">
+        <select id="msg_toid" class="form-control">
+              <option value="0">所有玩家</option>
+              {% for uu in users %}
+              {% for p in players %}
+              {% if p.1 == uu.0 and p.2==1 and p.3==1 and p.5 %}
+              <option value="{{uu.0}}">{{ p.5 }}</option>
+              {% endif %}
+              {% endfor %}
+                {% endfor %}
+
+          </select> &nbsp;
+    <input id="msg_con" class="form-control mr-sm-2" type="search" placeholder="输入" aria-label="输入框" onfocus="$('#showtt').show('fast');var scrollHeight = $('#showt').prop('scrollHeight');$('#showt').scrollTop(scrollHeight,200);">
+    <button onclick="send_msg()" class="btn btn-outline-success my-2 my-sm-0" type="button">发送</button>
+  </form>
+
+</nav>
+</body>
+
+<script>
+$(document).ready(function(){
+  var txt;
+  txt = "欢迎来到克苏鲁炮团，既然你来这里了，那么你也被深渊盯住了，那么你是谁？";
+  $("#forn").html(txt);
+
+  get_msg(1);
+  var scrollHeight = $("#showt").prop("scrollHeight");
+  $("#showt").scrollTop(scrollHeight,200);
+  setInterval(function(){
+    get_msg(1);
+  }, 3000);
+});
+
+function subm(id){
+    if(id){
+        r=id;
+
+        var ne= $("#set_"+r).val();
+        send_p(1,r,ne);
+        // console.log(r+":"+ne);
+        // send(1,r,ne);
+    }else{
+        for(r of rr){
+            var ne= $("#set_"+r).val();
+            send_p(1,r,ne);
+            console.log(r+":"+ne);
+            // send(1,r,ne);
+        }
+    }
+    alert("提交完成");
+
+
+}
+
+function send_p(k,nid,v){
+    $.post("/addu2", {
+                // id:0,
+                kind: k,
+                uid: '{{thisuid}}',
+                nid: nid,
+                aid:0,
+                v:v
+              },
+                function(myData , status){
+                    // window.location.href="create2"
+                    // $("#jumpp").show();
+                    console.log(myData);
+            });
+}
+
+
+
+
+function send_msg() {
+    var toid = $("#msg_toid").val();
+    var con = $("#msg_con").val();
+    var scrollHeight = $("#showt").prop("scrollHeight");
+    $("#showt").scrollTop(scrollHeight,200);
+    send_m(1,toid,con);
+}
+
+function send_m(k,toid=0,msg=0){
+    $.post("/sendmsg", {
+                    kind: k,
+                    toid:toid,
+                    msg:msg
+                  },
+                    function(myData , status){
+                    console.log(myData);
+                    get_msg(1);
+                    // alert(myData);
+
+                });
+    }
+
+function get_msg(k){
+    $.get("/getmsg", {
+                    kind: k,
+                  },
+                    function(myData , status){
+                        var qq = myData[0][0];
+                        var nsid= $("#newstid").val();
+                        if(qq!=nsid){
+                            $("#newstid").val(qq);
+                            console.log(qq);
+                            $("#showt").html("<p>-------------------------------------------------------------------</p>");
+                        }
+                        else{
+                            return;
+                        }
+                        myData = myData.reverse();
+                        for (data of myData){
+                            var timestamp=new Date().getTime();
+                            var tt= parseInt(data[4]);
+                            var ctime = currentTime(tt);
+                            var fid=parseInt(data[2]);
+                            var tid=parseInt(data[3]);
+                            var d="<small class=\"text-muted\">from <span id='f_"+timestamp+"' class=\"text-primary\"></span> to <span id='t_"+timestamp+"' class=\"text-primary\"></span>("+ctime+"):</small><p> "+data[5]+"</p>";
+                            $("#showt").append(d);
+                            if(fid == "{{myuid}}"){
+                                $("#f_"+timestamp).html("'me'");
+                                $("#f_"+timestamp).attr("class","text-success");
+                            }
+                            else if(fid == 0){
+                                $("#f_"+timestamp).html("'所有人'");
+                            }
+                            else{
+
+                                get_plyer(data[2],"f_"+timestamp);
+                            }
+                            if(tid == "{{myuid}}"){
+                                $("#t_"+timestamp).html("'me'");
+                                $("#t_"+timestamp).attr("class","text-success");
+                            }
+                            else if(tid == 0){
+                                $("#t_"+timestamp).html("'所有人'");
+                            }
+                            else{
+                                get_plyer(data[3],"t_"+timestamp);
+                            }
+                            var scrollHeight = $("#showt").prop("scrollHeight");
+                            $("#showt").scrollTop(scrollHeight,200);
+
+                        }
+
+                },"json");
+}
+
+function get_plyer(uid,iid) {
+    $.get("/getplyer", {
+        uid: uid
+        },
+        function(myData , status){
+        var re = myData[0][5];
+        $("#"+iid).html("'"+re+"'");
+
+        },"json");
+}
+
+function currentTime(time) {
+    var date=new Date(time);
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    var d = date.getDate();
+    var hour = date.getHours().toString();
+    var minutes = date.getMinutes().toString();
+    var seconds = date.getSeconds().toString();
+    if (hour < 10) {
+        hour = "0" + hour;
+    }
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    // return  y + '-' + (m < 10 ? ('0' + m) : m) + '-' + (d < 10 ? ('0' + d) : d) + " " + hour + ":" + minutes + ":" + seconds;
+    return  hour + ":" + minutes + ":" + seconds;
+}
+
+function randomNum(minNum,maxNum){
+    switch(arguments.length){
+        case 1:
+            return parseInt(Math.random()*minNum+1,10);
+        break;
+        case 2:
+            return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10);
+        break;
+            default:
+                return 0;
+            break;
+    }
+}
+function tour(value,obj=0) {
+    var re = randomNum(1,value);
+    // console.log(re);
+    if(!obj){
+        obj=" ";
+    }
+    obj=obj+"检定:";
+
+    var d = "<small class=\"text-muted\">暗骰:</small><p>"+obj+re+"</p>";
+    $("#showt").append(d);
+    var scrollHeight = $("#showt").prop("scrollHeight");
+    $("#showt").scrollTop(scrollHeight,200);
+}
+function tou(value,obj) {
+    var d= randomNum(1,50);
+    var d2 = randomNum(1,50);
+    c = d+d2;
+    v2 = parseInt(value/2);
+    v3 = parseInt(value/5);
+    var msg = obj+"检定:";
+    if(c>value){
+        if(c>95){
+            msg = msg+"大失败!"+c;
+        }
+        else{
+            msg = msg+"失败!"+c;
+        }
+    }
+    else if(c<value && c>v2){
+        msg = msg+"成功!"+c;
+    }
+    else if(c<v2 && c>v3){
+        msg = msg+"大成功!"+c;
+    }
+    else if(c<v3){
+        msg = msg+"终极成功!"+c;
+    }
+    send_m(1,0,msg);
+}
+
+function tou2(value,obj=0) {
+    var d= randomNum(1,50);
+    var d2 = randomNum(1,50);
+    c = d+d2;
+    v2 = parseInt(value/2);
+    v3 = parseInt(value/5);
+    var msg = obj+"检定:";
+    if(c>value){
+        if(c>95){
+            msg = msg+"大失败!"+c;
+        }
+        else{
+            msg = msg+"失败!"+c;
+        }
+    }
+    else if(c<value && c>v2){
+        msg = msg+"成功!"+c;
+    }
+    else if(c<v2 && c>v3){
+        msg = msg+"困难成功!"+c;
+    }
+    else if(c<v3){
+        msg = msg+"终极成功!"+c;
+    }
+    var d = "<small class=\"text-muted\">暗骰:</small><p>"+msg+"</p>";
+    $("#showt").append(d);
+    var scrollHeight = $("#showt").prop("scrollHeight");
+    $("#showt").scrollTop(scrollHeight,200);
+}
+
+
+    function timeout(obj){
+        if(obj<10){
+
+        }else{
+            var times = obj * 100; // 60秒
+            countTime = setInterval(function() {
+                times = --times < 0 ? 0 : times;
+                var ms = Math.floor(times / 100).toString();
+
+                if(ms.length <= 1) {
+                    ms = "0" + ms;
+                }
+                var hm = Math.floor(times % 100).toString();
+                if(hm.length <= 1) {
+                    hm = "0" + hm;
+                }
+                if(times == 0) {
+                    //alert("游戏结束");
+                    clearInterval(countTime);
+                }
+                // 获取分钟、毫秒数
+                $(".a").html(ms);
+                $(".b").html(hm);
+            }, 10);
+        }
+
+
+    }
+    $(function () {
+        $('.start').click(function () {
+            var a = $('.a').html();
+            timeout(a);
+        });
+        $('.end').click(function () {
+            $('.a').html(120);
+            $('.b').html('00');
+            clearInterval(countTime);
+        });
+        $('.redu').click(function () {
+            var a = $('.a').html();
+            a = parseInt(a);
+            a = a - 30;
+            $('.a').html(a);
+        });
+        $('.pluu').click(function () {
+            var a = $('.a').html();
+            a = parseInt(a);
+            a = a + 30;
+            $('.a').html(a);
+        });
+
+    })
+
+</script>
+
+
+</html>

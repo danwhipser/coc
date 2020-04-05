@@ -1,0 +1,74 @@
+<!-- Navbar -->
+            <div class="navigation navbar navbar-light justify-content-center py-xl-7">
+
+                <!-- Brand -->
+                <a href="/" class="d-none d-xl-block mb-6">
+                    <div class="avatar avatar-lg">
+                            <img class="avatar-img" src="static/logo.jpeg" alt="">
+                        </div>
+<!--                    <img src="static/logo.jpeg" class="mx-auto fill-primary" data-inject-svg="" alt="" style="height: 46px;">-->
+                </a>
+
+                <!-- Menu -->
+                <ul class="nav navbar-nav flex-row flex-xl-column flex-grow-1 justify-content-between justify-content-xl-center py-3 py-lg-0" role="tablist">
+
+                    <!-- Invisible item to center nav vertically -->
+                    <li class="nav-item d-none d-xl-block invisible flex-xl-grow-1">
+                        <a class="nav-link position-relative p-0 py-xl-3" href="#" title="">
+                            <i class="icon-lg fe-x"></i>
+                        </a>
+                    </li>
+
+                    <!-- Demo only: Documentation -->
+                    <li class="nav-item">
+                        <a class="nav-link position-relative p-0 py-xl-3 {% if page == 'index' %}active{% endif %}" data-toggle="tab" href="#tab-content-demos" title="首页" role="tab">
+                            <i class="icon-lg fe-layers"></i>
+                        </a>
+                    </li>
+
+                    <!-- Chats -->
+                    <li class="nav-item mt-xl-9">
+                        <a id="cont_chat" class="nav-link position-relative p-0 py-xl-3 {% if page == 'roomp' or page=='roommap' %}active{% endif %}" data-toggle="tab" href="#tab-content-dialogs" title="寻找游戏" role="tab">
+                            <i class="icon-lg fe-message-square"></i>
+<!--                            <div class="badge badge-dot badge-primary badge-bottom-center"></div>-->
+                        </a>
+                    </li>
+
+                    <!-- Create group -->
+                    <li class="nav-item mt-xl-9">
+                        <a id="cont_game" class="nav-link position-relative p-0 py-xl-3 {% if page == 'roomc' %}active{% endif %}" data-toggle="tab" href="#tab-content-create-chat" title="创建游戏" role="tab">
+                            <i class="icon-lg fe-edit"></i>
+                        </a>
+                    </li>
+
+
+                    <!-- Friend -->
+<!--                    <li class="nav-item mt-xl-9">-->
+<!--                        <a class="nav-link position-relative p-0 py-xl-3" data-toggle="tab" href="#tab-content-friends" title="Friends" role="tab">-->
+<!--                            <i class="icon-lg fe-users"></i>-->
+<!--                        </a>-->
+<!--                    </li>-->
+
+
+
+                    <!-- Profile -->
+                    <li class="nav-item mt-xl-9 d-xl-block flex-xl-grow-1">
+                        <a id="cont_user" class="nav-link position-relative p-0 py-xl-3 {% if page == 'setting' %}active{% endif %}" data-toggle="tab" href="#tab-content-user" title="用户卡组" role="tab">
+                            <i class="icon-lg fe-user"></i>
+                        </a>
+                    </li>
+
+
+
+                    <!-- Settings -->
+                    <li class="nav-item mt-xl-9">
+                        <a class="nav-link position-relative p-0 py-xl-3" data-toggle="tab" href="#tab-content-setup" title="账户设置" role="tab">
+                            <i class="icon-lg fe-settings"></i>
+                        </a>
+                    </li>
+
+                </ul>
+                <!-- Menu -->
+
+            </div>
+            <!-- Navbar -->

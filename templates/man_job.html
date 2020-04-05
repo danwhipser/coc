@@ -1,0 +1,142 @@
+{% include 'header.html' %}
+<body>
+
+<a href="imboss" class="btn btn-info">return</a>
+&nbsp;&nbsp;&nbsp;
+<a href="man_point?k=1" class="btn btn-primary">用户</a>
+&nbsp;&nbsp;&nbsp;
+<a href="man_point?k=2" class="btn btn-primary">职业</a>
+&nbsp;&nbsp;&nbsp;
+<a href="man_point?k=11" class="btn btn-primary">职业+</a>
+&nbsp;&nbsp;&nbsp;
+<a href="man_point?k=3" class="btn btn-primary">技能</a>
+&nbsp;&nbsp;&nbsp;
+<a href="man_point?k=4" class="btn btn-primary">物品</a>
+&nbsp;&nbsp;&nbsp;
+<a href="saizi" class="btn btn-primary">骰子</a>
+<p>&nbsp;</p>
+<div class="row">
+<!--  <div class="col-xs-6 col-md-1"> </div>-->
+  <div class="col-xs-6 col-md-12">
+
+
+      <h2 align="center">{{clss.0.1}}信息</h2>
+
+      <table class="table table-striped">
+
+<tr>
+    <td>{{clss.0.1}}名称</td>
+    {% for n in atrr %}
+          {% if n.1 == 2 and (n.0 == 4 or n.0==12 or n.0==46) %}
+
+      <td><input type="hidden" name="aid" value="{{n.0}}" />{{n.2}}</td>
+          {% endif %}
+    {% endfor %}
+</tr>
+     {% for n1 in names %}
+          {% if n1.1 == 2 %}
+    <tr>
+      <td>{{n1.2}}</td>
+        {% for n in atrr %}
+          {% if n.1 == 2 and (n.0 == 4 or n.0==12 or n.0==46) %}
+
+      <td>
+
+          {% if n.0 == 4 %}
+            {% for v in value %}
+                   {% if v.1 == n1.0 and v.2 == n.0 %}
+                    {% for an2 in atrr %}
+                       {% if an2.0 == v.3 %}
+          <a id="i_{{v.0}}" href="#" onclick="del('info',{{v.0}})">
+                        {{an2.2}}x
+                        {% endif %}
+                       {% endfor %}
+          {{v.4}};</a>&nbsp;&nbsp;
+<!--          <a id="i_{{v.0}}" href="#" onclick="del('info',{{v.0}})">删除</a>;&nbsp;&nbsp;-->
+                   {% endif %}
+                   {% endfor %}
+
+          <form class="form-inline" action="man_point" method="post">
+               <div class="form-group">
+
+                   <input type="hidden" name="nid" value="{{n1.0}}" />
+          <input type="hidden" name="aid" value="{{n.0}}" />
+                   <input type="hidden" name="iflink" value="1" />
+                   <select name="link">
+                       {% for an in atrr %}
+                       {% if an.1 == 1 %}
+                       <option value="{{an.0}}">{{an.2}}</option>
+                       {% endif %}
+                       {% endfor %}
+                   </select>
+          <input type="text" name="value" class="form-control"  size="1"/>
+          <button type="submit" class="btn btn-primary">提交</button>
+               </div>
+      </form>
+          {% elif n.0 == 12 or n.0 == 46 %}
+          {% for v in value %}
+                   {% if v.1 == n1.0 and v.2 == n.0 %}
+                    {% for an1 in names %}
+                       {% if an1.0 == v.3 %}
+
+                       <a id="i_{{v.0}}" href="#" onclick="del('info',{{v.0}})"> {{an1.2}};</a>&nbsp;&nbsp;
+                        {% endif %}
+                       {% endfor %}
+
+                   {% endif %}
+                   {% endfor %}
+          <form class="form-inline" action="man_point?k=11" method="post">
+               <div class="form-group">
+
+                   <input type="hidden" name="nid" value="{{n1.0}}" />
+          <input type="hidden" name="aid" value="{{n.0}}" />
+                   <input type="hidden" name="iflink" value="1" />
+                   <select name="link">
+                       {% for nn in names %}
+                       {% if nn.1 == 3 %}
+                       <option value="{{nn.0}}">{{nn.2}}</option>
+                       {% endif %}
+                       {% endfor %}
+                   </select>
+          <input type="text" name="value" class="form-control"  size="1"/>
+          <button type="submit" class="btn btn-primary">提交</button>
+               </div>
+      </form>
+          {% endif %}
+
+      </td>
+          {% endif %}
+        {% endfor %}
+  </tr>
+          {% endif %}
+    {% endfor %}
+</table>
+
+  </div>
+<!--    <div class="col-xs-6 col-md-1"> </div>-->
+</div>
+
+</body>
+<script>
+    function del(table,id) {
+            // var myData = "This is my data string.";
+            $.post("/delet", {
+                table: table,
+                id: id
+              },
+                function(myData , status){
+                if(status=="success"){
+                    if(table=="info"){
+
+                        $("#i_"+id).hide();
+                        // alert("#n_"+id);
+                    }
+
+                }
+                // alert(myData);
+                // alert(status);
+            });
+        }
+</script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</html>

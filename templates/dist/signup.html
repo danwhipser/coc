@@ -1,0 +1,71 @@
+{% include 'dist/header.html' %}
+    <!-- Head -->
+
+    <body>
+
+        <div class="layout">
+
+            <div class="container d-flex flex-column">
+                <div class="row align-items-center justify-content-center no-gutters min-vh-100">
+
+                    <div class="col-12 col-md-5 col-lg-4 py-8 py-md-11">
+
+                        <!-- Heading -->
+                        <h1 class="font-bold text-center">{{message}}</h1>
+
+                        <!-- Text -->
+                        <p class="text-center mb-6">欢迎来到类克苏鲁跑团游戏深渊小屋</p>
+
+                        <!-- Form -->
+                        <form class="mb-6" action="register" method="post">
+
+
+
+                            <!-- Email -->
+                            <div class="form-group">
+                                <label for="email" class="sr-only">Email地址</label>
+                                <input type="email" name="username" class="form-control form-control-lg" id="email" placeholder="Email地址(登陆使用)">
+                            </div>
+                            <!-- Name -->
+<!--                            <div class="form-group">-->
+<!--                                <label for="name" class="sr-only">昵称</label>-->
+<!--                                <input type="text" name="cname" class="form-control form-control-lg" id="name" placeholder="昵称">-->
+<!--                            </div>-->
+
+                            <!-- Password -->
+                            <div class="form-group">
+                                <label for="password" class="sr-only">密码</label>
+                                <input type="password" name="password" class="form-control form-control-lg" id="password" placeholder="密码">
+                            </div>
+                            <!-- Password -->
+<!--                            <div class="form-group">-->
+<!--                                <label for="password" class="sr-only">确认密码</label>-->
+<!--                                <input type="password" name="repassword" class="form-control form-control-lg" id="repassword" placeholder="再输一次密码">-->
+<!--                            </div>-->
+                            <!-- 邀请码 -->
+                            <div class="form-group">
+                                <label for="password" class="sr-only">邀请码</label>
+                                <input type="password" name="code" class="form-control form-control-lg" id="code" placeholder="邀请码">
+                            </div>
+
+                            <!-- Submit -->
+                            <button class="btn btn-lg btn-block btn-primary" type="submit">注册</button>
+                        </form>
+
+                        <!-- Text -->
+                        <p class="text-center">
+                            已经拥有帐号? <a href="./">登陆</a>.
+                        </p>
+
+                    </div>
+                </div> <!-- / .row -->
+            </div>
+
+        </div><!-- .layout -->
+
+        <!-- Scripts -->
+        {% include 'dist/jsclude.html' %}
+        <!-- Scripts -->
+
+    </body>
+</html>

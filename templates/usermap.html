@@ -1,0 +1,45 @@
+{% include 'header.html' %}
+
+<body>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">COCkit</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-item nav-link" href="/showallplyer">用户信息</a>
+      </li>
+    </ul>
+
+  </div>
+
+</nav>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-10" id='KpDisplay'>
+                <div class="map-display p-2"  >
+                  <img src="./kppage/pic/map2.gif" class="img-fluid" alt="Responsive image">
+                </div>
+                <div class="token-display-block">
+                    <a>{{img.0.4}}</a>
+                 <img id="token1" class="draggable-token"  src="./">
+                 <img id="token2" class="draggable-token"  src="./kppage/pic/token2.jpg">
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+ <script>
+        $(function() {
+          $( ".draggable-token" ).draggable({ containment: "#KpDisplay", scroll: false });
+        });
+
+
+     </script>
+</html>
