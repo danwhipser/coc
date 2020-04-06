@@ -250,12 +250,17 @@
                                                     </button>
 <!--                                                    筛子数字-->
                                                     <div class="dropdown-menu" aria-labelledby="cussaizi">
-                                                        <a id="showo_imgi" onclick="showo_img()" class="dropdown-item d-flex align-items-center rp_getinfo" href="#" data-toggle="modal" data-target="#dshowimg">
+                                                        <a onclick="creacy()" class="dropdown-item d-flex align-items-center" href="#">
+                                                            疯狂检定 <span class="ml-auto fe-target"></span>
+                                                        </a>
+                                                        <a id="showo_imgi" onclick="showo_img()" class="dropdown-item d-flex align-items-center" href="#" data-toggle="modal" data-target="#dshowimg">
                                                             显示图片 <span class="ml-auto fe-image"></span>
                                                         </a>
-                                                        <a class="dropdown-item d-flex align-items-center rp_getinfo" href="#" data-toggle="modal" data-target="#dnotebook">
+                                                        <a class="dropdown-item d-flex align-items-center" href="#" data-toggle="modal" data-target="#dnotebook">
                                                             调查员笔记 <span class="ml-auto fe-book-open"></span>
                                                         </a>
+
+
                                                     </div>
                                                 </div>
                                                 <div class="input-group-append">
@@ -1153,7 +1158,7 @@
             function(myData , status){
                 $("#msg_box").html("");
                 myData = myData.reverse();
-                var lastid=0;
+                var lastidd=0;
                 for(data of myData){
                     var uid = data[0];
                     var name = data[1];
@@ -1171,9 +1176,9 @@
                         var mytemp = "msg_oth_";
                         set_msg_box(sia,"msg_box","msg_tp_other",mytemp,name,pic,msga);
                     }
-                    lastid = "#"+mytemp+sia;
+                    lastidd = "#"+mytemp+sia;
                 }
-                window.location.href=lastid;
+                window.location.href=lastidd;
 
             });
         }
@@ -1199,6 +1204,7 @@
             $("#"+mytemp+sid+" .msg_time").html(msg_time);
         }
 
+        //手机界面时切回主界面
         function qiehui(){
             $("#chat-1-user-profile").attr("class","chat-sidebar");
             $("#chat-1-info").attr("class","chat-sidebar chat-sidebar-visible");
@@ -1708,6 +1714,26 @@
                 get_msg();
             });
 
+        }
+
+        function creacy(){
+            if(mycid==0 || mycid=="0" || !mycid){
+                alert("请至少将一个卡组加入游戏再投");
+                return
+            }
+            $.post("/tou_creacy", {
+                kind:5,
+                fromcid:mycid,
+                toid:"{{group_id}}",
+                },
+            function(myData , status){
+                // console.log(myData);
+                if(myData==""){
+                    alert("出现迷之错误")
+                }
+                $("#chat-id-1-input").val("");
+                get_msg();
+            });
         }
 
         function delobj(pid=0){

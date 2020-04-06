@@ -1311,6 +1311,37 @@ def tou_demage():
     re = send_msg(kind, myuid, fromcid, toid, dmsg)
     return str(re)
 
+# 疯狂检定
+@app.route('/tou_creacy', methods=['POST'])
+def tou_creacy():
+    kind = int(request.form['kind'])
+    toid = int(request.form['toid'])
+    fromcid = int(request.form['fromcid'])
+    myuid = int(session.get('uid'))
+    # 获取1d10
+    radnum = op.roll(10)
+    # radnum = radnum
+    us = opt("user.db")
+    cr_names = us.select_w("name", "kind=8 order by id asc")
+    # 找到第一个疯狂id
+    firstid = cr_names[0][0]
+    # 加上随机数
+    getid = radnum + firstid
+    re = 0
+    ii = 1
+    for cr in cr_names:
+        if ii >= radnum:
+            creacy_name = cr[2]
+            creacy_desc = cr[3]
+            msg = "<p class=\"font-weight-bold\">%s %s</p>%s" % (creacy_name, radnum, creacy_desc)
+            re = send_msg(kind, myuid, fromcid, toid, msg)
+            break
+        ii += 1
+
+    return str(re)
+
+
+
 # 检测成功程度 c参数,value最大值,msg+"成功"+数字
 def set_secces(c,value,msg):
     out = []
