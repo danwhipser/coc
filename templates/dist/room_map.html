@@ -1,0 +1,545 @@
+{% include 'dist/header.html' %}
+<!-- Head -->
+<!-- Scripts -->
+        {% include 'dist/jsclude.html' %}
+        <!-- Scripts -->
+    <body>
+
+        <div class="layout">
+            {% include 'dist/navibar.html' %}
+            {% include 'dist/sidebar.html' %}
+
+
+
+            <!-- Main Content -->
+            <div class="main main-visible" data-mobile-height="">
+
+                <!-- Chat -->
+                <div id="chat-1" class="chat dropzone-form-js" data-dz-url="some.php">
+
+                    <!-- Chat: body -->
+                    <div class="chat-body">
+
+                        <!-- Chat: Header -->
+                        <div class="chat-header border-bottom py-4 py-lg-6 px-lg-8">
+                            <div class="container-xxl">
+
+                                <div class="row align-items-center">
+
+                                    <!-- Close chat(mobile) -->
+                                    <div class="col-3 d-xl-none">
+                                        <ul class="list-inline mb-0">
+                                            <li class="list-inline-item">
+                                                <a class="text-muted px-0" href="#" data-chat="open">
+                                                    <i class="icon-md fe-chevron-left"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Chat photo -->
+                                    <div class="col-6 col-xl-6">
+                                        <div class="media text-center text-xl-left">
+                                            <div class="media-body align-self-center text-truncate">
+                                                <h6 class="text-truncate mb-n1">图片库 {{group_name}}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Chat toolbar -->
+                                    <div class="col-3 col-xl-6 text-right">
+                                        <ul class="nav justify-content-end">
+                                            <li class="nav-item list-inline-item d-none d-xl-block mr-0">
+                                                <a class="nav-link text-muted px-3" onclick="showo_img()" href="#" title="刷新图片">
+                                                    <i class="icon-md fe-refresh-cw"></i>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item list-inline-item d-none d-xl-block mr-0">
+                                                <a class="nav-link text-muted px-3" href="roomc?rid={{group_id}}" title="返回聊天室">
+                                                    <i class="icon-md fe-log-out"></i>
+                                                </a>
+                                            </li>
+                                            {% if token!=0 %}
+                                            <li class="nav-item list-inline-item d-none d-xl-block mr-0">
+                                                <a class="nav-link text-muted px-3" href="#" data-chat-sidebar-toggle="#chat-2-info" title="添加图片">
+                                                    <i class="icon-md fe-more-vertical"></i>
+                                                </a>
+                                            </li>{% endif %}
+
+                                            <!-- Mobile nav -->
+                                            <li class="nav-item list-inline-item d-block d-xl-none">
+                                                <div class="dropdown">
+                                                    <a class="nav-link text-muted px-0" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="icon-md fe-more-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        {% if token!=0 %}
+                                                        <a class="dropdown-item d-flex align-items-center" href="#" data-chat-sidebar-toggle="#chat-2-info">
+                                                            添加图片 <span class="ml-auto pl-5 fe-folder-plus"></span>
+                                                        </a>
+                                                        {% endif %}
+                                                        <a class="dropdown-item d-flex align-items-center" onclick="showo_img()" href="#">
+                                                            刷新图片 <span class="ml-auto pl-5 fe-refresh-cw"></span>
+                                                        </a>
+                                                        <a class="dropdown-item d-flex align-items-center" href="roomc?rid={{group_id}}">
+                                                            返回聊天室 <span class="ml-auto pl-5 fe-log-out"></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <!-- Mobile nav -->
+                                        </ul>
+                                    </div>
+
+                                </div><!-- .row -->
+
+                            </div>
+                        </div>
+                        <!-- Chat: Header -->
+
+
+                        <!-- Chat: Content-->
+                        <div class="chat-content px-lg-8">
+                            <div class="container-xxl py-6 py-lg-10">
+
+                                <!-- map display -->
+                                <div id="map-display-1">
+                                   <img src="" class="img-fluid" alt="地图显示">
+                                </div>
+
+
+                                <!-- map display-->
+
+
+                            </div>
+
+                            <!-- Scroll to end -->
+                            <div class="end-of-chat"></div>
+                        </div>
+                        <!-- Chat: Content -->
+
+                        <!-- Chat: DropzoneJS container -->
+                        <div class="chat-files hide-scrollbar px-lg-8">
+                            <div class="container-xxl">
+                                <div class="dropzone-previews-js form-row py-4"></div>
+                            </div>
+                        </div>
+                        <!-- Chat: DropzoneJS container -->
+
+                    </div>
+                    <!-- Chat: body -->
+
+                    <!-- Chat Details -->
+                    <div id="chat-2-info" class="chat-sidebar {% if token!=0 %}chat-sidebar-visible{% endif %}" >
+                        <div class="d-flex h-100 flex-column">
+
+                            <!-- Header -->
+                            <div class="border-bottom py-4 py-lg-6">
+                                <div class="container-fluid">
+
+                                    <ul class="nav justify-content-between align-items-center">
+                                        <!-- Close sidebar -->
+                                        <li class="nav-item list-inline-item">
+                                            <a class="nav-link text-muted px-0" href="#" data-chat-sidebar-close="">
+                                                <i class="icon-md fe-chevron-left"></i>
+                                            </a>
+                                        </li>
+
+                                        <!-- Title(mobile) -->
+                                        <li class="text-center d-block d-lg-none">
+                                            <h6 class="mb-n2">Bootstrap Themes</h6>
+                                            <small class="text-muted">Chat Details</small>
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+                            </div>
+                            <!-- Header -->
+
+                            <!-- Body -->
+                            <div class="hide-scrollbar flex-fill">
+
+                                <div class="border-bottom text-center py-9 px-10">
+                                    <!-- map的 dropzone上传  -->
+                                    <div id="dropzone-map-1" class="dropzone-map-js" data-dz-url="{{ url_for('upload_map') }}">
+
+                                        <button id="map-upload-btn-1" class="btn btn-primary btn-lg dropzone-button-js" type="button">上传图片</button>
+
+                                        <div class="container-xxl">
+                                            <div class="dropzone-previews-js form-row py-4"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- Navs -->
+                                <ul class="nav nav-tabs nav-justified bg-light rounded-0" role="tablist">
+                                    <!-- <li class="nav-item">
+                                        <a href="#chat-id-1-members" class="nav-link active" data-toggle="tab" role="tab" aria-selected="true">Members</a>
+                                    </li> -->
+                                    <li class="nav-item">
+                                        <a id="chat-id-1-files-tab" href="#chat-id-1-files" class="nav-link" data-toggle="tab" role="tab">已上传文件</a>
+                                    </li>
+                                </ul>
+                                <!-- Navs -->
+
+                                <div class="tab-content">
+                                    <!-- Members -->
+<!--                                    <div id="chat-id-1-members" class="tab-pane fade show active">-->
+
+<!--                                    </div>-->
+                                    <!-- Members -->
+
+                                    <!-- Files -->
+                                    <div id="chat-id-1-files" class="tab-pane fade show active">
+                                        <ul class="list-group list-group-flush list-group-no-border-first map_list">
+
+                                        </ul>
+                                    </div>
+                                    <!-- Files -->
+                                </div>
+                            </div>
+                            <!-- Body -->
+
+                        </div>
+                    </div>
+                    <!-- Chat Details -->
+
+                </div>
+                <!-- Chat -->
+
+            </div>
+            <!-- Main Content -->
+
+            <!-- Active Users: Sidebar -->
+
+            <!-- Active Users: Sidebar -->
+
+        </div>
+        <!-- Layout -->
+
+        <!-- DropzoneJS: Template -->
+        <div id="dropzone-template-js">
+            <div class="col-lg-4 my-3">
+                <div class="card bg-light">
+                    <div class="card-body p-3">
+                        <div class="media align-items-center">
+
+                            <div class="dropzone-file-preview">
+                                <div class="avatar avatar rounded bg-secondary text-basic-inverse d-block mr-5">
+                                    <i class="fe-paperclip"></i>
+                                </div>
+                            </div>
+
+                            <div class="dropzone-image-preview">
+                                <div class="avatar avatar mr-5">
+                                    <img src="#" class="avatar-img rounded" data-dz-thumbnail="" alt="">
+                                </div>
+                            </div>
+
+                            <div class="media-body overflow-hidden">
+                                <h6 class="text-truncate small mb-0" data-dz-name></h6>
+                                <p class="extra-small" data-dz-size></p>
+                            </div>
+
+                            <div class="ml-5">
+                                <a href="#" class="btn btn-sm btn-link text-decoration-none text-muted" data-dz-remove>
+                                    <i class="fe-x"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- DropzoneJS: Template -->
+
+        <!-- Modal: Invite friends -->
+        <div class="modal fade" id="invite-friends" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <div class="media flex-fill">
+                            <div class="icon-shape rounded-lg bg-primary text-white mr-5">
+                                <i class="fe-users"></i>
+                            </div>
+                            <div class="media-body align-self-center">
+                                <h5 class="modal-title">Invite friends</h5>
+                                <p class="small">Invite colleagues, clients and friends.</p>
+                            </div>
+                        </div>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form action="#">
+                            <div class="form-group">
+                                <label for="invite-email" class="small">Email</label>
+                                <input type="text" class="form-control form-control-lg" id="invite-email">
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label for="invite-message" class="small">Invitation message</label>
+                                <textarea class="form-control form-control-lg" id="invite-message" data-autosize="true"></textarea>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-lg btn-block btn-primary d-flex align-items-center">
+                            Invite friend
+                            <i class="fe-user-plus ml-auto"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Modal: Invite friends -->
+
+        <!-- 文件显示列表：Template -->
+        <div id="file-list-template" class="d-none">
+            <li id="file-list-template-0" class="list-group-item py-6">
+                <div class="media">
+
+                    <div class="icon-shape bg-primary text-white mr-5">
+                        <i class="fe-paperclip"></i>
+                    </div>
+
+                    <div class="media-body align-self-center overflow-hidden">
+                        <h6 class="text-truncate mb-0">
+                            <a href="#" class="text-reset map_name" title="file-list-template-filename">file-list-template-filename</a>
+                        </h6>
+                    </div>
+
+                    <div class="align-self-center ml-5">
+                        <div class="dropdown">
+                            <a href="#" class="btn btn-sm btn-ico btn-link text-muted w-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fe-more-vertical"></i>
+                            </a>
+                            <div imgurl="file-list-template-imgurl" class="dropdown-menu map_showu">
+                                <div class="file-list-template-display">
+                                     <a class="dropdown-item d-flex align-items-center map_showh" onclick="" href="#">
+                                     display <span class="ml-auto fe-map"></span>
+                                     </a>
+                                 </div>
+                                 <div class="file-list-template-delete">
+                                     <a class="dropdown-item d-flex align-items-center"  href="#">
+                                     Delete <span class="ml-auto fe-trash-2"></span>
+                                     </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </li>
+
+        </div>
+
+
+
+        <!-- 文件显示列表：Template -->
+        <script>
+
+        if ( document.querySelector('#dropzone-template-js') ) {
+            var template = document.querySelector('#dropzone-template-js');
+            var template_element = document.querySelector('#dropzone-template-js');
+            template_element.parentNode.removeChild(template_element);
+        }
+
+        [].forEach.call(document.querySelectorAll('.dropzone-map-js'), function (el) {
+
+            var clickable         = el.querySelector('.dropzone-button-js').id;
+            var url               = el.getAttribute('data-dz-url');
+            var previewsContainer = el.querySelector('.dropzone-previews-js');
+
+            var myDropzonemap = new Dropzone(el, {
+                url: url,
+                previewTemplate: template.innerHTML,
+                previewsContainer: previewsContainer,
+                clickable: '#' + clickable,
+                init: function() {
+
+                this.on("success", function(file, responseText) {
+                        // 回传信息 可以使用其他方法 只是测试用
+                        console.log(responseText);
+                        send_img(responseText);
+                    })
+                }
+            });
+        });
+
+        [].forEach.call(document.querySelectorAll('.dropzone-single-image'), function (el) {
+
+
+            var clickable         = el.querySelector('.dropzone-button-js').id;
+            var previewsContainer = el.querySelector('.dropzone-single-image-container');
+            var url               = el.getAttribute('data-dz-url');
+            var dropzone_avatar = new Dropzone(el, {
+                url: url,
+                previewTemplate: "<div class=\"avatar avatar mb-5\"><img src=\"#\" class=\"avatar-img\" data-dz-thumbnail=\"\" alt=\"\"></div>",
+                previewsContainer: previewsContainer,
+                clickable: "#" + clickable,
+                maxFiles: 1,
+                acceptedFiles: "image/jpeg,image/png,image/gif",
+
+                init: function() {
+                    this.on("maxfilesexceeded", function(file) {
+                        this.removeAllFiles();
+                        this.addFile(file);
+                    }),
+
+                    this.on("complete", function(file) {
+                        el.querySelector(".dropzone-single-image-prew").style.display = "none";
+                    }),
+
+                    this.on("success", function(file, responseText) {
+                        // 回传信息 可以使用其他方法 只是测试用
+                        console.log(responseText);
+                    });
+                }
+            });
+        });
+
+        $(function(){
+            //获取显示图片列表
+            show_imgs();
+            //显示已标记显示的图片
+            showo_img();
+            // 获取file-list模板
+            // var filelisttemplate = $("#file-list-template-0").clone(true);
+            // var filelistname=["map_1585167062_85784.gif","map_1585173659_74282.gif"];
+            //
+            // set_imgs(filelistname,filelisttemplate);
+
+            $(document).on("click",".file-list-template-display",function () {
+              var displayimgurl = $(this).parent().attr("imgurl");
+              //need：后台根据图片名称 显示给其他玩家 对应的图片 $post
+              $("#map-display-1").find("img").attr("src",displayimgurl)
+            });
+
+
+           $(document).on("click",".file-list-template-delete",function () {
+             var deleteimgurl = $(this).parent().attr("imgurl");
+             //need：后台根据文件名 删除对应文件 $post
+             console.log(deleteimgurl);
+             del_img(deleteimgurl);
+             $(this).parent().parent().parent().parent().parent().remove();
+
+           });
+
+        });
+
+        function set_imgs(arry, filelisttemplate){
+            // var filelistname=["map_1585167062_85784.gif","map_1585173659_74282.gif"];
+            //need：通过后台获得 现为测试
+            var filelistname=arry;
+            var template = filelisttemplate;
+            // console.log(template)
+            $("#chat-id-1-files .map_list").empty();
+            filelistname.forEach(function(val){
+                template = $("#file-list-template-0").clone(true);
+                template.attr('id','map_'+val[0]);
+                $("#chat-id-1-files .map_list").append(template);
+                $("#map_"+val[0]+" .map_name").text(val[2]);
+                $("#map_"+val[0]+" .map_name").attr("title",val[2]);
+                $("#map_"+val[0]+" .map_showu").attr("imgurl",val[2]);
+                $("#map_"+val[0]+" .map_showh").attr("onclick","showh_img('"+val[2]+"')");
+
+                // $("[title ='file-list-template-filename']").text(val)
+                // $("[title ='file-list-template-filename']").attr("title",val)
+                // $("[imgurl ='file-list-template-imgurl']").attr("imgurl",val)
+            });
+        }
+
+        // 将图片显示出来
+        function showo_img() {
+            $.get("/get_showimg", {
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                if(myData!="0"){
+                    $("#map-display-1").find("img").attr("src",myData)
+                    // console.log("要显示的图片"+myData);
+                }
+            });
+        }
+        // 标记显示图片
+        function showh_img(url){
+            $.post("/showh_map", {
+                url:url,
+                token: "{{token}}",
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                if(myData!="0"){
+                    showo_img();
+                    // console.log(myData);
+                }
+            });
+        }
+
+        //上传图片地址
+        function send_img(url){
+            $.post("/add_map", {
+                url:url,
+                token: "{{token}}",
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                if(myData!="1"){
+                    console.log(myData);
+                }
+                show_imgs();
+            });
+        }
+
+        // 获取图片列表
+        function show_imgs(){
+            $.post("/show_map", {
+                token: "{{token}}",
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                console.log(myData);
+                if(myData!=0){
+                    // var imglist = new Array();
+                    // for(data of myData){
+                    //     imglist.push(data[2]);
+                    // }
+                    // console.log(imglist);
+                    var filelisttemplate = $("#file-list-template-0").clone(true);
+                    var filelistname=myData;
+
+                    set_imgs(filelistname,filelisttemplate);
+                }
+
+            });
+        }
+
+
+        //上传图片地址
+        function del_img(url){
+            $.post("/del_map", {
+                url:url,
+                token: "{{token}}",
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                if(myData!="1"){
+                    console.log(myData);
+                }
+            });
+        }
+        </script>
+
+
+
+    </body>
+</html>

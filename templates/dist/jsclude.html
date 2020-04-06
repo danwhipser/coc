@@ -1,0 +1,21 @@
+<script src="static/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="static/assets/js/plugins/plugins.bundle.js"></script>
+<script src="static/assets/js/template.js"></script>
+<script>
+    var page = "{{page}}";
+    $(document).ready(function(){
+        if(page == "user"){
+            $("#cont_user").click();
+
+        }
+    });
+
+    function cha(method, str){
+        if(method=="img"){
+            var objRegExp= /img\s(.+)$/;
+            var repla = "<div class=\"col\"><img class=\"img-fluid rounded\" src=\"$1\" data-action=\"zoom\" alt=\"\"></div>"
+            str = str.replace(objRegExp, repla);
+            return str;
+        }
+    }
+</script>

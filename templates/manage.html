@@ -1,0 +1,212 @@
+{% include 'header.html' %}
+<body>
+<a href="/logout" class="btn btn-danger">logout</a>
+&nbsp;&nbsp;&nbsp;
+<a href="imboss" class="btn btn-info">return</a>
+&nbsp;&nbsp;&nbsp;
+<a href="man_point?k=1" class="btn btn-primary">用户</a>
+&nbsp;&nbsp;&nbsp;
+<a href="man_point?k=2" class="btn btn-primary">职业</a>
+&nbsp;&nbsp;&nbsp;
+<a href="man_point?k=11" class="btn btn-primary">职业+</a>
+&nbsp;&nbsp;&nbsp;
+<a href="man_point?k=3" class="btn btn-primary">技能</a>
+&nbsp;&nbsp;&nbsp;
+<a href="man_point?k=4" class="btn btn-primary">物品</a>
+&nbsp;&nbsp;&nbsp;
+<a href="showallplyer" class="btn btn-primary">显示用户信息</a>
+&nbsp;&nbsp;&nbsp;
+<a href="saizi" class="btn btn-primary">骰子</a>
+<p>&nbsp;</p>
+
+<!--<button onclick="submit()">Click me!</button>-->
+<p></p>
+<div class="row">
+  <div class="col-xs-6 col-md-1"> </div>
+  <div class="col-xs-6 col-md-10">
+     <h1 align="center">{% if message %} {{message}} {% endif %}</h1>
+<table class="table table-striped">
+  <tr>
+      <td colspan="3" align="center">大类名称</td>
+  </tr>
+<tr>
+      <td>id</td>
+      <td>名称</td>
+    <td>操作</td>
+  </tr>
+
+    {% for c in clss %}
+    <tr>
+      <td>{{c.0}}</td>
+      <td>{{c.1}}</td>
+        <td><button onclick="del('clss','{{c.0}}')" class="btn btn-danger">删除</button></td>
+  </tr>
+{% endfor %}
+
+          <tr>
+      <td></td>
+      <td>
+          <form class="form-inline" action="" method="post">
+              <input type="input" name="name" class="form-control">
+<!--              &nbsp;&nbsp;&nbsp;<input type="hidden" name="table" value="3">-->
+              <button type="submit" class="btn btn-primary">提交</button>
+          </form>
+      </td>
+              <td></td>
+  </tr>
+</table>
+
+<p></p>
+
+
+
+
+      <p> </p>
+      <p> </p>
+      <p> </p>
+      {% for cl in clss %}
+      {% if 1 != cl.0 %}
+      <table class="table table-striped">
+          <tr>
+              <td id="class_{{cl.0}}" colspan="4" align="center">{{cl.1}}名称</td>
+          </tr>
+        <tr>
+              <td>id</td>
+              <td>名称</td>
+            <td>描述</td>
+            <td>操作</td>
+          </tr>
+                  {% for n1 in names %}
+                  {% if n1.1 == cl.0 %}
+            <tr id="a_{{n1.0}}">
+              <td>{{n1.0}}</td>
+                <form class="form-inline" action="updaten" method="post">
+              <td>
+                  <input type="input" name="name" class="form-control" value="{{n1.2}}">
+              </td>
+                <td>
+                     <input type="input" name="desc" class="form-control" value="{{n1.3}}">
+                      <input type="hidden" name="naid" value="{{n1.0}}">
+                        <input type="hidden" name="table" value="1">
+                      <input type="hidden" name="kind" value="{{cl.0}}">
+                </td>
+                <td><button type="submit" class="btn btn-primary">修改</button> <button onclick="del('name','{{n1.0}}')" class="btn btn-danger">删除</button></td>
+                </form>
+          </tr>
+                  {% endif %}
+        {% endfor %}
+                <form class="form-inline" action="addn" method="post">
+                      <tr>
+                          <td>添加</td>
+                          <td>
+                            <input type="input" name="name" class="form-control">
+                          </td>
+                          <td>
+                              <input type="input" name="desc" class="form-control">
+                          </td>
+                          <td>
+                              <input type="hidden" name="table" value="1">
+                              <input type="hidden" name="kind" value="{{cl.0}}">
+                              <button type="submit" class="btn btn-primary">提交</button>
+                          </td>
+                  </tr>
+                  </form>
+        </table>
+      {% endif %}
+           <p> </p>
+      {% endfor %}
+
+
+
+{% for cl in clss %}
+      <table class="table table-striped">
+          <tr>
+              <td id="class_{{cl.0}}"  colspan="4" align="center">{{cl.1}}属性</td>
+          </tr>
+        <tr>
+              <td>id</td>
+              <td>名称</td>
+            <td>描述</td>
+            <td>操作</td>
+          </tr>
+                  {% for n1 in atrr %}
+                  {% if n1.1 == cl.0 %}
+            <tr id="a_{{n1.0}}">
+              <td>{{n1.0}}</td>
+                <form class="form-inline" action="updaten" method="post">
+              <td>
+                  <input type="input" name="name" class="form-control" value="{{n1.2}}">
+              </td>
+                <td>
+                     <input type="input" name="desc" class="form-control" value="{{n1.3}}">
+                      <input type="hidden" name="naid" value="{{n1.0}}">
+                        <input type="hidden" name="table" value="2">
+                      <input type="hidden" name="kind" value="{{cl.0}}">
+                </td>
+                <td><button type="submit" class="btn btn-primary">修改</button> <button onclick="del('name','{{n1.0}}')" class="btn btn-danger">删除</button></td>
+                </form>
+          </tr>
+                  {% endif %}
+        {% endfor %}
+                  <tr>
+                      <td>添加</td>
+              <td>
+                  <form class="form-inline" action="addn" method="post">
+                      <input type="input" name="name" class="form-control">
+                      <input type="hidden" name="table" value="2">
+                      <input type="hidden" name="kind" value="{{cl.0}}">
+                      &nbsp;&nbsp;&nbsp;
+                      <button type="submit" class="btn btn-primary">提交</button>
+                  </form>
+              </td>
+                      <td></td>
+          </tr>
+        </table>
+           <p> </p>
+      {% endfor %}
+
+
+  </div>
+  <div class="col-xs-6 col-md-1"> </div>
+</div>
+</body>
+
+<script>
+
+    // $(document).ready(function(){
+        function submit() {
+            var myData = "This is my data string.";
+            $.post("/receivedata", {
+                myData: myData
+              },
+                function(myData , status){
+                alert(myData);
+                alert(status);
+            });
+        }
+        function del(table,id) {
+            // var myData = "This is my data string.";
+            $.post("/delet", {
+                table: table,
+                id: id
+              },
+                function(myData , status){
+                if(status=="success"){
+                    if(table=="name"){
+
+                        $("#n_"+id).hide();
+                        // alert("#n_"+id);
+                    }
+                    else if(table=="atrr"){
+                        $("#a_"+id).hide();
+                    }
+                }
+                // alert(myData);
+                // alert(status);
+            });
+        }
+    // });
+
+</script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</html>

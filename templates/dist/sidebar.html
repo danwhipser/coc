@@ -1,0 +1,1025 @@
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="tab-content h-100" role="tablist">
+
+<!--                    建立游戏-->
+                    <div class="tab-pane fade h-100 {% if page == 'roomc' %}show active{% endif %}" id="tab-content-create-chat" role="tabpanel">
+                        <div class="d-flex flex-column h-100">
+
+                            <div class="hide-scrollbar">
+                                <div class="container-fluid py-6">
+
+                                    <!-- Title -->
+                                    <h2 class="font-bold mb-6">创建游戏</h2>
+                                    <!-- Title -->
+
+                                    <!-- Search -->
+                                    <form class="mb-6">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control form-control-lg" placeholder="搜索房间" aria-label="搜索房间">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-lg btn-ico btn-secondary btn-minimal" type="submit">
+                                                    <i class="fe-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- Search -->
+
+                                    <!-- Tabs -->
+                                    <ul class="nav nav-tabs nav-justified mb-6" role="tablist">
+                                        <li class="nav-item">
+                                            <a id="game_create" href="#create-group-details" class="nav-link {% if page != 'roomc' %}active{% endif %}" data-toggle="tab" role="tab" aria-selected="true">创建游戏</a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a id="game_find" href="#create-group-members" class="nav-link {% if page == 'roomc' %}active{% endif %}" data-toggle="tab" role="tab" aria-selected="false">已创建游戏</a>
+                                        </li>
+                                    </ul>
+                                    <!-- Tabs -->
+
+                                    <!-- 游戏详细内容 -->
+                                    <div class="tab-content" role="tablist">
+
+                                        <!-- 创建游戏 -->
+                                        <div id="create-group-details" class="tab-pane fade {% if page != 'roomc' %}show active{% endif %}" role="tabpanel">
+                                            <form action="#">
+                                                <div id="game_room_upic" class="form-group">
+                                                    <label class="small">封面图片</label>
+                                                    <div class="position-relative text-center bg-secondary rounded p-6">
+                                                        <!-- Placeholder -->
+                                                        <div class="avatar bg-primary text-white mb-5 dropzone-single-image-prew">
+                                                            <i class="icon-md fe-image"></i>
+                                                        </div>
+
+                                                        <!-- Preview -->
+                                                        <div class="dropzone-single-image-container"></div>
+
+                                                        <!-- Text -->
+                                                        <p class="small text-muted mb-0">上传类型 jpg, gif or png <br> 图片最大 3MB</p>
+
+                                                        <!-- Button with unique ID -->
+                                                        <input id="any-unique-id-2" class="dropzone-button-js d-none" type="button">
+                                                        <label class="stretched-label mb-0" for="any-unique-id-2"></label>
+                                                    </div>
+                                                    <input id="game_room_photo" type="hidden" value="0" />
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="small" for="new-chat-title">名称</label>
+                                                    <input id="game_room_name" class="form-control form-control-lg" name="new-chat-title" type="text" placeholder="房间名称">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="small" for="new-chat-topic">游戏类型 (可选)</label>
+                                                    <input id="game_room_type" class="form-control form-control-lg" name="new-chat-topic" type="text" placeholder="游戏类型">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="small" for="new-chat-topic">人数限制</label>
+                                                    <input id="game_room_ppl" class="form-control form-control-lg" name="new-chat-topic" type="text" placeholder="人数限制 (默认为4)">
+                                                </div>
+
+                                                <div class="form-group mb-0">
+                                                    <label class="small" for="new-chat-description">描述</label>
+                                                    <textarea id="game_room_desc" class="form-control form-control-lg" name="new-chat-description" rows="6" placeholder="可以对您建立的游戏进行简单描述,例如背景介绍"></textarea>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p>&nbsp;</p>
+                                                <button id="game_room_sub" class="btn btn-lg btn-primary btn-block" type="button">创建房间</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <!-- 创建游戏 -->
+
+                                        <!-- 已创建游戏 -->
+                                        <div id="create-group-members" class="tab-pane fade {% if page == 'roomc' %}show active{% endif %}" role="tabpanel">
+                                            <nav id="list_createroom" class="list-group list-group-flush mb-n6">
+
+                                            </nav>
+                                        </div>
+                                        <!-- 已创建游戏 -->
+
+                                    </div>
+                                    <!-- 游戏详细内容 -->
+
+                                </div>
+                            </div>
+
+                            <!-- Button -->
+<!--                            <div class="pb-6">-->
+<!--                                <div class="container-fluid">-->
+<!--                                    <button class="btn btn-lg btn-primary btn-block" type="submit">Create group</button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade h-100" id="tab-content-friends" role="tabpanel">
+                        <div class="d-flex flex-column h-100">
+
+                            <div class="hide-scrollbar">
+                                <div class="container-fluid py-6">
+
+                                    <!-- Title -->
+                                    <h2 class="font-bold mb-6">Friends</h2>
+                                    <!-- Title -->
+
+                                    <!-- Search -->
+                                    <form class="mb-6">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control form-control-lg" placeholder="Search for messages or users..." aria-label="Search for messages or users...">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-lg btn-ico btn-secondary btn-minimal" type="submit">
+                                                    <i class="fe-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- Search -->
+
+                                    <!-- Button -->
+                                    <button type="button" class="btn btn-lg btn-block btn-secondary d-flex align-items-center mb-6" data-toggle="modal" data-target="#invite-friends">
+                                        Invite friends
+                                        <i class="fe-users ml-auto"></i>
+                                    </button>
+
+                                    <!-- Friends -->
+                                    <nav class="mb-n6">
+
+                                        <div class="mb-6">
+                                            <small class="text-uppercase">A</small>
+                                        </div>
+
+                                        <!-- Friend -->
+                                        <div class="card mb-6">
+                                            <div class="card-body">
+
+                                                <div class="media">
+
+                                                    <div class="avatar avatar-online mr-5">
+                                                        <img class="avatar-img" src="static/assets/images/avatars/10.jpg" alt="Anna Bridges">
+                                                    </div>
+
+
+                                                    <div class="media-body align-self-center">
+                                                        <h6 class="mb-0">Anna Bridges</h6>
+                                                        <small class="text-muted">Online</small>
+                                                    </div>
+
+                                                    <div class="align-self-center ml-5">
+                                                        <div class="dropdown z-index-max">
+                                                            <a href="#" class="btn btn-sm btn-ico btn-link text-muted w-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fe-more-vertical"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    New chat <span class="ml-auto fe-edit-2"></span>
+                                                                </a>
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    Delete <span class="ml-auto fe-trash-2"></span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Link -->
+                                                <a href="chat-2.html" class="stretched-link"></a>
+
+                                            </div>
+                                        </div>
+                                        <!-- Friend -->
+
+                                        <div class="mb-6">
+                                            <small class="text-uppercase">B</small>
+                                        </div>
+
+                                        <!-- Friend -->
+                                        <div class="card mb-6">
+                                            <div class="card-body">
+
+                                                <div class="media">
+
+
+                                                    <div class="avatar mr-5">
+                                                        <img class="avatar-img" src="static/assets/images/avatars/6.jpg" alt="Brian Dawson">
+                                                    </div>
+
+                                                    <div class="media-body align-self-center">
+                                                        <h6 class="mb-0">Brian Dawson</h6>
+                                                        <small class="text-muted">last seen 2 hours ago</small>
+                                                    </div>
+
+                                                    <div class="align-self-center ml-5">
+                                                        <div class="dropdown z-index-max">
+                                                            <a href="#" class="btn btn-sm btn-ico btn-link text-muted w-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fe-more-vertical"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    New chat <span class="ml-auto fe-edit-2"></span>
+                                                                </a>
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    Delete <span class="ml-auto fe-trash-2"></span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Link -->
+                                                <a href="#" class="stretched-link"></a>
+
+                                            </div>
+                                        </div>
+                                        <!-- Friend -->
+
+                                        <div class="mb-6">
+                                            <small class="text-uppercase">L</small>
+                                        </div>
+
+                                        <!-- Friend -->
+                                        <div class="card mb-6">
+                                            <div class="card-body">
+
+                                                <div class="media">
+
+
+                                                    <div class="avatar mr-5">
+                                                        <img class="avatar-img" src="static/assets/images/avatars/5.jpg" alt="Leslie Sutton">
+                                                    </div>
+
+                                                    <div class="media-body align-self-center">
+                                                        <h6 class="mb-0">Leslie Sutton</h6>
+                                                        <small class="text-muted">last seen 3 days ago</small>
+                                                    </div>
+
+                                                    <div class="align-self-center ml-5">
+                                                        <div class="dropdown z-index-max">
+                                                            <a href="#" class="btn btn-sm btn-ico btn-link text-muted w-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fe-more-vertical"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    New chat <span class="ml-auto fe-edit-2"></span>
+                                                                </a>
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    Delete <span class="ml-auto fe-trash-2"></span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Link -->
+                                                <a href="#" class="stretched-link"></a>
+
+                                            </div>
+                                        </div>
+                                        <!-- Friend -->
+
+                                        <div class="mb-6">
+                                            <small class="text-uppercase">M</small>
+                                        </div>
+
+                                        <!-- Friend -->
+                                        <div class="card mb-6">
+                                            <div class="card-body">
+
+                                                <div class="media">
+
+
+                                                    <div class="avatar mr-5">
+                                                        <img class="avatar-img" src="static/assets/images/avatars/4.jpg" alt="Matthew Wiggins">
+                                                    </div>
+
+                                                    <div class="media-body align-self-center">
+                                                        <h6 class="mb-0">Matthew Wiggins</h6>
+                                                        <small class="text-muted">last seen 3 days ago</small>
+                                                    </div>
+
+                                                    <div class="align-self-center ml-5">
+                                                        <div class="dropdown z-index-max">
+                                                            <a href="#" class="btn btn-sm btn-ico btn-link text-muted w-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fe-more-vertical"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    New chat <span class="ml-auto fe-edit-2"></span>
+                                                                </a>
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    Delete <span class="ml-auto fe-trash-2"></span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Link -->
+                                                <a href="#" class="stretched-link"></a>
+
+                                            </div>
+                                        </div>
+                                        <!-- Friend -->
+
+                                        <div class="mb-6">
+                                            <small class="text-uppercase">S</small>
+                                        </div>
+
+                                        <!-- Friend -->
+                                        <div class="card mb-6">
+                                            <div class="card-body">
+
+                                                <div class="media">
+
+
+                                                    <div class="avatar mr-5">
+                                                        <img class="avatar-img" src="static/assets/images/avatars/7.jpg" alt="Simon Hensley">
+                                                    </div>
+
+                                                    <div class="media-body align-self-center">
+                                                        <h6 class="mb-0">Simon Hensley</h6>
+                                                        <small class="text-muted">last seen 3 days ago</small>
+                                                    </div>
+
+                                                    <div class="align-self-center ml-5">
+                                                        <div class="dropdown z-index-max">
+                                                            <a href="#" class="btn btn-sm btn-ico btn-link text-muted w-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fe-more-vertical"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    New chat <span class="ml-auto fe-edit-2"></span>
+                                                                </a>
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    Delete <span class="ml-auto fe-trash-2"></span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Link -->
+                                                <a href="#" class="stretched-link"></a>
+
+                                            </div>
+                                        </div>
+                                        <!-- Friend -->
+
+                                        <div class="mb-6">
+                                            <small class="text-uppercase">W</small>
+                                        </div>
+
+                                        <!-- Friend -->
+                                        <div class="card mb-6">
+                                            <div class="card-body">
+
+                                                <div class="media">
+
+
+                                                    <div class="avatar mr-5">
+                                                        <img class="avatar-img" src="static/assets/images/avatars/9.jpg" alt="William Wright">
+                                                    </div>
+
+                                                    <div class="media-body align-self-center">
+                                                        <h6 class="mb-0">William Wright</h6>
+                                                        <small class="text-muted">last seen 3 days ago</small>
+                                                    </div>
+
+                                                    <div class="align-self-center ml-5">
+                                                        <div class="dropdown z-index-max">
+                                                            <a href="#" class="btn btn-sm btn-ico btn-link text-muted w-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fe-more-vertical"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    New chat <span class="ml-auto fe-edit-2"></span>
+                                                                </a>
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    Delete <span class="ml-auto fe-trash-2"></span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Link -->
+                                                <a href="#" class="stretched-link"></a>
+
+                                            </div>
+                                        </div>
+                                        <!-- Friend --><!-- Friend -->
+                                        <div class="card mb-6">
+                                            <div class="card-body">
+
+                                                <div class="media">
+
+
+                                                    <div class="avatar mr-5">
+                                                        <img class="avatar-img" src="static/assets/images/avatars/3.jpg" alt="William Greer">
+                                                    </div>
+
+                                                    <div class="media-body align-self-center">
+                                                        <h6 class="mb-0">William Greer</h6>
+                                                        <small class="text-muted">last seen 10 minutes ago</small>
+                                                    </div>
+
+                                                    <div class="align-self-center ml-5">
+                                                        <div class="dropdown z-index-max">
+                                                            <a href="#" class="btn btn-sm btn-ico btn-link text-muted w-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fe-more-vertical"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    New chat <span class="ml-auto fe-edit-2"></span>
+                                                                </a>
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    Delete <span class="ml-auto fe-trash-2"></span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Link -->
+                                                <a href="#" class="stretched-link"></a>
+
+                                            </div>
+                                        </div>
+                                        <!-- Friend -->
+
+                                        <div class="mb-6">
+                                            <small class="text-uppercase">Z</small>
+                                        </div>
+
+                                        <!-- Friend -->
+                                        <div class="card mb-6">
+                                            <div class="card-body">
+
+                                                <div class="media">
+
+
+                                                    <div class="avatar mr-5">
+                                                        <img class="avatar-img" src="static/assets/images/avatars/7.jpg" alt="Zane Mayes">
+                                                    </div>
+
+                                                    <div class="media-body align-self-center">
+                                                        <h6 class="mb-0">Zane Mayes</h6>
+                                                        <small class="text-muted">last seen 3 days ago</small>
+                                                    </div>
+
+                                                    <div class="align-self-center ml-5">
+                                                        <div class="dropdown z-index-max">
+                                                            <a href="#" class="btn btn-sm btn-ico btn-link text-muted w-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fe-more-vertical"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    New chat <span class="ml-auto fe-edit-2"></span>
+                                                                </a>
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    Delete <span class="ml-auto fe-trash-2"></span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Link -->
+                                                <a href="#" class="stretched-link"></a>
+
+                                            </div>
+                                        </div>
+                                        <!-- Friend -->
+
+                                    </nav>
+                                    <!-- Friends -->
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+<!--                    寻找游戏-->
+                    <div class="tab-pane fade h-100 {% if page == 'roomp' or page=='roommap' %}show active{% endif %}" id="tab-content-dialogs" role="tabpanel">
+                        <div class="d-flex flex-column h-100">
+
+                            <div class="hide-scrollbar">
+                                <div class="container-fluid py-6">
+
+                                    <!-- Title -->
+                                    <h2 class="font-bold mb-6">寻找游戏</h2>
+                                    <!-- Title -->
+
+                                    <!-- Search -->
+                                    <form class="mb-6">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control form-control-lg" placeholder="搜索房间" aria-label="搜索房间">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-lg btn-ico btn-secondary btn-minimal" type="submit">
+                                                    <i class="fe-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- Search -->
+
+
+                                    <!-- Chats -->
+                                    <nav id="list_showedroom" class="nav d-block list-discussions-js mb-n6">
+
+                                    </nav>
+                                    <!-- 显示房间的模板 -->
+                                        <a id="t_showedroom" style="display: none;" class="text-reset nav-link p-0 mb-6" href="javascript:;">
+                                            <div class="card card-active-listener">
+                                                <div class="card-body">
+                                                    <div class="media">
+
+                                                        <div class="avatar mr-5 bg-primary text-white text-truncate room_name_pt">
+                                                            <span class="room_name_p"></span>
+                                                        </div>
+                                                        <div class="avatar mr-5 room_pict">
+                                                            <img class="avatar-img room_pic" src="static/assets/images/avatars/7.jpg" alt="组团图片">
+                                                        </div>
+
+                                                        <div class="media-body overflow-hidden">
+                                                            <div class="d-flex align-items-center mb-1">
+                                                                <h6 class="text-truncate mb-0 mr-auto room_name">组团名称</h6>
+                                                                <p class="small text-muted text-nowrap ml-4 room_type">克苏鲁</p>
+                                                            </div>
+                                                            <div class="text-truncate room_desc">这里是简介</div>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <!-- 显示房间的模板 -->
+                                    <!-- Chats -->
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+<!--                    首页-->
+                    <div class="tab-pane fade h-100 {% if page == 'index' %}show active{% endif %}" id="tab-content-demos" role="tabpanel">
+                        <div class="d-flex flex-column h-100">
+
+                            <div class="hide-scrollbar">
+                                <div class="container-fluid py-6">
+
+                                    <!-- Title -->
+                                    <h2 class="font-bold mb-6">深渊小屋&nbsp;<span class="badge badge-sm badge-pill badge-primary">Alpha1.2.5</span></h2>
+                                    <!-- Title -->
+
+
+                                    <!-- Card -->
+                                    <div class="card mb-6">
+                                        <div class="card-body">
+
+                                            <div class="media align-items-center">
+                                                <div class="mr-5">
+                                                    <img src="static/assets/images/play2.svg" class="fill-primary" data-inject-svg="" alt="" style="height: 46px; width: 46px;">
+                                                </div>
+                                                <div class="media-body">
+                                                    <h5 class="mb-0">
+                                                        <a onclick="$('#cont_user').click();" href="javascript:;" class="text-basic-inverse stretched-link">建立新人物</a>
+                                                    </h5>
+                                                    <p>快速建立您的调查员.</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- Card -->
+
+                                    <!-- Card -->
+                                    <div class="card mb-6">
+                                        <div class="card-body">
+
+                                            <div class="media align-items-center">
+                                                <div class="mr-5">
+                                                    <img src="static/assets/images/search2.svg" class="fill-primary" data-inject-svg="" alt="" style="height: 46px; width: 46px;">
+                                                </div>
+                                                <div class="media-body">
+                                                    <h5 class="mb-0">
+                                                        <a onclick="$('#cont_chat').click();" href="javascript:;" class="text-basic-inverse stretched-link">寻找游戏</a>
+                                                    </h5>
+                                                    <p>寻找网络上是否有人建立游戏</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- Card -->
+
+                                    <!-- Card -->
+                                    <div class="card mb-6">
+                                        <div class="card-body">
+
+                                            <div class="media align-items-center">
+                                                <div class="mr-5">
+                                                    <img src="static/assets/images/create2.svg" class="fill-primary" data-inject-svg="" alt="" style="height: 46px; width: 46px;">
+                                                </div>
+                                                <div class="media-body">
+                                                    <h5 class="mb-0">
+                                                        <a onclick="$('#cont_game').click();$('#game_create').click();" href="javascript:;" class="text-basic-inverse stretched-link">创建游戏</a>
+                                                    </h5>
+                                                    <p>如果您想当KP就可以创建一个游戏</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- Card -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+<!--                    创建人物页面-->
+                    <div class="tab-pane fade h-100 {% if page == 'setting' %}show active{% endif %}" id="tab-content-user" role="tabpanel">
+                        <div class="d-flex flex-column h-100">
+
+                            <div class="hide-scrollbar">
+                                <div class="container-fluid py-6">
+
+                                    <!-- Title -->
+                                    <h2 class="font-bold mb-6">玩家卡组</h2>
+                                    <!-- Title -->
+
+                                     添加新人物
+                                    <a href="#" data-toggle="collapse" data-target="#show_xinrentishi" aria-expanded="false" aria-controls="show_xinrentishi"><small>新人提示</small></a>
+                                    <div class="collapse" id="show_xinrentishi">
+                                        <div>
+                                            下面的下拉菜单可以选择为新人准备的模板人物
+                                        </div>
+                                    </div>
+                                    <form class="mb-6">
+
+                                        <div class="input-group">
+                                            <input id="role_name" type="text" class="form-control form-control-lg" placeholder="输入您的人物名称" aria-label="输入您的人物名称">
+                                            <div class="input-group-append">
+                                                <button onclick="create_role()" id="role_create" class="btn btn-primary" type="button">
+                                                    确认
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="mb-6">
+                                                <select id="list_temp" class="custom-select custom-select-lg" onchange="set_myname()">
+                                                    <option value="0" selected>自创人物</option>
+                                                    <option value="1">怪物(kp专用)</option>
+                                                </select>
+                                                <div id="list_temp_hide" class="d-none"></div>
+                                            </div>
+                                     人物卡组列表
+
+                                    <!-- 卡组 -->
+                                    {% for k in kazu %}
+                                        <div id="ka_{{k.0}}" class="card mb-6">
+                                            <div class="card-body">
+
+                                                <div class="media">
+                                                    {% for user in user_all %}
+                                                        {% if user.7==k.0 and user.3==75 %}
+                                                            {% if user.5=="0" %}
+                                                            <div class="avatar mr-5 bg-primary text-white text-truncate">
+                                                                <span>{{k.5}}</span>
+                                                            </div>
+                                                            {% else %}
+                                                            <div class="avatar mr-5">
+                                                                <img class="avatar-img" src="{{user.5}}" alt="{{k.5}}" />
+                                                            </div>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+
+                                                    <div class="media-body align-self-center">
+                                                        <h6 class="mb-0">{{k.5}}</h6>
+<!--                                                        <small class="text-muted">Online</small>-->
+                                                    </div>
+
+                                                    <div class="align-self-center ml-5">
+                                                        <div class="dropdown z-index-max">
+                                                            <a href="#" class="btn btn-sm btn-ico btn-link text-muted w-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fe-more-vertical"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    设置 <span class="ml-auto fe-edit-2"></span>
+                                                                </a>
+                                                                <a onclick="del_role('{{k.0}}');" class="dropdown-item d-flex align-items-center" href="javascript:;">
+                                                                    删除 <span class="ml-auto fe-trash-2"></span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <!-- Link -->
+                                                <a href="setting?c={{k.0}}" class="stretched-link"></a>
+
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                        <!-- 卡组 -->
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+
+                    </div>
+
+                    <div class="tab-pane fade h-100" id="tab-content-setup" role="tabpanel">
+                        <div class="d-flex flex-column h-100">
+
+                            <div class="hide-scrollbar">
+                                <div class="container-fluid py-6">
+
+                                    <!-- Title -->
+                                    <h2 class="font-bold mb-6">设置</h2>
+                                    <!-- Title -->
+
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <!-- Button -->
+                                            <button type="button" class="btn btn-lg btn-block btn-basic d-flex align-items-center">
+                                                设置
+                                                <span class="fe-settings ml-auto"></span>
+                                            </button>
+                                        </div>
+
+                                        <div class="col">
+                                            <!-- Button -->
+                                            <a href="logout" class="btn btn-lg btn-block btn-basic d-flex align-items-center">注销<span class="fe-log-out ml-auto"></span></a>
+<!--                                            <button type="button" class="btn btn-lg btn-block btn-basic d-flex align-items-center">-->
+<!--                                                Logout-->
+<!--                                                <span class="fe-log-out ml-auto"></span>-->
+<!--                                            </button>-->
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Sidebar -->
+
+
+            <script>
+                var roomlastid=0;
+                $(document).ready(function() {
+                    //列出模板人物
+                    list_temp();
+
+                    //提交房间信息
+                    $("#game_room_sub").click(function() {
+                        var name = $("#game_room_name").val();
+                        var type = $("#game_room_type").val();
+                        var ppl  = $("#game_room_ppl").val();
+                        var desc = $("#game_room_desc").val();
+                        var photo= $("#game_room_photo").val();
+                        if(!ppl){
+                            ppl = 4;
+                        }
+                        if(!type){
+                            type = 0;
+                        }
+                        if(!desc){
+                            desc = 0;
+                        }
+                        if(!name){
+                            alert("请至少填写房间名称");
+                        }
+                        $.post("/add_room", {
+                            method : "create",
+                            aid: 68,
+                            value1: name,
+                            value2: "myid",
+                          },
+                        function(myData , status){
+                            if(status!="success"){
+                                alert("提交失败!"+status);
+                                return 0;
+                            }
+                            if(myData){
+                                lastid = myData;
+                                sent_room_info("set_room",69,type,0,5,lastid);
+                                sent_room_info("set_room",70,ppl,0,5,lastid);
+                                sent_room_info("set_room",71,desc,0,5,lastid);
+                                sent_room_info("set_room",74,photo,0,5,lastid);
+                                sent_room_info("set_room",84,0,0,5,lastid); //设置激活图片为0
+                                sent_room_info("set_token",82,0,0,5,lastid);
+                                alert("成功提交");
+                                $("#game_room_name").val("");
+                                $("#game_room_type").val("");
+                                $("#game_room_ppl").val("");
+                                $("#game_room_desc").val("");
+                                $("#game_room_photo").val("");
+                                get_rooms("myroom","list_createroom","t_showedroom", "myroom_");
+                                get_rooms("allroom","list_showedroom","t_showedroom", "allroom_");
+                                $("#game_find").click();
+                            }
+                        });
+                    });
+
+                    //列表的id,模板id,创建新快的id
+                    get_rooms("myroom","list_createroom","t_showedroom", "myroom_");
+                    get_rooms("allroom","list_showedroom","t_showedroom", "allroom_");
+                });
+
+                function get_rooms(method,list,templates,mytemp) {
+                    $("#"+list).html("");
+                    $.get("/get_rooms", {
+                        method: method,
+                      },
+                        function(myData , status){
+                            // console.log(myData)
+                            for(data of myData){
+                                var roomid = data[0][0];
+                                var roomname = data[0][2];
+                                var cc = $("#"+templates).clone(true);
+                                cc.attr('id',mytemp+roomid);
+                                cc.attr('href',"roomc?rid="+roomid);
+                                cc.attr('style','');
+                                $("#"+list).append(cc);
+                                $("#"+mytemp+roomid+" .room_name").html(roomname);
+                                for(dd of data[1]){
+                                    if(dd[1]=='74'){
+                                        if(dd[2]==0){
+                                            $("#"+mytemp+roomid+" .room_pict").hide();
+                                            $("#"+mytemp+roomid+" .room_name_p").html(roomname);
+                                        }
+                                        else{
+                                            $("#"+mytemp+roomid+" .room_name_pt").hide();
+                                            $("#"+mytemp+roomid+" .room_pic").attr('src',dd[2]);
+                                        }
+                                    }
+                                    else if(dd[1]=='70'){
+                                        $("#"+mytemp+roomid+" .room_type").html("最大人数:"+dd[2]);
+                                    }
+                                    else if(dd[1]=='71'){
+                                        $("#"+mytemp+roomid+" .room_desc").html(dd[2]);
+                                        $("#"+mytemp+roomid).attr("title","描述:"+dd[2]);
+                                    }
+
+                                }
+                            }
+                        },"json");
+                }
+
+                function sent_room_info(method, aid, v1, v2, lk=0, li=0){
+                    $.post("/add_room", {
+                        method : method,
+                        aid: aid,
+                        value1: v1,
+                        value2: v2,
+                        lk:lk,
+                        li:li
+                      },
+                    function(myData , status){
+                        if(status!="success"){
+                            alert("提交失败!"+status);
+                            return 0;
+                        }
+                        roomlastid=myData;
+                    });
+
+                }
+
+                //
+        // Dropzone upload chat or avatar photo
+        //
+        [].forEach.call(document.querySelectorAll('#game_room_upic'), function (el) {
+
+            var clickable         = el.querySelector('.dropzone-button-js').id;
+            var previewsContainer = el.querySelector('.dropzone-single-image-container');
+
+            var dropzone_roomp = new Dropzone(el, {
+                url: "uploadroompic",
+                previewTemplate: "<div class=\"avatar avatar mb-5\"><img src=\"#\" class=\"avatar-img\" data-dz-thumbnail=\"\" alt=\"\"></div>",
+                previewsContainer: previewsContainer,
+                clickable: "#" + clickable,
+                maxFiles: 1,
+                acceptedFiles: "image/jpeg,image/png,image/gif",
+
+                init: function() {
+                    this.on("maxfilesexceeded", function(file) {
+                        this.removeAllFiles();
+                        this.addFile(file);
+                    }),
+
+                    this.on("complete", function(file) {
+                        el.querySelector(".dropzone-single-image-prew").style.display = "none";
+                    }),
+                    this.on("success", function(file, responseText) {
+                        // 回传信息 可以使用其他方法 只是测试用
+                        $("#game_room_photo").val(responseText);
+                    })
+                    ;
+                }
+            });
+        });
+
+                    // 建立人物卡组
+    function create_role(){
+        var role_name = $("#role_name").val();
+        var selev = $("#list_temp").val();
+        selev = parseInt(selev);
+
+        if(selev!=0 && selev!=1){
+            $.post("/set_temp", {
+                tempid: selev,
+                v:role_name
+              },
+                function(myData , status){
+                    if(status=="success"){
+                        alert("成功添加人物,您可以直接寻找游戏并开始游戏");
+                        window.location.href="roomp";
+                    }
+                    else{
+                        alert("添加人物失败");
+                    }
+            });
+        }
+        else if(selev==0) {
+            $.post("/add_kazu", {
+                v:role_name
+              },
+                function(myData , status){
+                    if(status=="success"){
+                        alert("成功添加人物");
+                        window.location.href="/setting?c="+myData;
+                    }
+                    else{
+                        alert("添加人物失败");
+                    }
+            });
+        }
+
+    }
+
+    // 删除人物卡组
+    function del_role(id){
+        // console.log(id);
+        $.post("/del_kazu", {
+                id:id
+              },
+                function(myData , status){
+                    if(status=="success"){
+                        $("#ka_"+id).hide();
+                    }
+                    else{
+                        alert("删除人物失败");
+                    }
+            });
+    }
+
+    //列出模板人物
+    function list_temp() {
+        var method = "list";
+        $.get("/gettemplates", {
+                method:method
+              },
+                function(myData , status){
+                    // console.log(myData);
+                    for(data of myData){
+                        var html='<option value="'+data[0]+'">'+data[2]+'('+data[1]+')</option>';
+                        var html2='<input type="hidden" id="hidet_'+data[0]+'" value="'+data[1]+'">';
+                        $("#list_temp").append(html);
+                        $("#list_temp_hide").append(html2);
+                    }
+            },"json");
+    }
+    //获取id
+    function set_myname() {
+        var selev = $("#list_temp").val();
+        selev = parseInt(selev);
+        if(selev!=0 && selev!=1){
+            var name = $("#hidet_"+selev).val();
+            $("#role_name").val(name);
+        }
+        else{
+            $("#role_name").val("");
+        }
+    }
+            </script>

@@ -1,0 +1,2029 @@
+{% include 'dist/header.html' %}
+<!-- Head -->
+<style>.modal-backdrop{z-index:1019;}</style>
+    <body>
+
+        <div class="layout">
+            {% include 'dist/navibar.html' %}
+            {% include 'dist/sidebar.html' %}
+
+            <!-- Main Content -->
+            <div class="main main-visible" data-mobile-height="">
+
+                <!-- Chat -->
+                <div id="chat-1" class="chat dropzone-form-js" data-dz-url="some.php">
+
+                    <!-- Chat: body -->
+                    <div class="chat-body">
+
+                        <!-- Chat: Header -->
+                        <div class="chat-header border-bottom py-4 py-lg-6 px-lg-8">
+                            <div class="container-xxl">
+
+                                <div class="row align-items-center">
+
+                                    <!-- Close chat(mobile) -->
+                                    <div class="col-3 d-xl-none">
+                                        <ul class="list-inline mb-0">
+                                            <li class="list-inline-item">
+                                                <a class="text-muted px-0" href="#" data-chat="open">
+                                                    <i class="icon-md fe-chevron-left"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Chat photo -->
+                                    <div class="col-6 col-xl-6">
+                                        <div class="media text-center text-xl-left">
+                                            {% for gd in group_deteil %}
+                                                {% if gd.1==74 %}
+                                                    {% if gd.2=="0" %}
+                                                    <div class="avatar mr-5 bg-primary text-white text-truncate room_name_pt">
+                                                        <span class="room_name_p">{{group_name}}</span>
+                                                    </div>
+                                                    {% else %}
+                                                    <div class="avatar avatar-sm d-none d-xl-inline-block mr-5">
+                                                        <img src="{{gd.2}}" class="avatar-img" alt="{{group_name}}">
+                                                    </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            <div class="media-body align-self-center text-truncate">
+                                                <h6 class="text-truncate mb-n1"><a class="text-dark" href="javascript:;" data-chat-sidebar-toggle="#chat-1-info">{{group_name}}</a></h6>
+                                                {% for gd in group_deteil %}
+                                                {% if gd.1==69 %}
+                                                <small class="text-muted">{{gd.2}}</small>
+                                                {% endif %}
+                                                {% endfor %}
+                                                <small class="text-muted mx-2"> • </small>
+                                                {% for gd in group_deteil %}
+                                                {% if gd.1==71 %}
+                                                <small class="text-muted">{{gd.2}}</small>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Chat toolbar -->
+                                    <div class="col-3 col-xl-6 text-right">
+                                        <ul class="nav justify-content-end">
+                                            <li class="nav-item list-inline-item d-none d-xl-block mr-0">
+                                                <a class="nav-link text-muted px-3" href="#" data-chat-sidebar-toggle="#chat-1-info" title="房间信息">
+                                                    <i class="icon-md fe-more-vertical"></i>
+                                                </a>
+                                            </li>
+                                            <!-- Mobile nav -->
+                                            <li class="nav-item list-inline-item d-block d-xl-none">
+                                                <a onclick="show_myde();" class="nav-link text-muted px-0" href="#">
+                                                        <i class="icon-md fe-more-vertical"></i>
+                                                    </a>
+                                            </li>
+                                            <!-- Mobile nav -->
+                                        </ul>
+                                    </div>
+
+                                </div><!-- .row -->
+
+                            </div>
+                        </div>
+                        <!-- Chat: Header -->
+
+                        <!-- Chat: Search -->
+                        <div class="collapse border-bottom px-lg-8" id="chat-1-search">
+                            <div class="container-xxl py-4 py-lg-6">
+
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-lg" placeholder="搜索对话" aria-label="搜索对话">
+
+                                    <div class="input-group-append">
+                                        <button class="btn btn-lg btn-ico btn-secondary btn-minimal" type="submit">
+                                            <i class="fe-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- Chat: Search -->
+
+                        <!-- Chat: Content-->
+                        <div class="chat-content px-lg-8">
+                            <div id="msg_box" class="container-xxl py-6 py-lg-10">
+
+                                <!-- Divider -->
+                                <div class="message-divider my-9 mx-lg-5">
+                                    <div class="row align-items-center">
+
+                                        <div class="col">
+                                            <hr>
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <small class="text-muted">今日</small>
+                                        </div>
+
+                                        <div class="col">
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Divider -->
+
+                            </div>
+<!--                            聊天窗口模板----------------------------------------------------------------->
+                             <!-- Message -->
+                                <div id="msg_tp_other" class="message" style="display: none;">
+                                    <!-- Avatar -->
+                                    <a class="avatar avatar-sm mr-4 mr-lg-5 msg_imgs" href="#">
+                                        <img class="avatar-img msg_imga" src="static/assets/images/avatars/9.jpg" alt="">
+                                        <div class="badge badge-sm badge-pill badge-primary badge-border-basic badge-bottom-right">
+<!--                                            <span class="text-uppercase"></span>-->
+                                            <samll class="msg_img_name">大牛皮我</samll>
+                                        </div>
+                                    </a>
+                                    <a class="avatar avatar-sm ml-4 ml-lg-5 bg-primary text-white text-truncate msg_img_p" href="#">
+                                        <span class="msg_img_pa">名称</span>
+                                    </a> &nbsp;&nbsp;
+
+                                    <!-- Message: body -->
+                                    <div class="message-body">
+
+                                        <!-- Message: row -->
+                                        <div class="message-row">
+                                            <div class="d-flex align-items-center">
+
+                                                <!-- Message: content -->
+                                                <div class="message-content bg-light">
+                                                    <div class="msg_main">内容内容内容</div>
+
+                                                    <div class="mt-1">
+                                                        <small class="opacity-65 msg_time">8 mins ago</small>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: content -->
+
+                                            </div>
+                                        </div>
+                                        <!-- Message: row -->
+
+                                    </div>
+                                    <!-- Message: body -->
+                                </div>
+                                <!-- Message -->
+
+<!--                                ---------------------------------------------------------------------------------------------------->
+
+                                <!-- Message -->
+                                <div id="msg_tp_my" class="message message-right" style="display: none;">
+                                    <!-- Avatar -->
+                                    <div class="avatar avatar-sm ml-4 ml-lg-5 msg_imgs">
+                                        <img class="avatar-img msg_imga" src="static/assets/images/avatars/12.jpg" alt="" title="名称">
+                                        <div class="badge badge-sm badge-pill badge-info badge-border-basic badge-bottom-left">
+<!--                                            <span class="text-uppercase"></span>-->
+                                            <samll class="msg_img_name">大牛皮我</samll>
+                                        </div>
+                                    </div>
+                                     <div class="avatar avatar-sm ml-4 ml-lg-5 bg-primary text-white text-truncate msg_img_p">
+                                                            <span class="msg_img_pa">名称</span>
+                                                        </div>
+                                    <!-- Message: body -->
+                                    <div class="message-body">
+
+                                        <!-- Message: row -->
+                                        <div class="message-row">
+                                            <div class="d-flex align-items-center justify-content-end">
+
+                                                <!-- Message: content -->
+                                                <div class="message-content bg-primary text-white">
+                                                    <div class="msg_main">内容内容内容</div>
+
+                                                    <div class="mt-1">
+                                                        <small class="opacity-65 msg_time">8 mins ago</small>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: content -->
+
+                                            </div>
+                                        </div>
+                                        <!-- Message: row -->
+
+                                    </div>
+                                    <!-- Message: body -->
+                                </div>
+                                <!-- Message -->
+<!--                            聊天窗口模板----------------------------------------------------------------->
+
+
+
+                            <!-- Scroll to end -->
+                            <div class="end-of-chat"></div>
+                        </div>
+                        <!-- Chat: Content -->
+
+                        <!-- Chat: DropzoneJS container -->
+                        <!-- Chat: DropzoneJS container -->
+
+                        <!-- Chat: Footer -->
+                        <div class="chat-footer border-top py-4 py-lg-6 px-lg-8">
+                            <div class="container-xxl">
+
+                                <form id="chat-id-1-form" action="static/assets/php/upload.php" data-emoji-form="">
+                                    <div class="form-row align-items-center">
+                                        <div class="col">
+                                            <div class="input-group">
+
+                                                <!-- Textarea -->
+                                                <textarea id="chat-id-1-input" class="form-control bg-transparent border-0" placeholder="人物卡加入游戏之后再输入..." rows="1" data-emoji-input="" data-autosize="true"></textarea>
+
+                                                <!-- Emoji button -->
+                                                <div class="input-group-append">
+                                                    <button id="emo" class="btn btn-ico btn-secondary btn-minimal btn-sm bg-transparent border-0" type="button" data-emoji-btn="" title="表情包">
+                                                        <img src="static/assets/images/xiaolian.svg" data-inject-svg="" alt="">
+                                                    </button>
+                                                </div>
+                                                <!-- shu button -->
+                                                <div class="input-group-append">
+                                                    <button id="listother" class="btn btn-ico btn-secondary btn-minimal btn-sm bg-transparent border-0" type="button" title="其他" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <img src="static/assets/images/shu.svg" data-inject-svg="" alt="">
+                                                    </button>
+<!--                                                    筛子数字-->
+                                                    <div class="dropdown-menu" aria-labelledby="cussaizi">
+                                                        <a id="showo_imgi" onclick="showo_img()" class="dropdown-item d-flex align-items-center rp_getinfo" href="#" data-toggle="modal" data-target="#dshowimg">
+                                                            显示图片 <span class="ml-auto fe-image"></span>
+                                                        </a>
+                                                        <a class="dropdown-item d-flex align-items-center rp_getinfo" href="#" data-toggle="modal" data-target="#dnotebook">
+                                                            调查员笔记 <span class="ml-auto fe-book-open"></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="input-group-append">
+                                                    <button id="cussaizi" class="btn btn-ico btn-secondary btn-minimal btn-sm bg-transparent border-0" type="button" title="特殊骰子" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <img src="static/assets/images/saizi.svg" data-inject-svg="" alt="">
+                                                    </button>
+<!--                                                    筛子数字-->
+                                                    <div class="dropdown-menu" aria-labelledby="cussaizi">
+                                                        <a onclick="tou2(0,'d100',100);" class="dropdown-item" href="#!">d100</a>
+                                                        <a onclick="tou2(0,'d50',50);" class="dropdown-item" href="#!">d50</a>
+                                                        <a onclick="tou2(0,'d20',20);" class="dropdown-item" href="#!">d20</a>
+                                                        <a onclick="tou2(0,'d10',10);" class="dropdown-item" href="#!">d10</a>
+                                                        <a onclick="tou2(0,'d9',9);" class="dropdown-item" href="#!">d9</a>
+                                                        <a onclick="tou2(0,'d8',8);" class="dropdown-item" href="#!">d8</a>
+                                                        <a onclick="tou2(0,'d7',7);" class="dropdown-item" href="#!">d7</a>
+                                                        <a onclick="tou2(0,'d6',6);" class="dropdown-item" href="#!">d6</a>
+                                                        <a onclick="tou2(0,'d5',5);" class="dropdown-item" href="#!">d5</a>
+                                                        <a onclick="tou2(0,'d4',4);" class="dropdown-item" href="#!">d4</a>
+                                                        <a onclick="tou2(0,'d3',3);" class="dropdown-item" href="#!">d3</a>
+                                                        <a onclick="tou2(0,'d2',2);" class="dropdown-item" href="#!">d2</a>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+<!--                                            调查员笔记-->
+                                            <div class="modal fade" id="dnotebook" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                <div class="modal-dialog" role="document" style="z-index: 2040">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">调查员笔记</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <textarea id="dnotebook_v" class="form-control" rows="10"></textarea>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button onclick="send_note()" type="button" class="btn btn-primary">保存笔记</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+<!--                                            图片上传-->
+                                            <div class="modal fade" id="dshowimg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                               <a href="#!" id="map-display-1"><img src="" class="img-fluid" alt="等待主持人上传图片..."></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Submit button -->
+                                        <div class="col-auto">
+                                            <button onclick="send_msg()" class="btn btn-ico btn-primary rounded-circle" type="button">
+                                                <span class="fe-send"></span>
+                                            </button>
+                                        </div>
+
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        </div>
+                        <!-- Chat: Footer -->
+                    </div>
+                    <!-- Chat: body -->
+
+                    <!-- Chat Details -->
+                    <div id="chat-1-info" class="chat-sidebar">
+                        <div class="d-flex h-100 flex-column">
+
+                            <!-- Header -->
+                            <div class="border-bottom py-4 py-lg-6">
+                                <div class="container-fluid">
+
+                                    <ul class="nav justify-content-between align-items-center">
+                                        <!-- Close sidebar -->
+                                        <li class="nav-item list-inline-item">
+                                            <a class="nav-link text-muted px-0" href="#" data-chat-sidebar-close="">
+                                                <i class="icon-md fe-chevron-left"></i>
+                                            </a>
+                                        </li>
+
+                                        <!-- Title(mobile) -->
+                                        <li class="text-center d-block d-lg-none">
+<!--                                            <h6 class="mb-n2">房间名称</h6>-->
+<!--                                            <small class="text-muted">房间信息</small>-->
+                                        </li>
+
+                                        <!-- Dropdown -->
+                                        <li id="delet_room_list" class="nav-item list-inline-item">
+                                            <div class="dropdown">
+                                                <a class="nav-link text-muted px-0" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="icon-md fe-sliders"></i>
+                                                </a>
+                                                <div class="dropdown-menu">
+<!--                                                    <a class="dropdown-item d-flex align-items-center" href="#">-->
+<!--                                                        编辑房间-->
+<!--                                                        <span class="ml-auto fe-edit"></span>-->
+<!--                                                    </a>-->
+                                                    <a onclick="" class="dropdown-item d-flex align-items-center" href="#" data-chat-sidebar-toggle="#chat-2-info">
+                                                        上传图片
+                                                        <span class="ml-auto fe-map"></span>
+                                                    </a>
+                                                    <a onclick="clear_msg({{group_id}})" class="dropdown-item d-flex align-items-center" href="#">
+                                                        清除对话
+                                                        <span class="ml-auto fe-inbox"></span>
+                                                    </a>
+                                                    <a onclick="delet_room({{group_id}})" class="dropdown-item d-flex align-items-center" href="#">
+                                                        删除房间
+                                                        <span class="ml-auto fe-trash-2"></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                            <!-- Header -->
+
+                            <!-- Body -->
+                            <div class="hide-scrollbar flex-fill">
+
+                                <div class="border-bottom text-center py-9 px-10">
+                                    <!-- Photo -->
+                                    {% for gd in group_deteil %}
+                                        {% if gd.1==74 %}
+                                            {% if gd.2=="0" %}
+                                            <div class="avatar avatar-xl mx-5 mb-5 bg-primary text-white text-truncate">
+                                                <span class="room_name_p">{{group_name}}</span>
+                                            </div>
+                                            {% else %}
+                                            <div class="avatar avatar-xl mx-5 mb-5">
+                                                <img class="avatar-img" src="{{gd.2}}" alt="{{group_name}}">
+                                            </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    <h5>{{group_name}}</h5>
+                                    <p class="text-muted">
+                                        {% for gd in group_deteil %}
+                                        {% if gd.1==69 %}
+                                        类型:{{gd.2}}&nbsp;&nbsp;
+                                        {% elif gd.1==70 %}
+                                        最大人数:{{gd.2}}</p>
+                                        {% elif gd.1==71 %}
+                                    <p><a class="text-dark" data-toggle="collapse" href="#jianjie1" role="button" aria-expanded="false" aria-controls="jianjie1">
+                                        <small>点击查看房间简介 </small></a></p>
+                                    <div class="collapse" id="jianjie1">
+                                        <p>{{gd.2}}</p>
+                                            </div>
+                                        {% endif %}
+                                        {% endfor %}
+
+                                </div>
+
+                                <!-- Navs -->
+                                <ul class="nav nav-tabs nav-justified bg-light rounded-0" role="tablist">
+                                    <li class="nav-item">
+                                        <a id="wanjialiebiao" href="#chat-id-1-members" class="nav-link active" data-toggle="tab" role="tab" aria-selected="true">玩家列表</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#chat-id-1-files" class="nav-link" data-toggle="tab" role="tab">人物卡列表</a>
+                                    </li>
+                                </ul>
+                                <!-- Navs -->
+
+                                <div class="tab-content">
+                                    <!-- 玩家列表 -->
+                                    <div id="chat-id-1-members" class="tab-pane fade show active">
+                                        <ul id="list_players" class="list-group list-group-flush list-group-no-border-first">
+
+
+
+                                        </ul>
+                                        <!-- 人物列表模板 -->
+                                            <li id="tp_list_rp" style="display: none;" class="list-group-item py-6">
+                                                <div class="media align-items-center">
+
+                                                    <div class="avatar mr-5 bg-primary text-white text-truncate rp_name_pt">
+                                                            <span class="rp_name_p"></span>
+                                                        </div>
+                                                    <div class="avatar avatar-sm mr-5 rp_pict">
+                                                        <img class="avatar-img rp_pic" src="static/assets/images/avatars/3.jpg" />
+                                                    </div>
+
+                                                    <div class="media-body">
+                                                        <h6 class="mb-0">
+                                                            <a href="#" class="text-reset rp_name">名称</a>
+                                                        </h6>
+                                                        <small class="text-muted rp_work"></small>
+                                                    </div>
+
+                                                    <div class="align-self-center ml-5 rp_rightcli">
+                                                        <div class="dropdown">
+                                                            <a href="#" class="btn btn-sm btn-ico btn-link text-muted w-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fe-more-vertical"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu">
+                                                                <a onclick="add_game()" class="dropdown-item d-flex align-items-center rp_getinfo" href="#">
+                                                                    加入游戏 <span class="ml-auto fe-plus"></span>
+                                                                </a>
+<!--                                                                <a class="dropdown-item d-flex align-items-center" href="#">-->
+<!--                                                                    踢出游戏 <span class="ml-auto fe-user-x"></span>-->
+<!--                                                                </a>-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </li>
+                                            <!-- 人物列表模板 -->
+                                    </div>
+                                    <!-- 玩家列表 -->
+
+                                    <!-- NPC列表 -->
+                                    <div id="chat-id-1-files" class="tab-pane fade">
+                                        <ul id="list_npc" class="list-group list-group-flush list-group-no-border-first">
+                                            <!-- Member -->
+                                            <li class="list-group-item py-6">
+                                                <div class="media align-items-center">
+
+
+
+                                                    <div class="avatar avatar-sm mr-5">
+                                                        <img class="avatar-img" src="static/assets/images/avatars/3.jpg" alt="William Greer">
+                                                    </div>
+
+                                                    <div class="media-body">
+                                                        <h6 class="mb-0">
+                                                            <a href="#" class="text-reset">William Greer</a>
+                                                        </h6>
+                                                        <small class="text-muted">last seen 10 minutes ago</small>
+                                                    </div>
+
+                                                    <div class="align-self-center ml-5">
+                                                        <div class="dropdown">
+                                                            <a href="#" class="btn btn-sm btn-ico btn-link text-muted w-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fe-more-vertical"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    Promote <span class="ml-auto fe-trending-up"></span>
+                                                                </a>
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    Restrict <span class="ml-auto fe-trending-down"></span>
+                                                                </a>
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    Delete <span class="ml-auto fe-user-x"></span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </li>
+                                            <!-- Member -->
+                                            <!-- Member -->
+                                            <li class="list-group-item py-6">
+                                                <div class="media align-items-center">
+
+
+
+                                                    <div class="avatar avatar-sm mr-5">
+                                                        <img class="avatar-img" src="static/assets/images/avatars/3.jpg" alt="William Greer">
+                                                    </div>
+
+                                                    <div class="media-body">
+                                                        <h6 class="mb-0">
+                                                            <a href="#" class="text-reset">William Greer</a>
+                                                        </h6>
+                                                        <small class="text-muted">last seen 10 minutes ago</small>
+                                                    </div>
+
+                                                    <div class="align-self-center ml-5">
+                                                        <div class="dropdown">
+                                                            <a href="#" class="btn btn-sm btn-ico btn-link text-muted w-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fe-more-vertical"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    Promote <span class="ml-auto fe-trending-up"></span>
+                                                                </a>
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    Restrict <span class="ml-auto fe-trending-down"></span>
+                                                                </a>
+                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                    Delete <span class="ml-auto fe-user-x"></span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </li>
+                                            <!-- Member -->
+
+                                        </ul>
+                                    </div>
+                                    <!-- NPC列表 -->
+                                </div>
+                            </div>
+                            <!-- Body -->
+
+                        </div>
+                    </div>
+                    <!-- Chat Details -->
+
+                    <!-- New members -->
+                    <div id="chat-1-members" class="chat-sidebar">
+                        <div class="d-flex h-100 flex-column">
+
+                            <!-- Header -->
+                            <div class="border-bottom py-4 py-lg-6">
+                                <div class="container-fluid">
+
+                                    <ul class="nav justify-content-between align-items-center">
+                                        <!-- Close sidebar -->
+                                        <li class="nav-item">
+                                            <a class="nav-link text-muted px-0" href="#" data-chat-sidebar-close="">
+                                                <i class="icon-md fe-chevron-left"></i>
+                                            </a>
+                                        </li>
+
+                                        <!-- Title(mobile) -->
+                                        <li class="text-center d-block d-lg-none">
+                                            <h6 class="mb-n2">Bootstrap Themes</h6>
+                                            <small class="text-muted">Add Members</small>
+                                        </li>
+
+                                        <!-- Dropdown -->
+                                        <li class="nav-item">
+                                            <div class="dropdown">
+                                                <a class="nav-link text-muted px-0" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="icon-md fe-sliders"></i>
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                                        Mute
+                                                        <span class="ml-auto fe-bell"></span>
+                                                    </a>
+                                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                                        Delete
+                                                        <span class="ml-auto fe-trash-2"></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                            <!-- Header -->
+
+                            <!-- Body -->
+                            <div class="hide-scrollbar flex-fill">
+                                <!-- Search -->
+                                <div class="border-bottom py-7">
+                                    <div class="container-fluid">
+
+                                        <form action="#">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control form-control-lg" placeholder="Search for users..." aria-label="Search users...">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-lg btn-ico btn-secondary btn-minimal" type="submit">
+                                                        <i class="fe-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                                <!-- Search -->
+
+                                <!-- Members -->
+                                <form action="#">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item py-4">
+                                            <small class="text-uppercase">A</small>
+                                        </li>
+
+                                        <!-- Member -->
+                                        <li class="list-group-item py-6">
+                                            <div class="media align-items-center">
+
+                                                
+                                                <div class="avatar avatar-sm avatar-online mr-5">
+                                                    <img class="avatar-img" src="static/assets/images/avatars/10.jpg" alt="Anna Bridges">
+                                                </div>
+                                                
+                                                
+                                                <div class="media-body">
+                                                    <h6 class="mb-0">Anna Bridges</h6>
+                                                    <small class="text-muted">Online</small>
+                                                </div>
+
+                                                <div class="align-self-center ml-auto">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input" id="id-add-user-chat-1-user-1" type="checkbox">
+                                                        <label class="custom-control-label" for="id-add-user-chat-1-user-1"></label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- Label -->
+                                            <label class="stretched-label" for="id-add-user-chat-1-user-1"></label>
+                                        </li>
+                                        <!-- Member -->
+
+
+                                        <li class="list-group-item py-4">
+                                            <small class="text-uppercase">B</small>
+                                        </li>
+
+                                        <!-- Member -->
+                                        <li class="list-group-item py-6">
+                                            <div class="media align-items-center">
+
+                                                
+                                                
+                                                <div class="avatar avatar-sm mr-5">
+                                                    <img class="avatar-img" src="static/assets/images/avatars/6.jpg" alt="Brian Dawson">
+                                                </div>
+                                                
+                                                <div class="media-body">
+                                                    <h6 class="mb-0">Brian Dawson</h6>
+                                                    <small class="text-muted">last seen 2 hours ago</small>
+                                                </div>
+
+                                                <div class="align-self-center ml-auto">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input" id="id-add-user-chat-1-user-2" type="checkbox">
+                                                        <label class="custom-control-label" for="id-add-user-chat-1-user-2"></label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- Label -->
+                                            <label class="stretched-label" for="id-add-user-chat-1-user-2"></label>
+                                        </li>
+                                        <!-- Member -->
+
+
+                                        <li class="list-group-item py-4">
+                                            <small class="text-uppercase">L</small>
+                                        </li>
+
+                                        <!-- Member -->
+                                        <li class="list-group-item py-6">
+                                            <div class="media align-items-center">
+
+                                                
+                                                
+                                                <div class="avatar avatar-sm mr-5">
+                                                    <img class="avatar-img" src="static/assets/images/avatars/5.jpg" alt="Leslie Sutton">
+                                                </div>
+                                                
+                                                <div class="media-body">
+                                                    <h6 class="mb-0">Leslie Sutton</h6>
+                                                    <small class="text-muted">last seen 3 days ago</small>
+                                                </div>
+
+                                                <div class="align-self-center ml-auto">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input" id="id-add-user-chat-1-user-3" type="checkbox">
+                                                        <label class="custom-control-label" for="id-add-user-chat-1-user-3"></label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- Label -->
+                                            <label class="stretched-label" for="id-add-user-chat-1-user-3"></label>
+                                        </li>
+                                        <!-- Member -->
+
+
+                                        <li class="list-group-item py-4">
+                                            <small class="text-uppercase">M</small>
+                                        </li>
+
+                                        <!-- Member -->
+                                        <li class="list-group-item py-6">
+                                            <div class="media align-items-center">
+
+                                                
+                                                
+                                                <div class="avatar avatar-sm mr-5">
+                                                    <img class="avatar-img" src="static/assets/images/avatars/4.jpg" alt="Matthew Wiggins">
+                                                </div>
+                                                
+                                                <div class="media-body">
+                                                    <h6 class="mb-0">Matthew Wiggins</h6>
+                                                    <small class="text-muted">last seen 3 days ago</small>
+                                                </div>
+
+                                                <div class="align-self-center ml-auto">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input" id="id-add-user-chat-1-user-4" type="checkbox">
+                                                        <label class="custom-control-label" for="id-add-user-chat-1-user-4"></label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- Label -->
+                                            <label class="stretched-label" for="id-add-user-chat-1-user-4"></label>
+                                        </li>
+                                        <!-- Member -->
+
+
+                                        <li class="list-group-item py-4">
+                                            <small class="text-uppercase">S</small>
+                                        </li>
+
+                                        <!-- Member -->
+                                        <li class="list-group-item py-6">
+                                            <div class="media align-items-center">
+
+                                                
+                                                
+                                                <div class="avatar avatar-sm mr-5">
+                                                    <img class="avatar-img" src="static/assets/images/avatars/7.jpg" alt="Simon Hensley">
+                                                </div>
+                                                
+                                                <div class="media-body">
+                                                    <h6 class="mb-0">Simon Hensley</h6>
+                                                    <small class="text-muted">last seen 3 days ago</small>
+                                                </div>
+
+                                                <div class="align-self-center ml-auto">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input" id="id-add-user-chat-1-user-5" type="checkbox">
+                                                        <label class="custom-control-label" for="id-add-user-chat-1-user-5"></label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- Label -->
+                                            <label class="stretched-label" for="id-add-user-chat-1-user-5"></label>
+                                        </li>
+                                        <!-- Member -->
+
+
+                                        <li class="list-group-item py-4">
+                                            <small class="text-uppercase">W</small>
+                                        </li>
+
+                                        <!-- Member -->
+                                        <li class="list-group-item py-6">
+                                            <div class="media align-items-center">
+
+                                                
+                                                
+                                                <div class="avatar avatar-sm mr-5">
+                                                    <img class="avatar-img" src="static/assets/images/avatars/9.jpg" alt="William Wright">
+                                                </div>
+                                                
+                                                <div class="media-body">
+                                                    <h6 class="mb-0">William Wright</h6>
+                                                    <small class="text-muted">last seen 3 days ago</small>
+                                                </div>
+
+                                                <div class="align-self-center ml-auto">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input" id="id-add-user-chat-1-user-6" type="checkbox">
+                                                        <label class="custom-control-label" for="id-add-user-chat-1-user-6"></label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- Label -->
+                                            <label class="stretched-label" for="id-add-user-chat-1-user-6"></label>
+                                        </li>
+                                        <!-- Member -->
+<!-- Member -->
+                                        <li class="list-group-item py-6">
+                                            <div class="media align-items-center">
+
+                                                
+                                                
+                                                <div class="avatar avatar-sm mr-5">
+                                                    <img class="avatar-img" src="static/assets/images/avatars/3.jpg" alt="William Greer">
+                                                </div>
+                                                
+                                                <div class="media-body">
+                                                    <h6 class="mb-0">William Greer</h6>
+                                                    <small class="text-muted">last seen 10 minutes ago</small>
+                                                </div>
+
+                                                <div class="align-self-center ml-auto">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input" id="id-add-user-chat-1-user-7" type="checkbox">
+                                                        <label class="custom-control-label" for="id-add-user-chat-1-user-7"></label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- Label -->
+                                            <label class="stretched-label" for="id-add-user-chat-1-user-7"></label>
+                                        </li>
+                                        <!-- Member -->
+
+
+                                        <li class="list-group-item py-4">
+                                            <small class="text-uppercase">Z</small>
+                                        </li>
+
+                                        <!-- Member -->
+                                        <li class="list-group-item py-6">
+                                            <div class="media align-items-center">
+
+                                                
+                                                
+                                                <div class="avatar avatar-sm mr-5">
+                                                    <img class="avatar-img" src="static/assets/images/avatars/7.jpg" alt="Zane Mayes">
+                                                </div>
+                                                
+                                                <div class="media-body">
+                                                    <h6 class="mb-0">Zane Mayes</h6>
+                                                    <small class="text-muted">last seen 3 days ago</small>
+                                                </div>
+
+                                                <div class="align-self-center ml-auto">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input" id="id-add-user-chat-1-user-8" type="checkbox">
+                                                        <label class="custom-control-label" for="id-add-user-chat-1-user-8"></label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- Label -->
+                                            <label class="stretched-label" for="id-add-user-chat-1-user-8"></label>
+                                        </li>
+                                        <!-- Member -->
+
+                                    </ul>
+                                </form>
+                                <!-- Members -->
+                            </div>
+                            <!-- Body -->
+
+                            <!-- Button -->
+                            <div class="border-top py-7">
+                                <div class="container-fluid">
+                                    <button class="btn btn-lg btn-block btn-primary d-flex align-items-center" type="submit">
+                                        Add members
+                                        <span class="fe-user-plus ml-auto"></span>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- New members -->
+
+                {% include 'dist/user_deteil.html' %}
+
+                </div>
+                <!-- Chat -->
+
+            </div>
+            <!-- Main Content -->
+
+            <!-- Active Users: Sidebar -->
+
+            <!-- Active Users: Sidebar -->
+
+        </div>
+        <!-- Layout -->
+
+        <!-- DropzoneJS: Template -->
+        <!-- DropzoneJS: Template -->
+
+        <!-- Modal: Invite friends -->
+        <div class="modal fade" id="invite-friends" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <div class="media flex-fill">
+                            <div class="icon-shape rounded-lg bg-primary text-white mr-5">
+                                <i class="fe-users"></i>
+                            </div>
+                            <div class="media-body align-self-center">
+                                <h5 class="modal-title">Invite friends</h5>
+                                <p class="small">Invite colleagues, clients and friends.</p>
+                            </div>
+                        </div>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form action="#">
+                            <div class="form-group">
+                                <label for="invite-email" class="small">Email</label>
+                                <input type="text" class="form-control form-control-lg" id="invite-email">
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label for="invite-message" class="small">Invitation message</label>
+                                <textarea class="form-control form-control-lg" id="invite-message" data-autosize="true"></textarea>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-lg btn-block btn-primary d-flex align-items-center">
+                            Invite friend
+                            <i class="fe-user-plus ml-auto"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Modal: Invite friends -->
+
+        <!-- Scripts -->
+        {% include 'dist/jsclude.html' %}
+        <!-- Scripts -->
+    <script>
+        var pids = new Array();
+        var noteid=0;
+        var mycid=0;
+        var lastid=0;
+        var liliang;
+        var tizhi;
+        var tixing;
+        var yizhi;
+        $(document).ready(function() {
+            get_kazu("mykazu","list_npc","tp_list_rp","list_rp_");
+            get_kazu("allkazu","list_players","tp_list_rp","list_pp_");
+            get_msg_lastid();
+            setInterval(function(){
+                get_msg_lastid();
+              }, 3000);
+            // 显示右边的信息框
+            $("#chat-1-info").attr("class","chat-sidebar chat-sidebar-visible");
+            {% if page=="roomp" %}
+            //如果不是房间创建人去掉删除按钮
+            $("#delet_room_list").hide();
+            {% endif %}
+            //获取用户数据
+
+
+            //获取显示图片列表
+            show_imgs();
+            //显示已标记显示的图片
+
+            $(document).on("click",".file-list-template-display",function () {
+              var displayimgurl = $(this).parent().attr("imgurl");
+              //need：后台根据图片名称 显示给其他玩家 对应的图片 $post
+              $("#map-display-1").find("img").attr("src",displayimgurl)
+            });
+
+
+           $(document).on("click",".file-list-template-delete",function () {
+             var deleteimgurl = $(this).parent().attr("imgurl");
+             //need：后台根据文件名 删除对应文件 $post
+             console.log(deleteimgurl);
+             del_img(deleteimgurl);
+             $(this).parent().parent().parent().parent().parent().remove();
+
+           });
+        });
+
+        //获取职业描述
+        function get_winfo(id,showid){
+            $.get("/getwinfo", {
+                nid : id,
+              },
+                function(myData , status){
+                    if(myData!=0){
+                        var teshu = myData[2][0];
+                        $("#"+showid).append("<p>职业特殊:"+teshu+"</p>");
+                    }
+            },"json");
+        }
+
+        function get_kazu(method, list, templates, mytemp) {
+            $("#"+list).html("");
+            $.get("/getkazu", {
+                method: method,
+                gid:"{{group_id}}"
+              },
+                function(myData , status){
+                //     卡组首页信息
+                //     卡组具体信息
+                //     工作
+                    // console.log(myData);
+                    for(data of myData){
+                        var cid = data[0][0];
+                        if(cid=="0"){
+                            continue;
+                        }
+                        var uid = data[0][1];
+                        var pname = data[0][5];
+                        if(data[2]!="0"){
+                            var work = data[2][0];
+                            var workname = work[2];
+                        }
+                        else{
+                            var work = 0;
+                            var workname = "未设定职业";
+                        }
+                        var cc = $("#"+templates).clone(true);
+                        cc.attr('id',mytemp+cid);
+                        // cc.attr('href',"roomc?rid="+roomid);
+                        cc.attr('style','');
+                        $("#"+list).append(cc);
+                        $("#"+mytemp+cid+" .rp_name").html(pname);
+                        // 设定点击查看详细信息
+                        $("#"+mytemp+cid+" .rp_name").attr("onclick","show_deteils("+cid+","+uid+",'"+workname+"')");
+                        if(uid=={{myuid}} || "{{page}}"=="roomc"){
+                            if(method=="allkazu"){
+                                $("#"+mytemp+cid+" .rp_getinfo").attr("onclick","del_game("+cid+","+uid+")");
+                            }
+                            else if(method=="mykazu"){
+                                $("#"+mytemp+cid+" .rp_getinfo").attr("onclick","add_game("+cid+")");
+                            }
+                        }
+                        else{
+                            $("#"+mytemp+cid+" .rp_rightcli").hide();
+                        }
+
+                        if(method=="allkazu"){
+                            if(uid=={{myuid}}){
+                                mycid = cid;
+                                $("#dtt_mycid").val(mycid);
+                                $("#dtt_myuid").val(uid);
+                                $("#dtt_myjobname").val(workname);
+                                show_myde();
+                                var outtext="退出游戏";
+                            }
+                            else{
+                                var outtext="踢出游戏";
+                            }
+                            $("#"+mytemp+cid+" .rp_getinfo").html(outtext+" <span class=\"ml-auto fe-user-x\"></span>");
+                        }
+                        $("#"+mytemp+cid+" .rp_work").html("职业:"+workname);
+                        for(dd of data[1]){
+                            if(dd[3]=='75'){
+                                if(dd[5]==0){
+                                    $("#"+mytemp+cid+" .rp_pict").hide();
+                                    $("#"+mytemp+cid+" .rp_name_p").html(pname);
+                                }
+                                else{
+                                    $("#"+mytemp+cid+" .rp_name_pt").hide();
+                                    $("#"+mytemp+cid+" .rp_pic").attr('src',dd[5]);
+                                }
+                            }
+                        }
+                    }
+                },"json");
+        }
+
+        function get_msg_lastid(){
+            $.get("/getmsg_lastid", {
+                gid:"{{group_id}}"
+              },
+            function(myData , status){
+                myData=parseInt(myData);
+                if(myData!=0){
+                    if(lastid!=myData){
+                        lastid=myData;
+                        get_msg();
+                    }
+                }
+
+            });
+        }
+
+        function get_msg(){
+            $.get("/getmsg_group", {
+                gid:"{{group_id}}"
+              },
+            function(myData , status){
+                $("#msg_box").html("");
+                myData = myData.reverse();
+                var lastid=0;
+                for(data of myData){
+                    var uid = data[0];
+                    var name = data[1];
+                    var pic = data[2];
+                    var msga = data[3];
+                    var timestamp=new Date().getTime();
+                    var radn = randomNum(1000,9999);
+                    var sia = timestamp+radn;
+                    if(uid == "{{myuid}}"){
+                        var mytemp = "msg_my_";
+                        set_msg_box(sia,"msg_box","msg_tp_my",mytemp,name,pic,msga);
+                    }
+                    else{
+                        // console.log(name);
+                        var mytemp = "msg_oth_";
+                        set_msg_box(sia,"msg_box","msg_tp_other",mytemp,name,pic,msga);
+                    }
+                    lastid = "#"+mytemp+sia;
+                }
+                window.location.href=lastid;
+
+            });
+        }
+        function set_msg_box(sid,list, templates, mytemp,name,pic,msga){
+            var cc = $("#"+templates).clone(true);
+            cc.attr('id',mytemp+sid);
+            cc.attr('style','');
+            $("#"+list).append(cc);
+            if(pic=="0"){
+                $("#"+mytemp+sid+" .msg_imgs").hide();
+                $("#"+mytemp+sid+" .msg_img_pa").html(name);
+            }
+            else{
+                $("#"+mytemp+sid+" .msg_img_p").hide();
+                $("#"+mytemp+sid+" .msg_imga").attr("src",pic);
+                $("#"+mytemp+sid+" .msg_img_name").html(name);
+            }
+            // $("#"+mytemp+sid+" .msg_imgs").attr("href","#"+mytemp+sid);
+            var showmsg = msga[6];
+            showmsg = cha("img",showmsg);
+            $("#"+mytemp+sid+" .msg_main").html(showmsg);
+            var msg_time = currentTime(parseInt(msga[5]));
+            $("#"+mytemp+sid+" .msg_time").html(msg_time);
+        }
+
+        function qiehui(){
+            $("#chat-1-user-profile").attr("class","chat-sidebar");
+            $("#chat-1-info").attr("class","chat-sidebar chat-sidebar-visible");
+        }
+
+        //列出人物卡详细信息
+        function show_deteils(cid,uid,jobname) {
+            {% if page=="roomp" %}
+            if (uid!={{myuid}}){
+                alert("您没有权限看别人的角色卡!");
+                return;
+            }
+            {% endif %}
+
+            $("#chat-1-info").attr("class","chat-sidebar");
+            $("#chat-1-user-profile").attr("class","chat-sidebar chat-sidebar-visible");
+
+            $("#dtt_cid").val(cid);
+            $("#dtt_uid").val(uid);
+            $("#dtt_jobname").val(jobname);
+
+            var str = "职业:"+jobname;
+            $.get("/get_infodeteil", {
+                cid: cid,
+                uid: uid,
+              },
+                function(myData , status){
+                    pids = new Array();
+                    // console.log(myData);
+                    $("#dt_askills_list").html("");
+                    $("#dt_atr_list1").html("");
+                    $("#dt_atr_list2").html("");
+                    $("#dt_skills_list").html("");
+                    $("#dt_objs_list").html("");
+                    $("#background").html("");
+
+
+                    for(data of myData){
+                        var pid = data[0];
+                        var kind = data[2];
+                        var nid = data[3];
+                        var value = data[5];
+                        if(kind==1){
+
+                            if(nid==1){
+                                var pname = value;
+                                $("#dt_name").html(value);
+
+                                //添加空手攻击
+                                set_objj("dt_objs_list","dt_obj","dt_s_hand","空手",pname,"战斗","1d3");
+                            }
+                            if(nid==75){
+                                if(value=="0"){
+                                    $("#dt_pic").hide();
+                                    $("#dt_name_p").show();
+                                    $("#dt_name_p .dt_name_pa").html(pname);
+                                }
+                                else{
+                                    $("#dt_name_p").hide();
+                                    $("#dt_pic").show();
+                                    $("#dt_pic .dt_pica").attr("src",value);
+                                }
+                            }
+                            if(nid==9)
+                                get_winfo(parseInt(value),"background");
+                            if(nid==16)
+                                str = str+" 年龄:"+value;
+                            if(nid==17)
+                                str = str+" 性别:"+value;
+                            if(nid==18)
+                                str = str+" 居住地:"+value;
+                            if(nid==19)
+                                str = str+" 故乡:"+value;
+                            if(nid==48)
+                                $("#background").append(value);
+                            if(nid==52){
+                                $("#dnotebook_v").val(value);
+                                noteid = pid;
+                            }
+
+                            {% for at in atrr %}
+                            // 属性点数下
+                                {% if at.0>=20 and at.0<=27 or at.0==31 %}
+                                    if(nid=={{at.0}}){
+                                        if(nid==20){
+                                            liliang = parseInt(value);
+                                        }
+                                        if(nid==21){
+                                            tizhi = parseInt(value);
+                                        }
+                                        if(nid==22){
+                                            tixing = parseInt(value);
+                                        }
+                                        if(nid==26){
+                                            yizhi = parseInt(value);
+                                        }
+                                        var str2="{{at.2}}";
+                                        set_ask("dt_atr_list2","dt_skill","dt_s_"+pid,str2,value,pname);
+                                        pids.push(pid);
+                                    }
+                                {% endif %}
+                            {% endfor %}
+                            {% for at in atrr %}
+                            // 属性点数上
+                                {% if at.0>=29 and at.0<=32 and at.0!=31 %}
+                                    if(nid=={{at.0}}){
+                                        var str2="{{at.2}}";
+                                        if(nid==29){
+                                            var tili=parseInt((tizhi+tixing)/10);
+                                            set_ask("dt_atr_list1","dt_skill2","dt_s_"+pid,str2,value,pname,tili);
+                                        }
+                                        else if(nid==30){
+                                            var lizhi = yizhi;
+                                            set_ask("dt_atr_list1","dt_skill2","dt_s_"+pid,str2,value,pname,lizhi);
+                                        }
+                                        else if(nid==32){
+                                            var mofa = parseInt(yizhi/5);
+                                            set_ask("dt_atr_list1","dt_skill2","dt_s_"+pid,str2,value,pname,mofa);
+                                        }
+                                        else{
+                                            set_ask("dt_atr_list1","dt_skill2","dt_s_"+pid,str2,value,pname);
+                                        }
+
+                                        pids.push(pid);
+                                    }
+                                {% endif %}
+                            {% endfor %}
+
+
+                            // 剩余金钱
+                            {% for at in atrr %}
+                                {% if at.0==55 %}
+                                    if(nid=={{at.0}}){
+                                        //加入db
+                                        var db=get_db(liliang,tixing);
+                                        set_ask("dt_atr_list1","dt_skill3","dt_s_db","DB",db,pname);
+                                        //加入金钱
+                                        var str2="{{at.2}}";
+                                        set_ask("dt_objs_list","dt_skill4","dt_s_"+pid,str2,value,pname,1);
+                                        pids.push(pid);
+
+                                    }
+                                {% endif %}
+                            {% endfor %}
+
+                        }
+                        else if(kind==3){
+                            {% for name in names %}
+                            // 技能点数
+                                if(nid=="{{name.0}}"){
+                                    var str2="{{name.2}}";
+                                    if(parseInt(value)>10){
+                                        set_ask("dt_skills_list","dt_skill","dt_s_"+pid,str2,value,pname,0,nid);
+                                        pids.push(pid);
+                                    }
+
+                                }
+                            {% endfor %}
+                        }
+                        else if(kind==4){
+
+                            {% for name in names %}
+                            // 物品
+                                if(nid=="{{name.0}}"){
+                                    var damage=0;
+                                    var useskill=0;
+                                    var skillplu=0;
+                                    var skillplu2=0;
+                                    var str2="{{name.2}}";
+                                    {% for in in infoe %}
+                                        {% if in.2==8 %}
+                                        if(nid=="{{in.1}}"){
+                                            damage = "{{in.4}}";
+                                        }
+                                        {% elif in.2==7 %}
+                                        if(nid=="{{in.1}}"){
+                                            useskill = "{{in.4}}";
+                                        }
+                                        {% elif in.2==47 %}
+                                        if(nid=="{{in.1}}"){
+                                            skillplu = "{{in.4}}";
+                                            skillplu2 = "{{in.5}}";
+                                        }
+                                        {% endif %}
+                                    {% endfor %}
+                                    set_objj("dt_objs_list","dt_obj","dt_s_"+pid,str2,pname,useskill,damage,skillplu,skillplu2,pid);
+                                }
+                            {% endfor %}
+
+
+                        }
+                    }
+                    $("#dt_odeteil").html(str);
+
+
+                },"json");
+        }
+
+        //修改用户信息的框框
+        function set_ask(list,temp,col,name,value,pname=0,apend=0,nid=0){
+            var cc = $("#"+temp).clone(true);
+            cc.attr('id',col);
+            cc.attr('style','');
+            if(apend==1){
+                $("#"+list).prepend(cc);
+            }
+            else{
+                $("#"+list).append(cc);
+            }
+            if(apend!=0 && apend!=1){
+                $("#"+col+" .dt_maxx").html("/"+apend);
+
+            }
+            $("#"+col+" .dt_atr_name").html(name);
+            $("#"+col+" .dt_atr_value").val(value);
+
+            if(pname==0){
+                pname="";
+            }
+            else{
+                pname = pname+" "
+            }
+            $("#"+col+" .dt_mingtou").attr("onclick","tou2("+value+",'"+pname+name+"')");
+            $("#"+col+" .dt_mingtoum").attr("onclick","tou2("+value+",'"+pname+name+"',100,'mobile')");
+            //投骰子的nid
+            if(nid!=0){
+                $("#"+col+" .dt_mingtou").attr("id","touzi_"+nid);
+            }
+
+        }
+
+        //物品信息的框框
+        function set_objj(list,temp,col,name,pname=0,useskill="0",damage="0",skillplu="0",skillplu2="0",pid="0"){
+            var cc = $("#"+temp).clone(true);
+            var useskillid=0;
+            cc.attr('id',col);
+            cc.attr('style','');
+            $("#"+list).append(cc);
+            $("#"+col+" .dt_atr_name").html(name);
+            $("#"+col+" .dt_atr_name").attr("title",name);
+            //显示伤害,使用技能等等
+            $("#"+col+" .dt_atr_sdlist").html("");
+            if(useskill=="0" && damage=="0" && skillplu=="0"){
+                var strr='<a class="dropdown-item dt_atr_other">特殊道具</a>';
+                $("#"+col+" .dt_atr_sdlist").append(strr);
+            }
+            if(useskill!="0"){
+                {% for nn in names %}
+                if(useskill=="{{nn.2}}"){
+                    useskillid = "{{nn.0}}";
+                }
+                {% endfor %}
+                var strr='<a class="dropdown-item dt_atr_useskill">使用技能:'+useskill+'</a>\n' +
+                     '<div class="dropdown-divider"></div>';
+                $("#"+col+" .dt_atr_sdlist").append(strr);
+            }
+            if(damage!="0"){
+                var strr='<a class="dropdown-item dt_atr_damage">伤害:'+damage+'</a>\n' +
+                     '<div class="dropdown-divider"></div>';
+                $("#"+col+" .dt_atr_sdlist").append(strr);
+                $("#"+col+" .dt_atr_name").attr("title","伤害:"+damage);
+            }
+            if(skillplu!="0"){
+                if(skillplu2!="0"){
+                    var skplu = skillplu+'|'+skillplu2;
+                }
+                else{
+                    var skplu = skillplu;
+                }
+                // var skplu = skillplu;
+
+                var strr='<a class="dropdown-item dt_atr_skillplu">技能加成:'+skplu+'</a>';
+                $("#"+col+" .dt_atr_sdlist").append(strr);
+            }
+
+            if(pname==0){
+                pname="";
+            }
+            else{
+                pname = pname+" "
+            }
+
+
+            $("#"+col+" .dt_mingtou").attr("onclick","tou3("+useskillid+",'"+pname+name+"','"+damage+"','"+skillplu+"','"+skillplu2+"')");
+            // console.log(pid);
+            if(pid!="0"){
+                $("#"+col+" .dt_deltou").attr("onclick","delobj("+pid+")");
+            }
+            else{
+                $("#"+col+" .dt_deltou").remove();
+            }
+
+
+        }
+
+        //修改用户信息
+        function send_ask() {
+            for(pid of pids){
+                var value = $("#dt_s_"+pid+" .dt_atr_value").val();
+                var name = $("#dt_s_"+pid+" .dt_atr_name").html();
+                $.post("/updateu", {
+                    pid: pid,
+                    gid: "{{group_id}}",
+                    token:"{{token}}",
+                    v: value
+                },
+                function(myData , status){
+                    var ccid=$("#dtt_cid").val();
+                    var uuid=$("#dtt_uid").val();
+                    var jobbnm=$("#dtt_jobname").val();
+                    show_deteils(ccid,uuid,jobbnm);
+                    // console.log(myData);
+                });
+            }
+            alert("成功修改");
+        }
+
+        //添加调查员笔记
+        function send_note() {
+            var value = $("#dnotebook_v").val();
+                $.post("/updateu", {
+                    pid: noteid,
+                    gid: "{{group_id}}",
+                    token:"{{token}}",
+                    v: value
+                },
+                function(myData , status){
+                    // console.log(myData);
+                    // alert("成功修改");
+                });
+        }
+
+        //发送信息
+        function send_msg(v=0) {
+            if(mycid==0 || mycid=="0" || !mycid){
+                alert("请至少将一个卡组加入游戏再输入");
+                return
+            }
+            if(v==0){
+                var value = $("#chat-id-1-input").val();
+                if(!value){
+                    alert("请输入内容再提交");
+                    $("#chat-id-1-input").focus();
+                    return;
+                }
+            }
+            else {
+                var value = v;
+            }
+            $.post("/sendmsg", {
+                kind:5,
+                fromcid:mycid,
+                toid:"{{group_id}}",
+                msg: value
+            },
+            function(myData , status){
+                $("#chat-id-1-input").val("");
+                get_msg();
+                // alert("成功提交");
+            });
+
+        }
+
+        //用户加入游戏
+        function add_game(cid) {
+            $.post("/addgame", {
+                cid: cid,
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                get_kazu("allkazu","list_players","tp_list_rp","list_pp_");
+                $("#wanjialiebiao").click();
+                mycid = cid;
+            });
+
+        }
+        function del_game(cid,uid) {
+            $.post("/delgame", {
+                cid: cid,
+                uid: uid,
+                token:"{{token}}",
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                get_kazu("allkazu","list_players","tp_list_rp","list_pp_");
+                $("#wanjialiebiao").click();
+            });
+        }
+
+        function randomNum(minNum,maxNum){
+            switch(arguments.length){
+                case 1:
+                    return parseInt(Math.random()*minNum+1,10);
+                break;
+                case 2:
+                    return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10);
+                break;
+                    default:
+                        return 0;
+                    break;
+            }
+        }
+
+        function currentTime(date) {
+            var date = new Date(date*1000);//如果date为13位不需要乘1000
+            var Y = date.getFullYear() + '-';
+            var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+            var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+            var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+            var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+            var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
+            return Y+M+D+h+m+s;
+        }
+
+        function tou(value=0,obj=0,max=0) {
+            var msg;
+            if(max==0){
+                var c= randomNum(1,100);
+            }
+            else {
+                var c= randomNum(1,max);
+            }
+
+            c = reset_num(c);
+            if(value==0){
+                msg = obj+"检定:"+c;
+                send_msg(msg);
+                return;
+            }
+            if(obj==0){
+                obj="特殊";
+            }
+            v2 = parseInt(value/2);
+            v3 = parseInt(value/5);
+            msg = obj+"检定:";
+            if(c>value){
+                if(c>95){
+                    msg = msg+"大失败!"+c;
+                }
+                else{
+                    msg = msg+"失败!"+c;
+                }
+            }
+            else if(c<=value && c>v2){
+                msg = msg+"成功!"+c;
+            }
+            else if(c==1){
+                msg = msg+"大成功!"+c;
+            }
+            else if(c<=v2 && c>v3){
+                msg = msg+"困难成功!"+c;
+            }
+            else if(c<=v3){
+                msg = msg+"极限成功!"+c;
+            }
+            send_msg(msg);
+            return;
+        }
+
+        function tou2(value=0,obj=0,max=100,type=0) {
+            if(mycid==0 || mycid=="0" || !mycid){
+                alert("请至少将一个卡组加入游戏再投");
+                return
+            }
+            $.post("/tou", {
+                kind:5,
+                fromcid:mycid,
+                toid:"{{group_id}}",
+                value: value,
+                obj : obj,
+                max : max
+            },
+            function(myData , status){
+                $("#chat-id-1-input").val("");
+                get_msg();
+                //设置手机界面
+                if(type=="mobile"){
+                    $("#chat-1-user-profile").attr("class","chat-sidebar");
+                }
+            });
+        }
+
+
+        function tou3(touziid=0,obj="0",damage="0",skillplu="0",skillplu2="0"){
+            if(mycid==0 || mycid=="0" || !mycid){
+                alert("请至少将一个卡组加入游戏再输入");
+                return
+            }
+            if(touziid!=0){
+                touziid="touzi_"+touziid;
+                $("#"+touziid).click();
+            }
+            var db=$("#dt_s_db .dt_atr_value").val();
+            $.post("/tou_demage", {
+                kind:5,
+                fromcid:mycid,
+                toid:"{{group_id}}",
+                damage: damage,
+                db: db,
+                obj : obj,
+                skillplu : skillplu,
+                skillplu2: skillplu2
+            },
+            function(myData , status){
+                // console.log(myData);
+                $("#chat-id-1-input").val("");
+                get_msg();
+            });
+
+        }
+
+        function delobj(pid=0){
+            $.post("/delobj", {
+                    pid: pid,
+                    token:"{{token}}",
+                },
+                function(myData , status){
+                    var ccid=$("#dtt_cid").val();
+                    var uuid=$("#dtt_uid").val();
+                    var jobbnm=$("#dtt_jobname").val();
+                    show_deteils(ccid,uuid,jobbnm);
+                    // console.log(myData);
+                });
+        }
+
+        function reset_num(num){
+            if(num>=95){
+                return num;
+            }
+            else{
+                var n = parseInt(num/10);
+                num = num-n;
+                return num;
+            }
+        }
+
+        //删除这个房间
+        function delet_room(id){
+            var r = confirm("是否确认删除房间");
+            if (r == true) {
+                $.post("/del_room", {
+                    id: id,
+                },
+                function(myData , status){
+                    if(myData=="1"){
+                        window.location.href="/";
+                    }
+                    else{
+                        alert(myData);
+                    }
+                });
+            } else {
+                return;
+            }
+
+        }
+        function clear_msg(gid) {
+            var r = confirm("是否确认清除对话");
+            if (r == true) {
+                $.post("/del_room_msg", {
+                    id: gid,
+                },
+                function(myData , status){
+                    $("#chat-id-1-input").val("");
+                    get_msg();
+                });
+            } else {
+                return;
+            }
+        }
+        function tzm(kind,value1,value2){
+            var re;
+            if(kind=="tili"){
+                re = parseInt((value1+value2)/10);
+            }
+            else if(kind=="lizhi"){
+                re = value1;
+            }
+            else if(kind=="mofa"){
+                re = parseInt(value1/5);
+            }
+            return re;
+        }
+
+        function get_db(value1,value2){
+            var cc = value1+value2;
+            var db=0;
+            if(cc>=2 && cc<=64){
+                db="-2";
+            }
+            else if(cc>=65 && cc<=84){
+                db="-1";
+            }
+            else if(cc>=85 && cc<=124){
+                db="0";
+            }
+            else if(cc>=125 && cc<=164){
+                db="1d4";
+            }
+            else if(cc>=165 && cc<=204){
+                db="1d6";
+            }
+            else{
+                db="1d10";
+            }
+            return db;
+        }
+
+        function add_obj() {
+            var obj_id = $("#list_objs").val();
+            var uid = $("#dtt_uid").val();
+            var cid = $("#dtt_cid").val();
+            if(obj_id==0){
+                alert("选择物品之后才能添加");
+            }
+            else{
+                $.post("/add_obj", {
+                    obj_id: obj_id,
+                    uid: uid,
+                    cid: cid
+                },
+                function(myData , status){
+                    var jobbnm=$("#dtt_jobname").val();
+                    show_deteils(cid,uid,jobbnm);
+                });
+            }
+        }
+
+        //手机点击个人信息时出现的
+        function show_myde() {
+            var mycid = $("#dtt_mycid").val();
+            var myuid = $("#dtt_myuid").val();
+            var mywork = $("#dtt_myjobname").val();
+            //如果加入游戏直接
+            if(myuid=="{{group_creater}}" || myuid==0){
+                $("#chat-1-info").attr("class","chat-sidebar chat-sidebar-visible");
+            }
+            else{
+                show_deteils(mycid,myuid,mywork);
+                $("#chat-1-user-profile").attr("class","chat-sidebar chat-sidebar-visible");
+            }
+
+        }
+
+
+
+
+
+
+        if ( document.querySelector('#dropzone-template-js') ) {
+            var template = document.querySelector('#dropzone-template-js');
+            var template_element = document.querySelector('#dropzone-template-js');
+            template_element.parentNode.removeChild(template_element);
+        }
+
+        [].forEach.call(document.querySelectorAll('.dropzone-map-js'), function (el) {
+
+            var clickable         = el.querySelector('.dropzone-button-js').id;
+            var url               = el.getAttribute('data-dz-url');
+            var previewsContainer = el.querySelector('.dropzone-previews-js');
+
+            var myDropzonemap = new Dropzone(el, {
+                url: url,
+                previewTemplate: template.innerHTML,
+                previewsContainer: previewsContainer,
+                clickable: '#' + clickable,
+                init: function() {
+
+                this.on("success", function(file, responseText) {
+                        // 回传信息 可以使用其他方法 只是测试用
+                        console.log(responseText);
+                        send_img(responseText);
+                    })
+                }
+            });
+        });
+
+        [].forEach.call(document.querySelectorAll('.dropzone-single-image'), function (el) {
+
+
+            var clickable         = el.querySelector('.dropzone-button-js').id;
+            var previewsContainer = el.querySelector('.dropzone-single-image-container');
+            var url               = el.getAttribute('data-dz-url');
+            var dropzone_avatar = new Dropzone(el, {
+                url: url,
+                previewTemplate: "<div class=\"avatar avatar mb-5\"><img src=\"#\" class=\"avatar-img\" data-dz-thumbnail=\"\" alt=\"\"></div>",
+                previewsContainer: previewsContainer,
+                clickable: "#" + clickable,
+                maxFiles: 1,
+                acceptedFiles: "image/jpeg,image/png,image/gif",
+
+                init: function() {
+                    this.on("maxfilesexceeded", function(file) {
+                        this.removeAllFiles();
+                        this.addFile(file);
+                    }),
+
+                    this.on("complete", function(file) {
+                        el.querySelector(".dropzone-single-image-prew").style.display = "none";
+                    }),
+
+                    this.on("success", function(file, responseText) {
+                        // 回传信息 可以使用其他方法 只是测试用
+                        console.log(responseText);
+                    });
+                }
+            });
+        });
+
+
+        function set_imgs(arry, filelisttemplate){
+            // var filelistname=["map_1585167062_85784.gif","map_1585173659_74282.gif"];
+            //need：通过后台获得 现为测试
+            var filelistname=arry;
+            var template = filelisttemplate;
+            // console.log(template)
+            $("#chat-id-1-files .map_list").empty();
+            filelistname.forEach(function(val){
+                template = $("#file-list-template-0").clone(true);
+                template.attr('id','map_'+val[0]);
+                $("#chat-id-1-files .map_list").append(template);
+                $("#map_"+val[0]+" .map_name").text(val[2]);
+                $("#map_"+val[0]+" .map_name").attr("title",val[2]);
+                $("#map_"+val[0]+" .map_showu").attr("imgurl",val[2]);
+                $("#map_"+val[0]+" .map_showh").attr("onclick","showh_img('"+val[2]+"')");
+
+                // $("[title ='file-list-template-filename']").text(val)
+                // $("[title ='file-list-template-filename']").attr("title",val)
+                // $("[imgurl ='file-list-template-imgurl']").attr("imgurl",val)
+            });
+        }
+
+        // 将图片显示出来
+        function showo_img() {
+            $.get("/get_showimg", {
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                if(myData!="0"){
+                    $("#map-display-1").find("img").attr("src",myData)
+                    // console.log("要显示的图片"+myData);
+                }
+            });
+        }
+        // 标记显示图片
+        function showh_img(url){
+            $.post("/showh_map", {
+                url:url,
+                token: "{{token}}",
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                if(myData!="0"){
+                    showo_img();
+                    // console.log(myData);
+                }
+            });
+        }
+
+        //上传图片地址
+        function send_img(url){
+            $.post("/add_map", {
+                url:url,
+                token: "{{token}}",
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                if(myData!="1"){
+                    console.log(myData);
+                }
+                show_imgs();
+            });
+        }
+
+        // 获取图片列表
+        function show_imgs(){
+            $.post("/show_map", {
+                token: "{{token}}",
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                console.log(myData);
+                if(myData!=0){
+                    // var imglist = new Array();
+                    // for(data of myData){
+                    //     imglist.push(data[2]);
+                    // }
+                    // console.log(imglist);
+                    var filelisttemplate = $("#file-list-template-0").clone(true);
+                    var filelistname=myData;
+
+                    set_imgs(filelistname,filelisttemplate);
+                }
+
+            });
+        }
+
+        // 将图片显示出来
+        function showo_img() {
+            $.get("/get_showimg", {
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                if(myData!="0"){
+                    $("#map-display-1").find("img").attr("src",myData);
+                    $("#map-display-1").attr("href",myData);
+                    // console.log("要显示的图片"+myData);
+                }
+            });
+        }
+
+
+        //上传图片地址
+        function del_img(url){
+            $.post("/del_map", {
+                url:url,
+                token: "{{token}}",
+                gid: "{{group_id}}"
+            },
+            function(myData , status){
+                if(myData!="1"){
+                    console.log(myData);
+                }
+            });
+        }
+        </script>
+    </body>
+</html>

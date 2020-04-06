@@ -1,0 +1,1343 @@
+{% include 'dist/header.html' %}
+    <!-- Head -->
+
+    <script>
+        var rr = new Array();
+        var rr2 = new Array();
+        var scoremax = 0;
+        var skillpoint = 0;
+        var quicke = 0;
+        var skill_allid = new Array();
+    </script>
+    <body>
+
+        <div class="layout">
+            {% include 'dist/navibar.html' %}
+
+            {% include 'dist/sidebar.html' %}
+
+            <!-- Main Content -->
+            <div class="main main-visible" data-mobile-height="" style="z-index: 1050;">
+
+                <!-- Chat -->
+                <div class="chat">
+
+                    <!-- Chat: body -->
+                    <div class="chat-body">
+
+                        <!-- Chat: Header -->
+                        <div class="chat-header border-bottom py-4 py-lg-6 px-lg-8">
+                            <div class="container-xxl">
+
+                                <div class="row align-items-center">
+
+                                    <!-- Close chat(mobile) -->
+                                    <div class="col-3 d-xl-none">
+                                        <ul class="list-inline mb-0">
+                                            <li class="list-inline-item">
+                                                <a class="text-muted px-0" href="#" data-chat="open">
+                                                    <i class="icon-md fe-chevron-left"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Chat photo -->
+                                    <div class="col-6 col-xl-6">
+                                        <div class="media text-center text-xl-left">
+                                            <div class="media-body align-self-center text-truncate">
+                                                <h6 class="text-truncate mb-n1">建立卡组</h6>
+                                                <small class="text-muted">建立和完善您的卡组</small>
+                                            </div>
+                                        </div>
+                                    </div>
+<!--                                    右上角-->
+                                    <div class="col-3 col-xl-6 text-right">
+                                        <!-- Chat toolbar -->
+                                        <ul class="nav justify-content-end">
+
+                                            <li class="nav-item list-inline-item mr-5">
+                                                <a href="#" class="btn btn-sm btn-ico btn-link text-muted w-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fe-more-vertical"></i>
+                                            </a>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item d-flex align-items-center" href="#profile-settings" title="基本资料">
+                                                    基本资料 <span class="ml-auto fe-user"></span>
+                                                </a>
+                                                <a class="dropdown-item d-flex align-items-center" href="#point-settings" title="技能点数">
+                                                    技能点数 <span class="ml-auto fe-book-open"></span>
+                                                </a>
+<!--                                                <a class="dropdown-item d-flex align-items-center" href="#objs_wst" title="购买物品">-->
+<!--                                                    购买物品 <span class="ml-auto fe-briefcase"></span>-->
+<!--                                                </a>-->
+                                                <a class="dropdown-item d-flex align-items-center" href="#finished_creating" title="完成创建">
+                                                    完成创建 <span class="ml-auto fe-check"></span>
+                                                </a>
+
+                                            </div>
+                                            </li>
+<!--                                            <li class="nav-item list-inline-item mr-5">-->
+<!--                                                <a class="nav-link text-muted px-3" href="#profile-settings" title="回到顶部">-->
+<!--                                                    <i class="fe-chevron-up"></i>-->
+<!--                                                </a>-->
+<!--                                            </li>-->
+                                        </ul>
+
+                                    </div>
+
+                                </div><!-- .row -->
+
+                            </div>
+                        </div>
+                        <!-- Chat: Header -->
+
+                        <!-- Chat: Content-->
+                        <div class="chat-content px-lg-8">
+                            <div class="container-xxl py-6 py-lg-10">
+
+                                <!-- Accordion -->
+                                <div class="accordion modified-accordion mb-n6 mb-lg-8" id="profile-settings">
+                                    <div class="card-columns">
+
+                                        <!-- Card基本资料 -->
+                                        <div class="card mb-6 mb-lg-8">
+                                            <div class="card-header position-relative">
+                                                <a href="#" class="text-reset d-block stretched-link collapsed" data-toggle="collapse" data-target="#profile-settings-account" aria-controls="profile-settings-account" aria-expanded="true">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <!-- Title -->
+                                                        <div class="col">
+                                                            <h5>基本资料</h5>
+                                                            <p>这里输入您的基本资料</p>
+                                                        </div>
+
+                                                        <!-- Icon -->
+                                                        <div class="col-auto">
+                                                            <i class="text-muted icon-md fe-user"></i>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <div id="profile-settings-account" class="collapse" data-parent="#profile-settings">
+                                                <div class="card-body">
+<!--                                                    <form action="#">-->
+                                                        <div class="form-group">
+
+                                                            <form class="dropzone-single-image" action="#">
+                                                                <div class="form-group">
+                                                                    <label class="small">头像</label>
+                                                                    <div class="position-relative text-center bg-secondary rounded p-6 touxiang">
+                                                                        <!-- Placeholder -->
+                                                                        <div class="avatar bg-primary text-white mb-5 dropzone-single-image-prew">
+                                                                            <i class="icon-md fe-image"></i>
+                                                                        </div>
+
+                                                                        <!-- Preview -->
+                                                                        <div class="dropzone-single-image-container"></div>
+
+                                                                        <!-- Text -->
+                                                                        <p class="small text-muted mb-0">上传类型 jpg, gif or png <br> 图片最大 3MB</p>
+
+                                                                        <!-- Button with unique ID -->
+                                                                        <input id="any-unique-id-3" class="dropzone-button-js d-none" type="button">
+                                                                        <label class="stretched-label mb-0" for="any-unique-id-3"></label>
+                                                                    </div>
+                                                                </div>
+                                                                <input id="n_75" type="hidden" value="{% for u in user %}{% if u.3 == 75 and u.2 ==1 %}{{ u.5 }}{% endif %}{% endfor %}" />
+                                                                <script>
+                                                                rr.push(75);
+                                                                </script>
+                                                            </form>
+                                                        </div>
+
+
+                                                        {% for n in atrr %}
+                                                        {% if n.1 == 1 and n.0<20 and n.0!=2 %}
+                                                            {% if n.0 == 9 %}
+                                                            <div class="form-group">
+                                                                 <label class="small" for="profile-name">{{n.2}}</label>
+                                                                  <select id="n_{{n.0}}" onblur="get_winfo({{n.0}});" class="form-control">
+                                                                          <option  value = "0">选择职业</option >
+                                                                          {% for n1 in names %}
+                                                                          {% if n1.1 == 2 %}
+                                                                              {% for u in user %}
+                                                                                {% if u.3==9 and u.2 ==1 %}
+                                                                                  {% set vv=u.5 | int %}
+                                                                                  {% if vv == n1.0 %}
+                                                                                  <option selected= selected value = "{{n1.0}}">{{n1.2}}</option >
+                                                                                    <script>
+                                                                                        var workk = "{{n1.0}}";
+                                                                                    </script>
+                                                                                  {% endif %}
+                                                                                {% endif %}
+                                                                              {% endfor %}
+                                                                          {% endif %}
+                                                                          {% endfor %}
+
+                                                                          {% for n1 in names %}
+                                                                          {% if n1.1 == 2 and n1.0!=127 %}
+                                                                          <option value = "{{n1.0}}">{{n1.2}}</option >
+                                                                          {% endif %}
+                                                                          {% endfor %}
+                                                                  </select>
+                                                                <span id="work_desc"></span>
+                                                            </div>
+                                                            <script>
+                                                                rr.push({{n.0}});
+                                                            </script>
+                                                            {% elif n.0 == 17 %}
+                                                            <div class="form-group">
+                                                                 <label class="small" for="profile-name">{{n.2}}</label>
+                                                                  <select id="n_{{n.0}}" class="form-control">
+                                                                            <option  value = "男">男</option >
+                                                                            <option  value = "女">女</option >
+                                                                            <option  value = "不明">不明</option >
+                                                                  </select>
+                                                            </div>
+                                                            <script>
+                                                                rr.push({{n.0}});
+                                                            </script>
+                                                            {% else %}
+                                                            <div class="form-group">
+                                                                <label class="small" for="profile-name">{{n.2}}</label>
+                                                                <input id="n_{{n.0}}" class="form-control form-control-lg" name="profile-name" type="text" placeholder="输入您的{{n.2}}信息"
+                                                                       value="{% for u in user %}{% if u.3 == n.0 and u.2 ==1 %}{% set vv=u.5 %}{{ vv }}{% endif %}{% endfor %}">
+                                                            </div>
+                                                            <script>
+                                                                rr.push({{n.0}});
+                                                            </script>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                        {% endfor %}
+<!--                                                        <div class="form-group">-->
+<!--                                                            <label class="small" for="profile-about">Bio</label>-->
+<!--                                                            <textarea class="form-control form-control-lg" id="profile-about" rows="3" placeholder="Express yourself" data-autosize="true"></textarea>-->
+<!--                                                        </div>-->
+
+                                                        <button onclick="add_s(rr);" class="btn btn-lg btn-primary btn-block d-none" type="button">提交基本资料</button>
+<!--                                                    </form>-->
+                                                </div>
+                                            </div><!-- .collapse -->
+
+                                        </div>
+                                        <!-- Card基本资料 -->
+
+                                        <!-- Card属性点数 -->
+                                        <div class="card mb-6 mb-lg-8">
+                                            <div class="card-header position-relative">
+                                                <a href="#" class="text-reset d-block stretched-link collapsed" data-toggle="collapse" data-target="#profile-settings-security" aria-expanded="true" aria-controls="profile-settings-security">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <!-- Title -->
+                                                        <div class="col">
+                                                            <h5>属性</h5>
+                                                            <p>您剩余的点数为:<span id="restd"></span></p>
+                                                        </div>
+
+                                                        <!-- Icon -->
+                                                        <div class="col-auto">
+                                                            <i class="text-muted icon-md fe-shield"></i>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <div id="profile-settings-security" class="collapse" data-parent="#profile-settings">
+                                                <div class="card-body">
+                                                    <form action="#">
+
+                                                        {% for n in atrr %}
+                                                            {% if n.1 == 1 and n.0>19 and n.0<28 %}
+
+                                                        <div class="col">
+                                                            <h3 align="center">{{n.2}}:&nbsp;&nbsp;
+                                                            <a onclick="reduce({{n.0}},5)" href="javascript:;"  class="btn btn-ico btn-primary btn-sm rounded-circle">
+                                                                <span>-</span>
+                                                            </a>
+                                                                <span id="s_{{n.0}}">50</span>
+                                                                <script>
+                                                                    rr2.push({{n.0}});
+                                                                </script>
+                                                                {% for u in user %}
+                                                                {% if u.3 == n.0 and u.2 ==1 %}
+                                                                {% set vv=u.5 %}
+                                                                <script>
+                                                                    $(document).ready(function() {
+                                                                        $("#s_{{n.0}}").html("{{ vv }}");
+                                                                    });
+                                                                </script>
+
+                                                                    {% if n.0==23 %}
+                                                                    {% set quick = u.5 | int %}
+                                                                    <input id="quick" type="hidden" value="{{quick/2 | int}}" />
+                                                                    <script>
+                                                                        var quicke = "{{quick/2 | int}}";
+                                                                    </script>
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                                {% endfor %}
+
+                                                            <a onclick="plus({{n.0}},5)" href="javascript:;"  class="btn btn-ico btn-primary btn-sm rounded-circle">
+                                                                <span>+</span>
+                                                            </a>
+                                                            </h3>
+                                                        </div>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        <p>&nbsp;</p>
+                                                        <button onclick="add_s(rr2,1);" class="btn btn-lg btn-primary btn-block d-none" type="button">
+                                                            提交属性
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div><!-- .collapse -->
+
+                                        </div>
+                                        <!-- Card属性点数 -->
+
+                                        <!-- Card人物背景 -->
+                                        <div class="card mb-6 mb-lg-8">
+                                            <div class="card-header position-relative">
+                                                <a href="#" class="text-reset d-block stretched-link collapsed" data-toggle="collapse" data-target="#profile-settings-back" aria-expanded="true" aria-controls="profile-settings-security">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <!-- Title -->
+                                                        <div class="col">
+                                                            <h5>调查员背景</h5>
+                                                            <p>简述人物背景以增强带入感</p>
+                                                        </div>
+
+                                                        <!-- Icon -->
+                                                        <div class="col-auto">
+                                                            <i class="text-muted icon-md fe-home"></i>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <div id="profile-settings-back" class="collapse" data-parent="#profile-settings">
+                                                <div class="card-body">
+                                                    <form action="#">
+                                                        <div class="form-group">
+                                                        <textarea id="n_48" class="form-control" rows="10">{% for u in user %}{% if u.3 == 48 %}{{u.5}}{% endif %}{% endfor %}</textarea>
+                                                        </div>
+                                                        <button onclick="add_o(48);" class="btn btn-lg btn-primary btn-block d-none" type="button">
+                                                            提交背景
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div><!-- .collapse -->
+
+                                        </div>
+                                        <!-- Card人物背景 -->
+
+                                        <!-- Card模板 -->
+                                        <div>
+
+<!--                                        <div class="card mb-6 mb-lg-8">-->
+<!--                                            <div class="card-header position-relative">-->
+<!--                                                <a href="#" class="text-reset d-block stretched-link collapsed" data-toggle="collapse" data-target="#profile-settings-security" aria-expanded="true" aria-controls="profile-settings-security">-->
+<!--                                                    <div class="row no-gutters align-items-center">-->
+<!--                                                        &lt;!&ndash; Title &ndash;&gt;-->
+<!--                                                        <div class="col">-->
+<!--                                                            <h5>标题</h5>-->
+<!--                                                            <p>副标题</p>-->
+<!--                                                        </div>-->
+
+<!--                                                        &lt;!&ndash; Icon &ndash;&gt;-->
+<!--                                                        <div class="col-auto">-->
+<!--                                                            <i class="text-muted icon-md fe-shield"></i>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </a>-->
+<!--                                            </div>-->
+
+<!--                                            <div id="profile-settings-security" class="collapse" data-parent="#profile-settings">-->
+<!--                                                <div class="card-body">-->
+<!--                                                    <form action="#">-->
+<!--                                                    </form>-->
+<!--                                                </div>-->
+<!--                                            </div>&lt;!&ndash; .collapse &ndash;&gt;-->
+
+<!--                                        </div>-->
+
+                                        </div>
+                                        <!-- Card模板 -->
+                                        </div>
+                                    <button id="sub_basic" onclick="add_s(rr);add_s(rr2,1);add_o(48);" class="btn btn-lg btn-primary btn-block" type="button">提交基本资料</button>
+                                </div>
+                                <p>&nbsp;</p>
+<!--                                技能点数-->
+                                <div class="accordion modified-accordion mb-n6 mb-lg-8" id="point-settings">
+                                     <!-- Card职业点数 -->
+                                    <div class="card mb-6 mb-lg-6" id="skills_works">
+                                        <div class="card-header position-relative">
+                                            <a href="#" class="text-reset d-block stretched-link collapsed" data-toggle="collapse" data-target="#profile-settings-works" aria-controls="profile-settings-works" aria-expanded="true">
+                                                <div class="row no-gutters align-items-center">
+                                                    <!-- Title -->
+                                                    <div class="col">
+                                                        <h5>职业技能</h5>
+                                                        <p>职业技能剩余:<span id="work_skill_rest">0</span></p>
+                                                    </div>
+                                                    <!-- Icon -->
+                                                    <div class="col-auto">
+                                                        <i class="text-muted icon-md fe-book-open"></i>
+                                                    </div>
+
+                                                </div>
+
+                                            </a>
+                                        </div>
+
+                                        <div id="profile-settings-works" class="collapse" data-parent="#point-settings">
+                                            <div class="card-body">
+
+                                                <form action="#">
+                                                    <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">必选技能</th>
+                                                            <th scope="col"><p align="center">点数</p></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="work_skill_list">
+                                                    </tbody>
+                                                </table>
+                                                    <table id="option_skill" class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">可选技能(可选<span id="work_skill_artn"></span>项)</th>
+                                                            <th scope="col"><p align="center">点数</p></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="work_skill_list2">
+                                                    </tbody>
+                                                </table>
+<!--                                                        <button class="btn btn-lg btn-primary btn-block" type="button">提交职业技能</button>-->
+                                                </form>
+                                            </div>
+                                        </div><!-- .collapse -->
+                                    </div>
+                                    <!-- Card职业点数 -->
+
+                                    <!-- Card兴趣点数 -->
+                                    <div id="skills_social" class="card mb-6 mb-lg-6">
+                                        <div class="card-header position-relative">
+                                            <a href="#" class="text-reset d-block stretched-link collapsed" data-toggle="collapse" data-target="#profile-settings-social" aria-controls="profile-settings-social" aria-expanded="true">
+                                                <div class="row no-gutters align-items-center">
+                                                    <!-- Title -->
+                                                    <div class="col">
+                                                        <h5>兴趣技能</h5>
+                                                        <p>兴趣技能剩余:<span id="total_in">120</span></p>
+                                                    </div>
+                                                    <!-- Icon -->
+                                                    <div class="col-auto">
+                                                        <i class="text-muted icon-md fe-book-open"></i>
+                                                    </div>
+
+                                                </div>
+
+                                            </a>
+                                        </div>
+
+                                        <div id="profile-settings-social" class="collapse" data-parent="#point-settings">
+                                            <div class="card-body">
+
+                                                <form action="#">
+                                                    <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">名称</th>
+                                                            <th class="d-none d-xl-block" scope="col">初始</th>
+                                                            <th scope="col"><p align="center">点数</p></th>
+                                                            <th class="d-none d-xl-block" scope="col">总计</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for name in names %}
+                                                        {% if name.1==3 and name.0!=128 %}
+<!--                                                    去掉自定义-->
+                                                        <tr>
+                                                        <th scope="row">{{name.2}}:</th>
+                                                            {% if name.0==125 %}
+                                                            <td class="d-none d-xl-block"><span id="skill_begin_{{name.0}}" class="quit">0</span></td>
+                                                            {% else %}
+                                                                {% for vv in value %}
+                                                                {% if vv.1==name.0 %}
+                                                            <td class="d-none d-xl-block"><span id="skill_begin_{{name.0}}">{{vv.4}}</span></td>
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                            {% endif %}
+
+                                                            <td align="center">
+                                                            <a onclick="reduce_i({{name.0}},5)" href="javascript:;"  class="btn btn-ico btn-primary btn-sm rounded-circle">
+                                                            <span>-</span>
+                                                            </a>
+                                                                &nbsp;
+                                                                <span id="skill_in_{{name.0}}" style="width: 50px;">0</span>
+                                                                &nbsp;
+                                                            <a onclick="plus_i({{name.0}},5)" href="javascript:;"  class="btn btn-ico btn-primary btn-sm rounded-circle">
+                                                            <span>+</span>
+                                                            </a>
+                                                            </td>
+                                                            {% if name.0==125 %}
+                                                            <td class="d-none d-xl-block"><span id="skill_total_{{name.0}}" class="quit">0</span></td>
+
+                                                            {% else %}
+                                                                {% for vv in value %}
+                                                                {% if vv.1==name.0 %}
+                                                                <td class="d-none d-xl-block"><span id="skill_total_{{name.0}}">{{vv.4}}</span></td>
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                            <script>
+                                                                skill_allid.push("{{name.0}}");
+                                                            </script>
+                                                            </tr>
+                                                        {% endif %}
+
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+
+                                                </form>
+                                            </div>
+                                        </div><!-- .collapse -->
+                                    <!-- Card -->
+                                        <button id="sub_skill" onclick="add_ws(skill_allid,'skill_total_','html')" class="btn btn-lg btn-primary btn-block" type="button">提交技能</button>
+                                </div>
+
+
+                                    <!-- Card 最终 -->
+                                    <div id="skills_result" style="display: none;" class="card mb-6 mb-lg-6">
+                                        <div class="card-header position-relative">
+                                            <a href="#" class="text-reset d-block stretched-link collapsed" data-toggle="collapse" data-target="#profile-settings-result" aria-controls="profile-settings-result" aria-expanded="true">
+                                                <div class="row no-gutters align-items-center">
+                                                    <!-- Title -->
+                                                    <div class="col">
+                                                        <h5>技能汇总列表</h5>
+<!--                                                        <p>兴趣技能剩余:</p>-->
+                                                    </div>
+                                                    <!-- Icon -->
+                                                    <div class="col-auto">
+                                                        <i class="text-muted icon-md fe-book-open"></i>
+                                                    </div>
+
+                                                </div>
+
+                                            </a>
+                                        </div>
+
+                                        <div id="profile-settings-result" class="collapse" data-parent="#point-settings">
+                                            <div class="card-body">
+
+                                                <form action="#">
+                                                    <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">名称</th>
+                                                            <th scope="col">点数</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for name in names %}
+                                                        {% if name.1==3 %}
+                                                        <tr>
+                                                        <th scope="row">{{name.2}}:</th>
+                                                        <td><input id="result_{{name.0}}" class="form-control form-control-lg" name="profile-name" type="text"
+                                                                   value="0"></td>
+
+                                                            </tr>
+                                                        {% endif %}
+
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+
+
+
+                                                    <button onclick="add_ws(skill_allid,'result_','value')" class="btn btn-lg btn-primary btn-block" type="button">修改技能</button>
+                                                </form>
+                                            </div>
+                                        </div><!-- .collapse -->
+                                    <!-- Card -->
+
+
+                                </div>
+                                </div>
+
+<!--                                购买物品-->
+                                <div id="objs_wst" class="d-none accordion modified-accordion mb-n6 mb-lg-8">
+                                    <div class="card-columns">
+                                     <!-- Card可以购买物品 -->
+                                    <div class="card mb-8 mb-lg-8">
+                                        <div class="card-header position-relative">
+                                            <a href="#" class="text-reset d-block stretched-link collapsed" data-toggle="collapse" data-target="#profile-settings-obj" aria-controls="profile-settings-obj" aria-expanded="true">
+                                                <div class="row no-gutters align-items-center">
+                                                    <!-- Title -->
+                                                    <div class="col">
+                                                        <h5>可购买物品</h5>
+                                                        <p>点击物品名称可以查看伤害与技能加成</p>
+                                                    </div>
+                                                    <!-- Icon -->
+                                                    <div class="col-auto">
+                                                        <i class="text-muted icon-md fe-briefcase"></i>
+                                                    </div>
+
+                                                </div>
+
+                                            </a>
+                                        </div>
+
+                                        <div id="profile-settings-obj" class="collapse" data-parent="#objs_wst">
+                                            <div class="card-body">
+
+                                                <form action="#">
+                                                    <table class="table table-hover">
+                                                        <tr>
+                                                            <td>名称</td>
+                                                            <td>价格</td>
+                                                            <td>操作</td>
+                                                        </tr>
+                                                    {% for name in names %}
+                                                    {% if name.1 == 4 %}
+
+                                                        <tr>
+                                                            <td>
+                                                                <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus"
+                                                                   title="伤害: {% for obj in obj_infos %}
+                                                                                {% if obj.1 == name.0 %}
+                                                                                    {% if obj.2==8 and obj.4 %}
+                                                                                    {{obj.4}}
+                                                                                    {% endif %}
+                                                                                {% endif %}
+                                                                                {% endfor %}"
+                                                                   data-content="利用技能:   {% for obj in obj_infos %}
+                                                                                            {% if obj.1 == name.0 %}
+                                                                                                {% if obj.2==7 and obj.4 %}
+                                                                                                {{obj.4}}
+                                                                                                {% endif %}
+                                                                                            {% endif %}
+                                                                                            {% endfor %}
+                                                                                             |
+                                                                                    技能加成:   {% for obj in obj_infos %}
+                                                                                            {% if obj.1 == name.0 %}
+                                                                                                {% if obj.2==47 and obj.4 %}
+                                                                                                {{obj.4}} {% if obj.5 %}{{obj.5}}{% endif %}
+                                                                                                {% endif %}
+                                                                                            {% endif %}
+                                                                                            {% endfor %}"
+                                                                >{{name.2}}</a>
+
+                                                                <input id="n_{{name.0}}" type="hidden" value="{{name.2}}">
+                                                            </td>
+                                                            <td>
+                                                                {% for obj in obj_infos %}
+                                                                {% if obj.1 == name.0 %}
+                                                                    {% if obj.2==40 and obj.4 %}
+                                                                    {{obj.4}}&nbsp;
+                                                                    <input id="p_{{name.0}}" type="hidden" value="{{obj.4}}">
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                                {% endfor %}
+
+                                                            </td>
+                                                            <td><a id="b_{{name.0}}" href="javascript:;" onclick="setin('{{name.0}}')" class="btn btn-info">购买</a></td>
+                                                        </tr>
+
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                    </table>
+                                                </form>
+                                            </div>
+                                        </div><!-- .collapse -->
+                                    </div>
+                                    <!-- Card可以购买物品 -->
+
+                                    <!-- Card购物车 -->
+                                    <div class="card mb-4 mb-lg-4">
+                                        <div class="card-header position-relative">
+                                            <a href="#" class="text-reset d-block stretched-link collapsed">
+                                                <div class="row no-gutters align-items-center">
+                                                    <!-- Title -->
+                                                    <div class="col">
+                                                        <h5>已购买物品</h5>
+                                                        <p>您剩余的金额：<span id="set_wp">0</span>$</p>
+                                                        <input id="geld_wp" type="hidden" value="0" />
+                                                        <p>剩余的钱可在游戏中使用</p>
+                                                    </div>
+                                                    <!-- Icon -->
+                                                    <div class="col-auto">
+                                                        <i class="text-muted icon-md fe-gift"></i>
+                                                    </div>
+
+                                                </div>
+
+                                            </a>
+                                        </div>
+
+                                        <div id="profile-settings-buy">
+                                            <div class="card-body">
+
+                                                <form action="#">
+                                                    <p><div id="set_w"> </div> </p>
+                                                    <p align="right">
+                                                        <a href="javascript:;" onclick="reset();" class="btn btn-secondary">重新选择</a>&nbsp;&nbsp;
+                                                        <a href="javascript:;" onclick="add_ob();" class="btn btn-success">完成</a>
+                                                    </p>
+                                                </form>
+                                            </div>
+                                        </div><!-- .collapse -->
+                                    <!-- Card -->
+
+                                </div>
+                                    <!-- Card购物车 -->
+                                    </div>
+                                </div>
+
+                                <p>&nbsp;</p>
+                                <button id="finished_creating" onclick="submitt()" class="btn btn-lg btn-info btn-block" type="button">完成人物创建</button>
+                                <!-- Accordion -->
+
+                            </div>
+                        </div>
+                        <!-- Chat: Content -->
+
+                    </div>
+                    <!-- Chat: body -->
+
+                </div>
+                <!-- Chat -->
+
+            </div>
+            <!-- Main Content -->
+
+        </div>
+        <!-- Layout -->
+
+        <!-- Modal: Invite friends -->
+        <div class="modal fade" id="invite-friends" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <div class="media flex-fill">
+                            <div class="icon-shape rounded-lg bg-primary text-white mr-5">
+                                <i class="fe-users"></i>
+                            </div>
+                            <div class="media-body align-self-center">
+                                <h5 class="modal-title">Invite friends</h5>
+                                <p class="small">Invite colleagues, clients and friends.</p>
+                            </div>
+                        </div>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form action="#">
+                            <div class="form-group">
+                                <label for="invite-email" class="small">Email</label>
+                                <input type="text" class="form-control form-control-lg" id="invite-email">
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label for="invite-message" class="small">Invitation message</label>
+                                <textarea class="form-control form-control-lg" id="invite-message" data-autosize="true"></textarea>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-lg btn-block btn-primary d-flex align-items-center">
+                            Invite friend
+                            <i class="fe-user-plus ml-auto"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Modal: Invite friends -->
+        <!-- Scripts -->
+        {% include 'dist/jsclude.html' %}
+        <!-- Scripts -->
+
+    <script>
+        // 职业技能点
+        var totalskill=0;
+        // 总共的点数
+        var allpoints = 460;
+        //物品
+        var objs=[];
+        $(document).ready(function() {
+
+
+            var skillpoint = co_skillpoint();
+            scoremax = allpoints-skillpoint;
+            $("#restd").html(scoremax);
+
+            $(".quit").html(quicke);
+            getworkskill();
+
+            //标签显示
+            $('[data-toggle="popover"]').popover()
+        });
+
+        // 计算技能点数综合
+        function co_skillpoint(){
+            var co = 0;
+            for (r of rr2){
+                var p = $("#s_"+r).html();
+                p = parseInt(p);
+                co = co + p;
+            }
+            return co;
+        }
+
+
+        //加减人物技能
+        function plus(nid,num){
+            var v = $("#s_"+nid).html();
+            v = parseInt(v);
+            scoremax = scoremax-num;
+            if (scoremax<0) {
+                scoremax = scoremax+num;
+                return ;
+            }
+            v = v + num;
+            if(v>90){
+                v = 90;
+                scoremax = scoremax+num;
+            }
+            $("#restd").html(scoremax);
+            $("#s_"+nid).html(v);
+        }
+        function reduce(nid,num){
+            var v = $("#s_"+nid).html();
+            v = parseInt(v);
+            scoremax = scoremax+num;
+            v = v - num;
+            nnid = parseInt(nid);
+            if(nnid == 22 || nnid ==25){
+                min = 40;
+            }
+            else{
+                min = 20;
+            }
+            if(v<min){
+                v = min;
+                scoremax = scoremax-num;
+            }
+            $("#restd").html(scoremax);
+            $("#s_"+nid).html(v);
+        }
+
+        //加减职业技能
+        function plus_w(nid,num) {
+            var v = $("#w_" + nid).html();
+            v = parseInt(v);
+            //    兴趣那边的设定
+            var v1 = $("#skill_begin_" + nid).html();
+            v1 = parseInt(v1);
+            var v2 = $("#skill_total_" + nid).html();
+            v2 = parseInt(v2);
+
+            if (v >= 90 || v1>=90 || v2>=90) {
+                return;
+            }
+            totalskill = totalskill - num;
+            if (totalskill < 0) {
+                totalskill = totalskill + num;
+                return;
+            } else {
+                v = v + num;
+                v1 = v1 + num;
+                v2 = v2 + num;
+            }
+            $("#work_skill_rest").html(totalskill);
+            $("#w_" + nid).html(v);
+            $("#skill_begin_" + nid).html(v1);
+            $("#skill_total_" + nid).html(v2);
+
+        }
+        function reduce_w(nid,num){
+            var v = $("#w_"+nid).html();
+            v = parseInt(v);
+            //    兴趣那边的设定
+            var v1 = $("#skill_begin_" + nid).html();
+            v1 = parseInt(v1);
+            var v2 = $("#skill_total_" + nid).html();
+            v2 = parseInt(v2);
+
+            totalskill = totalskill+num;
+            v = v - num;
+            if(v<0){
+                v = 0;
+                totalskill = totalskill-num;
+                return;
+            }
+            else{
+                v1 = v1 - num;
+                v2 = v2 - num;
+            }
+            $("#work_skill_rest").html(totalskill);
+            $("#w_"+nid).html(v);
+            $("#skill_begin_" + nid).html(v1);
+            $("#skill_total_" + nid).html(v2);
+        }
+
+        //加减兴趣技能
+        function plus_i(nid,num) {
+            var v = $("#skill_in_" + nid).html();
+            v = parseInt(v);
+            // var v1 = $("#skill_begin_" + nid).html();
+            // v1 = parseInt(v1);
+            var v2 = $("#skill_total_" + nid).html();
+            v2 = parseInt(v2);
+
+            //兴趣技能剩余
+            var total_in = $("#total_in").html();
+            total_in = parseInt(total_in);
+
+            if (v>=90 || v2>=90) {
+                return;
+            }
+            total_in = total_in - num;
+            if (total_in < 0) {
+                total_in = total_in + num;
+                return;
+            } else {
+                v = v + num;
+                // v1 = v1 + num;
+                v2 = v2 + num;
+            }
+            $("#total_in").html(total_in);
+            $("#skill_in_" + nid).html(v);
+            // $("#skill_begin_" + nid).html(v1);
+            $("#skill_total_" + nid).html(v2);
+
+        }
+        function reduce_i(nid,num){
+            var v = $("#skill_in_" + nid).html();
+            v = parseInt(v);
+            // var v1 = $("#skill_begin_" + nid).html();
+            // v1 = parseInt(v1);
+            var v2 = $("#skill_total_" + nid).html();
+            v2 = parseInt(v2);
+
+            //兴趣技能剩余
+            var total_in = $("#total_in").html();
+            total_in = parseInt(total_in);
+
+            total_in = total_in+num;
+            v = v - num;
+            if(v<0){
+                v = 0;
+                total_in = total_in-num;
+                return;
+            }
+            else{
+                // v1 = v1 - num;
+                v2 = v2 - num;
+            }
+            $("#total_in").html(total_in);
+            $("#w_"+nid).html(v);
+            $("#skill_in_" + nid).html(v);
+            // $("#skill_begin_" + nid).html(v1);
+            $("#skill_total_" + nid).html(v2);
+        }
+
+
+        //填写人物基本信息 kind=1 aid=0
+        function add_s(list_id,frm=0){
+            var r;
+            for (r in list_id){
+                var nid = list_id[r];
+                if(frm==1){
+                    var v = $("#s_"+nid).html();
+                    if(nid==23){
+                        quicke = parseInt(v);
+                        quicke = quicke/2;
+                        $(".quit").html(quicke);
+                    }
+                }
+                else{
+                    var v = $("#n_"+nid).val();
+                }
+
+                if(!v){
+                    alert("此处所有信息都必填！并按照自己希望的人设填写。");
+                    return;
+                }
+
+                // console.log(nid+":"+v);
+                add_user(1,nid,0,v);
+            }
+            getworkskill();
+            // alert("完成提交!");
+            // console.log("成功提交！");
+        }
+        //提交单独信息
+        function add_o(nid){
+            var v = $("#n_"+nid).val();
+            add_user(1,nid,0,v);
+            alert("完成提交!");
+        }
+
+        //提交技能  kind=3 aid=5
+        function add_ws(list_id, getid, method){
+            var result = confirm('是否完成点数分配?');
+            if(result){
+                for (idd of list_id){
+                if(method=="html"){
+                    v = $("#"+getid + idd).html();
+                    v = parseInt(v);
+                }
+                else if(method == "value"){
+                    v = $("#"+getid + idd).val();
+                    v = parseInt(v);
+                }
+                add_user(3,idd,5,v);
+                // console.log("id:"+idd+"|value:"+v);
+                }
+                getworkskill();
+                $("#skills_social").hide();
+                $("#skills_works").hide();
+                $("#skills_result").show();
+            }
+            else{
+                return;
+            }
+
+
+        }
+
+        //发送用户信息
+        function add_user(kind,nid,aid,v){
+            $.post("/addu", {
+                        // id:0,
+                        kind: kind,
+                        nid: nid,
+                        aid:aid,
+                        v:v,
+                        cid:"{{cid}}"
+                      },
+                    function(myData , status){
+                        if(status!="success"){
+                            alert("提交失败!"+status);
+                        }
+                    });
+        }
+
+        //获取职业描述
+        function get_winfo(id){
+            var value = $("#n_"+id).val();
+            // alert(value);
+            $.get("/getwinfo", {
+                nid : value,
+              },
+                function(myData , status){
+                    var v = parseInt(myData);
+                    if(myData!=0){
+                        // console.log(myData);
+                        var str = "<small>本职技能: ";
+                        for(w_atr of myData[0]){
+                            str = str+w_atr+" ";
+                        }
+                        if(myData[1]){
+                            str = str+" 可选技能: ";
+                            for(w_atrk of myData[1]){
+                                str = str+w_atrk+" ";
+                            }
+                        }
+                        if(myData[2]){
+                            str = str+"</small><br /><small>特殊互动: ";
+                            for(w_atrk of myData[2]){
+                                str = str+w_atrk+" ";
+                            }
+                        }
+                        str = str+"</small>";
+                        $("#work_desc").html(str);
+
+                        // console.log(str);
+                    }
+            },"json");
+        }
+
+        //获取工作技能点数
+        function getworkskill(){
+            var cid = Request["c"];
+            $.get("/getwork", {
+                kind: 1,
+                c :cid
+              },
+                function(myData , status){
+                    var v = parseInt(myData);
+                    if(myData!=0){
+                        getskills(v);
+                    }
+            });
+        }
+
+        //将物品放入购物框
+        function setin(nid,block=null) {
+            if(block==1){
+                alert("物品不可重复购买");
+                return;
+            }
+            var geld = $("#p_" + nid).val();
+            geld= parseInt(geld);
+            var res = $("#set_wp").html();
+            res = parseInt(res);
+            ress = res - geld;
+            if(ress>0){
+                $("#set_wp").html(ress);
+                $("#b_" + nid).attr("class","btn btn-info active");
+                $("#b_" + nid).attr("onclick","setin("+nid+",1)");
+                objs.push(parseInt(nid));
+                var nnam = $("#n_" + nid).val();
+                $("#set_w").append(nnam+"&nbsp;&nbsp;&nbsp;");
+            }
+            else{
+                alert("您的余额不足,请谨慎选择。");
+            }
+        }
+        //物品重置
+        function reset(){
+            var geld_wp = $("#geld_wp").val();
+            $("#set_w").html(" ");
+            $("#set_wp").html(geld_wp);
+            for(ob of objs){
+                $("#b_" + ob).attr("class","btn btn-info");
+                $("#b_" + ob).attr("onclick","setin("+ob+")");
+            }
+            // console.log(objs);
+            objs=[];
+        }
+
+        function add_ob(){
+            var result = confirm('确认物品购买以后就不能在这里修改了,只能在游戏当中修改,是否继续?');
+            if(result){
+                if(!objs){
+                    return;
+                }
+                for (obj of objs){
+                    add_user(4,obj,0,0);
+                    // console.log(obj);
+                }
+                var rest_geld = $("#set_wp").html();
+                add_user(1,55,0,rest_geld);
+                alert("提交成功");
+                $("#objs_wst").hide();
+            }
+
+        }
+
+        //最终完成提交
+        function submitt(){
+            var result = confirm('确认提交您的用户信息了吗?');
+            if(!result){
+                return;
+            }
+            add_ob();
+            $("#sub_skill").click();
+
+            var tizhi = $("#s_21").html();
+            var tixin = $("#s_22").html();
+            var kesulu= $("#result_126").val();
+            var yizhi = $("#s_26").html();
+            if(!tizhi || !tixin || !kesulu || !yizhi){
+                alert("参数不全,请填完所有数据后再提交!");
+                return;
+            }
+            // 体力
+            tizhi= parseInt(tizhi);
+            tixin= parseInt(tixin);
+            var tili = (tizhi+tixin)/10;
+            // 理智
+            yizhi = parseInt(yizhi);
+            var maxval = 99 - parseInt(kesulu);
+            var san = Math.min(maxval,yizhi);
+            // 幸运
+            var lucky = randomNum(1,6)+randomNum(1,6)+randomNum(1,6);
+            lucky = lucky*5;
+            // 魔法
+            magic = yizhi/5;
+
+            add_user(1,29,0,tili);  // 29	体力
+            add_user(1,30,0,san);   // 30	理智
+            add_user(1,31,0,lucky); // 31	幸运
+            add_user(1,32,0,magic); // 32	魔法
+            add_user(1,52,0,"这里放入调查员笔记"); // 52	调查员笔记
+            alert("成功提交用户信息!");
+            window.location.href="roomp";
+        }
+
+        function getskills(id){
+            // 0:总共的职业技能点数
+            // 1:各个职业技能
+            // 2:可选技能个数
+            // 3:各个可选技能
+            // 4:职业金钱
+            // 5:剩余金钱
+            // 6:技能点数
+            // 7:购买的物品
+            $.get("/getworkskill", {
+                wid: id,
+                cid: "{{cid}}"
+              },
+                function(myData , status){
+                // console.log(myData);
+                if(myData==0){
+                    return 0;
+                }
+                // 初始化初始资金
+                var geld = 0;
+                var havegeld = myData[5];
+                if(havegeld==0){
+                    geld = myData[4];
+                }
+                else {
+                    geld = havegeld;
+                }
+                $("#set_wp").html(geld);
+                $("#geld_wp").val(geld);
+
+                //如果没有技能才显示技能选择
+                var s = myData[6];
+                if(s!=0){
+                    $("#skills_social").hide();
+                    $("#skills_works").hide();
+                    $("#skills_result").show();
+                    for(ss of s){
+                        $("#result_"+ss[3]).val(ss[5]);
+                    }
+
+                }
+                else{
+                    totalskill = myData[0];
+                    $("#work_skill_rest").html(myData[0]);
+                    $("#work_skill_list").html("");
+                    var d = new Array();
+                    //必选技能
+                    for(d of myData[1]){
+                        if(d[0]){
+                            var ht = '<tr><th scope="col">'+d[0][2]+'</th>' +
+                                '<td align="center"><a onclick="reduce_w('+d[0][0]+',5)" href="javascript:;" class="btn btn-ico btn-primary btn-sm rounded-circle">\n' +
+                                '<span>-</span>\n' +
+                                '</a>&nbsp;&nbsp;<span id="w_'+d[0][0]+'">0</span>&nbsp;&nbsp;<a onclick="plus_w('+d[0][0]+',5)" href="javascript:;" class="btn btn-ico btn-primary btn-sm rounded-circle">\n' +
+                                '<span>+</span>\n' +
+                                '</a></td></tr>';
+                            $("#work_skill_list").append(ht);
+                        }
+                    }
+                    // 可选技能
+                    if(myData[2]!=0){
+                        $("#work_skill_artn").html(myData[2]);
+
+                        //可选技能
+                        for(d of myData[3]){
+                            if(d[0]){
+                                var ht = '<tr><th scope="col">'+d[0][2]+'</th>' +
+                                    '<td align="center"><a onclick="reduce_w('+d[0][0]+',5)" href="javascript:;" class="btn btn-ico btn-primary btn-sm rounded-circle">\n' +
+                                    '<span>-</span>\n' +
+                                    '</a>&nbsp;&nbsp;<span id="w_'+d[0][0]+'">0</span>&nbsp;&nbsp;<a onclick="plus_w('+d[0][0]+',5)" href="javascript:;" class="btn btn-ico btn-primary btn-sm rounded-circle">\n' +
+                                    '<span>+</span>\n' +
+                                    '</a></td></tr>';
+                                $("#work_skill_list2").append(ht);
+
+                            }
+                        }
+                    }
+                    else{
+                        $("#option_skill").hide();
+
+                    }
+                }
+
+                var o = myData[7];
+                if(o!=0){
+                    $("#objs_wst").hide();
+                }
+
+
+
+
+
+
+                // console.log(myData);
+            },"json");
+        }
+
+        //随机数生成
+        function randomNum(minNum,maxNum){
+            switch(arguments.length){
+                case 1:
+                    return parseInt(Math.random()*minNum+1,10);
+                break;
+                case 2:
+                    return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10);
+                break;
+                    default:
+                        return 0;
+                    break;
+            }
+        }
+        //获取get
+        var Request = new Object();
+        Request = GetRequest();
+        function GetRequest() {
+             var url = location.search;
+             var theRequest = new Object();
+             if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for(var i = 0; i < strs.length; i++) {
+                   theRequest[strs[i].split("=")[0]]=decodeURI(strs[i].split("=")[1]);
+                }
+             }
+             return theRequest;
+        }
+
+
+
+
+
+        //
+        // Dropzone upload chat or avatar photo
+        //
+        [].forEach.call(document.querySelectorAll('.touxiang'), function (el) {
+
+            var clickable         = el.querySelector('.dropzone-button-js').id;
+            var previewsContainer = el.querySelector('.dropzone-single-image-container');
+
+            var dropzone_avatar = new Dropzone(el, {
+                url: "uploadavatar",
+                previewTemplate: "<div class=\"avatar avatar mb-5\"><img src=\"#\" class=\"avatar-img\" data-dz-thumbnail=\"\" alt=\"\"></div>",
+                previewsContainer: previewsContainer,
+                clickable: "#" + clickable,
+                maxFiles: 1,
+                acceptedFiles: "image/jpeg,image/png,image/gif",
+
+                init: function() {
+                    this.on("maxfilesexceeded", function(file) {
+                        this.removeAllFiles();
+                        this.addFile(file);
+                    }),
+
+                    this.on("complete", function(file) {
+                        el.querySelector(".dropzone-single-image-prew").style.display = "none";
+                    }),
+                    this.on("success", function(file, responseText) {
+                        // 回传信息 可以使用其他方法 只是测试用
+                        $("#n_75").val(responseText);
+                    })
+                    ;
+                }
+            });
+        });
+
+    </script>
+    </body>
+</html>
