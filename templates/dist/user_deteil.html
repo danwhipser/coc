@@ -102,8 +102,8 @@
                                                             <span class="dt_atr_name">添加物品</span>:&nbsp;
                                                         </label>
                                                     </div>
-                                                        <select id="list_objs" class="form-control custom-select">
-                                                            <option value="0">物品</option>
+                                                        <select id="list_objs" class="form-control custom-select" onchange="show_obc()">
+                                                            <option value="0" selected="selected">物品</option>
                                                             {% for nn in names %}
                                                                 {% if nn.1==4 %}
                                                                 <option value="{{nn.0}}">{{nn.2}}</option>
@@ -118,8 +118,61 @@
                                                 </div>
 
                                             </div>
-                                        </div>
-                                    </li>
+                                            </div>
+                                        </li>
+                                      </ul>
+
+<!--                                    自定义武器框-->
+                                  <ul id="dt_objs_addc" class="list-group list-group-flush" style="display: none;">
+
+                                      <li class="list-group-item py-6">
+                                          <h4 id="dt_zidingyi">新增自定义武器:</h4>
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <input id="objc_name" class="form-control" placeholder="自定义武器名称">
+                                            </div>
+                                            </div>
+                                          <br />
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                            <select id="list_obskills" class="form-control custom-select" onchange="get_ob_val()">
+                                                            <option value="0" selected="selected">使用技能</option>
+                                                            {% for nn in names %}
+                                                                {% if nn.1==3 %}
+                                                                <option value="{{nn.0}}">{{nn.2}}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <input style="display: none" id="objc_zhong" class="form-control" placeholder="命中率">
+                                                </div>
+                                            </div>
+                                            </div>
+                                          <br />
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <div class="input-group">
+                                                    <input id="objc_damage" class="form-control" placeholder="伤害">
+                                                </div>
+                                            </div>
+                                            </div>
+                                          <br />
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <div class="input-group">
+                                                    <textarea id="objc_desc" class="form-control" placeholder="特殊描述"></textarea>
+                                                </div>
+                                            </div>
+                                            </div>
+                                          <br />
+                                        <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <button onclick="add_objc()" type="button" class="btn btn-primary form-control">添加自定义物品</button>
+                                            </div>
+                                            </div>
+                                        </li>
                                     </ul>
                                 </div>
 
@@ -254,7 +307,7 @@
                                                         <i class="icon-md fe-more-vertical"></i>
                                                     </a>
                                                     <div class="dropdown-menu">
-                                                        <a class="dt_mingtou dropdown-item d-flex align-items-center" href="#!">
+                                                        <a class="dt_mingtoum dropdown-item d-flex align-items-center" href="#!">
                                                             明骰 <span class="ml-auto pl-5 fe-slack"></span>
                                                         </a>
                                                         {% if page=="roomc" %}
