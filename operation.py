@@ -162,6 +162,15 @@ class opt:
         self.comsql(sql)
         return 1
 
+    def addla(self,table,plus):
+        sql = "INSERT INTO %s VALUES(NULL,%s)" % (table, plus)
+        print(sql)
+        self.cur.execute(sql)
+        lid = self.cur.lastrowid
+        self.con.commit()
+        # self.comsql(sql)
+        return lid
+
     def check_ve(self,nid,aid):
         sql = "select * from infoe where nid=%d and aid=%d" % (nid,aid)
         c = self.comsql(sql)

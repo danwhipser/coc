@@ -306,10 +306,10 @@
                                             </div>
 <!--                                            图片上传-->
                                             <div class="modal fade" id="dshowimg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
+                                                <div class="modal-dialog modal-xl" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-body">
-                                                               <a href="#!" id="map-display-1"><img src="" class="img-fluid" alt="等待主持人上传图片..."></a>
+                                                               <p align="center"><a href="#!" id="map-display-1"><img src="" class="img-fluid" alt="等待主持人上传图片..."></a></p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1038,11 +1038,15 @@
            $(document).on("click",".file-list-template-delete",function () {
              var deleteimgurl = $(this).parent().attr("imgurl");
              //need：后台根据文件名 删除对应文件 $post
-             console.log(deleteimgurl);
+             // console.log(deleteimgurl);
              del_img(deleteimgurl);
              $(this).parent().parent().parent().parent().parent().remove();
 
            });
+
+
+
+           // get_objc(13);
         });
 
         //获取职业描述
@@ -1058,6 +1062,7 @@
             },"json");
         }
 
+        //获取卡组
         function get_kazu(method, list, templates, mytemp) {
             $("#"+list).html("");
             $.get("/getkazu", {
@@ -1135,6 +1140,8 @@
                 },"json");
         }
 
+        //----------------------------------------------------------------message
+        //获取最后一个id
         function get_msg_lastid(){
             $.get("/getmsg_lastid", {
                 gid:"{{group_id}}"
@@ -1151,6 +1158,7 @@
             });
         }
 
+        // 获取message
         function get_msg(){
             $.get("/getmsg_group", {
                 gid:"{{group_id}}"
@@ -1204,12 +1212,39 @@
             $("#"+mytemp+sid+" .msg_time").html(msg_time);
         }
 
-        //手机界面时切回主界面
-        function qiehui(){
-            $("#chat-1-user-profile").attr("class","chat-sidebar");
-            $("#chat-1-info").attr("class","chat-sidebar chat-sidebar-visible");
-        }
+        //发送信息
+        function send_msg(v=0) {
+            if(mycid==0 || mycid=="0" || !mycid){
+                alert("请至少将一个卡组加入游戏再输入");
+                return
+            }
+            if(v==0){
+                var value = $("#chat-id-1-input").val();
+                if(!value){
+                    alert("请输入内容再提交");
+                    $("#chat-id-1-input").focus();
+                    return;
+                }
+            }
+            else {
+                var value = v;
+            }
+            $.post("/sendmsg", {
+                kind:5,
+                fromcid:mycid,
+                toid:"{{group_id}}",
+                msg: value
+            },
+            function(myData , status){
+                $("#chat-id-1-input").val("");
+                get_msg();
+                // alert("成功提交");
+            });
 
+        }
+        //----------------------------------------------------------------message
+
+        //----------------------------------------------------------------人物卡
         //列出人物卡详细信息
         function show_deteils(cid,uid,jobname) {
             {% if page=="roomp" %}
@@ -1393,8 +1428,6 @@
                                     set_objj("dt_objs_list","dt_obj","dt_s_"+pid,str2,pname,useskill,damage,skillplu,skillplu2,pid);
                                 }
                             {% endfor %}
-
-
                         }
                     }
                     $("#dt_odeteil").html(str);
@@ -1421,6 +1454,7 @@
             $("#"+col+" .dt_atr_name").html(name);
             $("#"+col+" .dt_atr_value").val(value);
 
+
             if(pname==0){
                 pname="";
             }
@@ -1429,8 +1463,9 @@
             }
             $("#"+col+" .dt_mingtou").attr("onclick","tou2("+value+",'"+pname+name+"')");
             $("#"+col+" .dt_mingtoum").attr("onclick","tou2("+value+",'"+pname+name+"',100,'mobile')");
-            //投骰子的nid
+            //骰子 和 参数的nid
             if(nid!=0){
+                $("#"+col+" .dt_atr_value").attr("id","va_"+nid);
                 $("#"+col+" .dt_mingtou").attr("id","touzi_"+nid);
             }
 
@@ -1489,6 +1524,7 @@
 
 
             $("#"+col+" .dt_mingtou").attr("onclick","tou3("+useskillid+",'"+pname+name+"','"+damage+"','"+skillplu+"','"+skillplu2+"')");
+            $("#"+col+" .dt_mingtoum").attr("onclick","tou3("+useskillid+",'"+pname+name+"','"+damage+"','"+skillplu+"','"+skillplu2+"','mobile')");
             // console.log(pid);
             if(pid!="0"){
                 $("#"+col+" .dt_deltou").attr("onclick","delobj("+pid+")");
@@ -1498,6 +1534,45 @@
             }
 
 
+        }
+
+        //设定体力理智魔法
+        function tzm(kind,value1,value2){
+            var re;
+            if(kind=="tili"){
+                re = parseInt((value1+value2)/10);
+            }
+            else if(kind=="lizhi"){
+                re = value1;
+            }
+            else if(kind=="mofa"){
+                re = parseInt(value1/5);
+            }
+            return re;
+        }
+        //设定伤害加成
+        function get_db(value1,value2){
+            var cc = value1+value2;
+            var db=0;
+            if(cc>=2 && cc<=64){
+                db="-2";
+            }
+            else if(cc>=65 && cc<=84){
+                db="-1";
+            }
+            else if(cc>=85 && cc<=124){
+                db="0";
+            }
+            else if(cc>=125 && cc<=164){
+                db="1d4";
+            }
+            else if(cc>=165 && cc<=204){
+                db="1d6";
+            }
+            else{
+                db="1d10";
+            }
+            return db;
         }
 
         //修改用户信息
@@ -1537,36 +1612,27 @@
                 });
         }
 
-        //发送信息
-        function send_msg(v=0) {
+        //扔疯狂
+        function creacy(){
             if(mycid==0 || mycid=="0" || !mycid){
-                alert("请至少将一个卡组加入游戏再输入");
+                alert("请至少将一个卡组加入游戏再投");
                 return
             }
-            if(v==0){
-                var value = $("#chat-id-1-input").val();
-                if(!value){
-                    alert("请输入内容再提交");
-                    $("#chat-id-1-input").focus();
-                    return;
-                }
-            }
-            else {
-                var value = v;
-            }
-            $.post("/sendmsg", {
+            $.post("/tou_creacy", {
                 kind:5,
                 fromcid:mycid,
                 toid:"{{group_id}}",
-                msg: value
-            },
+                },
             function(myData , status){
+                // console.log(myData);
+                if(myData==""){
+                    alert("出现迷之错误")
+                }
                 $("#chat-id-1-input").val("");
                 get_msg();
-                // alert("成功提交");
             });
-
         }
+        //----------------------------------------------------------------人物卡
 
         //用户加入游戏
         function add_game(cid) {
@@ -1592,173 +1658,6 @@
                 get_kazu("allkazu","list_players","tp_list_rp","list_pp_");
                 $("#wanjialiebiao").click();
             });
-        }
-
-        function randomNum(minNum,maxNum){
-            switch(arguments.length){
-                case 1:
-                    return parseInt(Math.random()*minNum+1,10);
-                break;
-                case 2:
-                    return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10);
-                break;
-                    default:
-                        return 0;
-                    break;
-            }
-        }
-
-        function currentTime(date) {
-            var date = new Date(date*1000);//如果date为13位不需要乘1000
-            var Y = date.getFullYear() + '-';
-            var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-            var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
-            var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
-            var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
-            var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
-            return Y+M+D+h+m+s;
-        }
-
-        function tou(value=0,obj=0,max=0) {
-            var msg;
-            if(max==0){
-                var c= randomNum(1,100);
-            }
-            else {
-                var c= randomNum(1,max);
-            }
-
-            c = reset_num(c);
-            if(value==0){
-                msg = obj+"检定:"+c;
-                send_msg(msg);
-                return;
-            }
-            if(obj==0){
-                obj="特殊";
-            }
-            v2 = parseInt(value/2);
-            v3 = parseInt(value/5);
-            msg = obj+"检定:";
-            if(c>value){
-                if(c>95){
-                    msg = msg+"大失败!"+c;
-                }
-                else{
-                    msg = msg+"失败!"+c;
-                }
-            }
-            else if(c<=value && c>v2){
-                msg = msg+"成功!"+c;
-            }
-            else if(c==1){
-                msg = msg+"大成功!"+c;
-            }
-            else if(c<=v2 && c>v3){
-                msg = msg+"困难成功!"+c;
-            }
-            else if(c<=v3){
-                msg = msg+"极限成功!"+c;
-            }
-            send_msg(msg);
-            return;
-        }
-
-        function tou2(value=0,obj=0,max=100,type=0) {
-            if(mycid==0 || mycid=="0" || !mycid){
-                alert("请至少将一个卡组加入游戏再投");
-                return
-            }
-            $.post("/tou", {
-                kind:5,
-                fromcid:mycid,
-                toid:"{{group_id}}",
-                value: value,
-                obj : obj,
-                max : max
-            },
-            function(myData , status){
-                $("#chat-id-1-input").val("");
-                get_msg();
-                //设置手机界面
-                if(type=="mobile"){
-                    $("#chat-1-user-profile").attr("class","chat-sidebar");
-                }
-            });
-        }
-
-
-        function tou3(touziid=0,obj="0",damage="0",skillplu="0",skillplu2="0"){
-            if(mycid==0 || mycid=="0" || !mycid){
-                alert("请至少将一个卡组加入游戏再输入");
-                return
-            }
-            if(touziid!=0){
-                touziid="touzi_"+touziid;
-                $("#"+touziid).click();
-            }
-            var db=$("#dt_s_db .dt_atr_value").val();
-            $.post("/tou_demage", {
-                kind:5,
-                fromcid:mycid,
-                toid:"{{group_id}}",
-                damage: damage,
-                db: db,
-                obj : obj,
-                skillplu : skillplu,
-                skillplu2: skillplu2
-            },
-            function(myData , status){
-                // console.log(myData);
-                $("#chat-id-1-input").val("");
-                get_msg();
-            });
-
-        }
-
-        function creacy(){
-            if(mycid==0 || mycid=="0" || !mycid){
-                alert("请至少将一个卡组加入游戏再投");
-                return
-            }
-            $.post("/tou_creacy", {
-                kind:5,
-                fromcid:mycid,
-                toid:"{{group_id}}",
-                },
-            function(myData , status){
-                // console.log(myData);
-                if(myData==""){
-                    alert("出现迷之错误")
-                }
-                $("#chat-id-1-input").val("");
-                get_msg();
-            });
-        }
-
-        function delobj(pid=0){
-            $.post("/delobj", {
-                    pid: pid,
-                    token:"{{token}}",
-                },
-                function(myData , status){
-                    var ccid=$("#dtt_cid").val();
-                    var uuid=$("#dtt_uid").val();
-                    var jobbnm=$("#dtt_jobname").val();
-                    show_deteils(ccid,uuid,jobbnm);
-                    // console.log(myData);
-                });
-        }
-
-        function reset_num(num){
-            if(num>=95){
-                return num;
-            }
-            else{
-                var n = parseInt(num/10);
-                num = num-n;
-                return num;
-            }
         }
 
         //删除这个房间
@@ -1795,50 +1694,98 @@
                 return;
             }
         }
-        function tzm(kind,value1,value2){
-            var re;
-            if(kind=="tili"){
-                re = parseInt((value1+value2)/10);
+
+
+        function randomNum(minNum,maxNum){
+            switch(arguments.length){
+                case 1:
+                    return parseInt(Math.random()*minNum+1,10);
+                break;
+                case 2:
+                    return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10);
+                break;
+                    default:
+                        return 0;
+                    break;
             }
-            else if(kind=="lizhi"){
-                re = value1;
-            }
-            else if(kind=="mofa"){
-                re = parseInt(value1/5);
-            }
-            return re;
         }
 
-        function get_db(value1,value2){
-            var cc = value1+value2;
-            var db=0;
-            if(cc>=2 && cc<=64){
-                db="-2";
-            }
-            else if(cc>=65 && cc<=84){
-                db="-1";
-            }
-            else if(cc>=85 && cc<=124){
-                db="0";
-            }
-            else if(cc>=125 && cc<=164){
-                db="1d4";
-            }
-            else if(cc>=165 && cc<=204){
-                db="1d6";
-            }
-            else{
-                db="1d10";
-            }
-            return db;
+        function currentTime(date) {
+            var date = new Date(date*1000);//如果date为13位不需要乘1000
+            var Y = date.getFullYear() + '-';
+            var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+            var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+            var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+            var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+            var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
+            return Y+M+D+h+m+s;
         }
 
+        function tou2(value=0,obj=0,max=100,type=0) {
+            if(mycid==0 || mycid=="0" || !mycid){
+                alert("请至少将一个卡组加入游戏再投");
+                return
+            }
+            $.post("/tou", {
+                kind:5,
+                fromcid:mycid,
+                toid:"{{group_id}}",
+                value: value,
+                obj : obj,
+                max : max
+            },
+            function(myData , status){
+                $("#chat-id-1-input").val("");
+                get_msg();
+                //设置手机界面
+                if(type=="mobile"){
+                    $("#chat-1-user-profile").attr("class","chat-sidebar");
+                }
+            });
+        }
+
+        function tou3(touziid=0,obj="0",damage="0",skillplu="0",skillplu2="0",type=0){
+            if(mycid==0 || mycid=="0" || !mycid){
+                alert("请至少将一个卡组加入游戏再输入");
+                return
+            }
+            if(touziid!=0){
+                touziid="touzi_"+touziid;
+                $("#"+touziid).click();
+            }
+            var db=$("#dt_s_db .dt_atr_value").val();
+            $.post("/tou_demage", {
+                kind:5,
+                fromcid:mycid,
+                toid:"{{group_id}}",
+                damage: damage,
+                db: db,
+                obj : obj,
+                skillplu : skillplu,
+                skillplu2: skillplu2
+            },
+            function(myData , status){
+                // console.log(myData);
+                $("#chat-id-1-input").val("");
+                get_msg();
+                //设置手机界面
+                if(type=="mobile"){
+                    $("#chat-1-user-profile").attr("class","chat-sidebar");
+                }
+            });
+
+        }
+
+        //----------------------------------------------------------------物品相关
         function add_obj() {
             var obj_id = $("#list_objs").val();
             var uid = $("#dtt_uid").val();
             var cid = $("#dtt_cid").val();
             if(obj_id==0){
                 alert("选择物品之后才能添加");
+            }
+            if(obj_id==14){
+                alert("自定义物品需要在下面的自定义物品表填写并添加");
             }
             else{
                 $.post("/add_obj", {
@@ -1853,6 +1800,92 @@
             }
         }
 
+        function delobj(pid=0){
+            $.post("/delobj", {
+                    pid: pid,
+                    token:"{{token}}",
+                },
+                function(myData , status){
+                    var ccid=$("#dtt_cid").val();
+                    var uuid=$("#dtt_uid").val();
+                    var jobbnm=$("#dtt_jobname").val();
+                    show_deteils(ccid,uuid,jobbnm);
+                    // console.log(myData);
+                });
+        }
+
+
+        //显示添加自定义物品菜单
+        function show_obc() {
+            var sele = $('#list_objs').val();
+            if(sele==14){
+                $('#dt_objs_addc').show();
+                window.location.href="#dt_zidingyi";
+            }
+            else {
+                $('#dt_objs_addc').hide();
+            }
+
+        }
+
+        //自定义时出现命中率
+        function get_ob_val() {
+            var sele_skill = $('#list_obskills').val();
+            if(sele_skill==13){
+                $('#objc_zhong').show();
+            }
+            else {
+                $('#objc_zhong').hide();
+            }
+        }
+
+        //添加自定义物品
+        function add_objc(){
+            var name   = $("#objc_name").val();       //名称
+            var usek   = $("#list_obskills").val();   //使用技能
+            var zhong  = $("#objc_zhong").val();      //命中率
+            var damage = $("#objc_damage").val();     //伤害
+            var desc   = $("#objc_desc").val();       //特殊描述
+            var uid = $("#dtt_uid").val();
+            var cid = $("#dtt_cid").val();
+            if(!name){
+                alert("请至少填写物品名称");
+                return;
+            }
+            $.post("/add_objc", {
+                    name: name,
+                    use_skill: usek,
+                    zhong: zhong,
+                    damage: damage,
+                    desc:desc,
+                    uid:uid,
+                    cid:cid
+                },
+                function(myData , status){
+                    if(myData=="1"){
+                        alert("成功添加");
+                        $("#objc_name").val("");
+                        $("#objc_zhong").val("");
+                        $("#objc_damage").val("");
+                        $("#objc_desc").val("");
+                    }
+                });
+        }
+        
+        //显示自定义物品
+        function get_objc(id) {
+            $.get("/get_objc", {
+                    id:id
+                },
+                function(myData , status){
+                    // console.log(myData);
+                },"json");
+        }
+        
+        
+        //----------------------------------------------------------------物品相关
+
+        //----------------------------------------------------------------手机优化
         //手机点击个人信息时出现的
         function show_myde() {
             var mycid = $("#dtt_mycid").val();
@@ -1869,10 +1902,12 @@
 
         }
 
-
-
-
-
+        //手机界面时切回主界面
+        function qiehui(){
+            $("#chat-1-user-profile").attr("class","chat-sidebar");
+            $("#chat-1-info").attr("class","chat-sidebar chat-sidebar-visible");
+        }
+        //----------------------------------------------------------------手机优化
 
         if ( document.querySelector('#dropzone-template-js') ) {
             var template = document.querySelector('#dropzone-template-js');

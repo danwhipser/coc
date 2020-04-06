@@ -986,6 +986,44 @@ def add_obj():
     us.add_u(4,int(uid),int(obj_id),0,0,1,int(cid))
     return str(1)
 
+#添加自定义物品
+@app.route('/add_objc', methods=['POST'])
+def add_objc():
+    name = request.form['name']
+    use_skill = request.form['use_skill']
+    zhong = request.form['zhong']
+    damage = request.form['damage']
+    desc = request.form['desc']
+    uid = request.form['uid']
+    cid = request.form['cid']
+    if not name:
+        return str(0)
+    if not use_skill:
+        use_skill=0
+    if not zhong:
+        zhong=0
+    if not damage:
+        damage=0
+    if not desc:
+        desc=0
+    uid = int(uid)
+    us = opt("user.db")
+    lastid = us.addla("custom", "4, %d, %d, '%s', '%s', 0" % (uid,85,name,"0"))
+    us.add("custom", "4, %d, %d, '%s', '%s',%d" % (uid, 90, name, "0", int(lastid)))
+    us.add("custom", "4, %d, %d, '%s', '%s',%d" % (uid, 86, use_skill, zhong, int(lastid)))
+    us.add("custom", "4, %d, %d, '%s', '%s',%d" % (uid, 87, damage, "0", int(lastid)))
+    us.add("custom", "4, %d, %d, '%s', '%s',%d" % (uid, 88, desc, "0", int(lastid)))
+    us.add_u(8,uid,79,0,lastid,1,int(cid))
+    return str(1)
+
+#获取自定义物品
+@app.route('/get_objc', methods=['GET'])
+def get_objc():
+    ccid = request.args.get("id")
+    us = opt("user.db")
+    objc_list = us.select_w("custom","link_id=%d" % int(ccid))
+    return jsonify(objc_list)
+
 # 验证token合法性
 def checktoken(token):
     myuid = session.get('uid')
