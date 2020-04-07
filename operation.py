@@ -211,8 +211,8 @@ class opt:
 
 
 # -------------------------------------------------------------扔骰子
-# xdxx只支持前面一位
-def roll_out(strg, tihuan):
+# xdxx只支持前面一位 如果ifbomb是max,取最大值
+def roll_out(strg, tihuan,ifbomb=0):
     it = re.finditer(tihuan, strg)
     for match in it:
         ce = match.group()
@@ -223,7 +223,10 @@ def roll_out(strg, tihuan):
         else:
             after = ce[1:]
             cc = after[1:] #d后面的数字
-        r = roll(int(cc),int(before))
+        if ifbomb == "max":
+            r = int(cc)*int(before)
+        else:
+            r = roll(int(cc),int(before))
         ee = str(r)
         strg = re.sub(tihuan, ee, strg)
     return strg
@@ -250,15 +253,17 @@ def plus_out(strg, tihuan):
     return strg
 
 # 替换xdx成数字,并且将字符串中数字加和
-def roll_str(strg):
+def roll_str(strg,ifbomb=0):
     a = '\dd\d+'
     b = '\dD\d+'
-    r = roll_out(strg,a)
-    r = roll_out(r,b)
+    r = roll_out(strg,a,ifbomb)
+    r = roll_out(r,b,ifbomb)
     return r
 
-# 把数组拆分并把db和0.5db替换了
-def roll_str2(strg,dbv):
+# 把数组拆分并把db和0.5db替换了   ifbomb=0失败,max最大值,其他 正常
+def roll_str2(strg,dbv,ifbomb):
+    if ifbomb == 0:
+        return 0
     out = []
     dbv = roll_str(dbv)
     r = re.split('\+', strg)
@@ -268,7 +273,7 @@ def roll_str2(strg,dbv):
         dbv2 = str(int(int(dbv)/2))
         ee = p1.sub(dbv2, ee)
         ee = p2.sub(dbv, ee)
-        ee = roll_str(ee)
+        ee = roll_str(ee,ifbomb)
         out.append(ee)
     return out
 

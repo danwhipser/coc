@@ -763,11 +763,13 @@ def delgame():
     gid = request.form['gid']
     uid = request.form['uid']
     token = request.form['token']
+    us = opt("user.db")
     if token == "0":
-        return str(0)
+        myuid = session.get('uid')
+        us.delet_w("groupp","aid=72 and value='%s' and value2='%s' and link_kind=5 and link_id=%d " % (myuid, cid,int(gid)))
+        return str(1)
     check = checktoken(token)
     if check == 1:
-        us = opt("user.db")
         # value是text类型
         ifin = us.select_w("groupp", "value='%s' and value2='%s' and link_kind=5 and link_id=%d" % (str(uid),str(cid),int(gid)))
         if ifin:
@@ -1013,7 +1015,7 @@ def add_objc():
     us.add("custom", "4, %d, %d, '%s', '%s',%d" % (uid, 86, use_skill, zhong, int(lastid)))
     us.add("custom", "4, %d, %d, '%s', '%s',%d" % (uid, 87, damage, "0", int(lastid)))
     us.add("custom", "4, %d, %d, '%s', '%s',%d" % (uid, 88, desc, "0", int(lastid)))
-    us.add_u(8,uid,79,0,lastid,1,int(cid))
+    us.add_u(9,uid,79,0,lastid,1,int(cid))
     return str(1)
 
 #获取自定义物品
@@ -1074,19 +1076,29 @@ def del_room_msg():
 def delobj():
     pid = request.form['pid']
     pid = int(pid)
+    kind = request.form['kind']
     token = request.form['token']
     myuid = session.get('uid')
     myuid = int(myuid)
     us = opt("user.db")
     if token == "0":
-        us.delet_w("plyer", "id=%d and uid=%d" % (pid, myuid))
+        if kind == "custom":
+            us.delet_w("custom", "id=%d and uid=%d" % (pid, myuid))
+            us.delet_w("custom", "link_id=%d and uid=%d" % (pid, myuid))
+            us.delet_w("plyer", "nid=79 and value='%s' and uid=%d" % (str(pid), myuid))
+        else:
+            us.delet_w("plyer", "id=%d and uid=%d" % (pid, myuid))
         return str(1)
     check = checktoken(token)
     if check == 1:
-        us.delet_w("plyer", "id=%d" % (pid))
+        if kind == "custom":
+            us.delet_w("custom", "id=%d" % (pid))
+            us.delet_w("custom", "link_id=%d" % (pid))
+            us.delet_w("plyer", "nid=79 and value='%s'" % (str(pid)))
+        else:
+            us.delet_w("plyer", "id=%d" % (pid))
         return str(1)
     else:
-        us.delet_w("plyer", "id=%d and uid=%d" % (pid, myuid))
         return str(0)
 
 
@@ -1347,6 +1359,51 @@ def tou_demage():
     title = "伤害计算:"+damage
     dmsg = "<a title=\"%s\">%s伤害检定:%s</a>" % (title, obj, str(cc))
     re = send_msg(kind, myuid, fromcid, toid, dmsg)
+    return str(re)
+
+# 把伤害投出来
+@app.route('/tou_demage2', methods=['POST'])
+def tou_demage2():
+    kind = int(request.form['kind'])
+    toid = int(request.form['toid'])
+    fromcid = int(request.form['fromcid'])
+    damage = request.form['damage']
+    db = request.form['db']
+    obj = request.form['obj']
+    skillname = request.form['skillname']
+    pname = request.form['pname']
+    zhong = request.form['zhong']
+    myuid = int(session.get('uid'))
+
+    zhong = int(zhong)
+    msg = pname + " 使用" + obj + "<br />"
+    if zhong != 0:
+        ro = op.roll(100)
+        ro = op.reset_num(ro)
+        if skillname == "0" or skillname == "自定义":
+            skillname = "特殊"
+        msg = msg + skillname + "检定:"
+        ms = set_secces(ro, zhong, msg)
+        msg = ms[0]+"<br />"
+        seccnum = ms[1]
+    else:
+        seccnum = 3
+
+    if seccnum>=5:
+        ifbomb = "max"
+    elif seccnum>=3 and seccnum<5:
+        ifbomb = "normal"
+    elif seccnum<3:
+        ifbomb = 0
+    dama = op.roll_str2(damage,db,ifbomb)
+    cc = 0
+    if dama != 0:
+        for a in dama:
+            cc = cc+int(a)
+    title = "伤害计算:"+str(damage)+"|"+str(ifbomb)
+    dmsg = "<a title=\"%s\">伤害检定:%s</a>" % (title, str(cc))
+    smsg = msg+dmsg
+    re = send_msg(kind, myuid, fromcid, toid, smsg)
     return str(re)
 
 # 疯狂检定

@@ -141,12 +141,12 @@
                                                             <option value="0" selected="selected">使用技能</option>
                                                             {% for nn in names %}
                                                                 {% if nn.1==3 %}
-                                                                <option value="{{nn.0}}">{{nn.2}}</option>
+                                                                <option value="{{nn.2}}">{{nn.2}}</option>
                                                                 {% endif %}
                                                             {% endfor %}
                                                         </select>
                                                     </div>
-                                                    <input style="display: none" id="objc_zhong" class="form-control" placeholder="命中率">
+                                                    <input id="objc_zhong" class="form-control" placeholder="命中率">
                                                 </div>
                                             </div>
                                             </div>
@@ -334,7 +334,7 @@
                             <div class="border-top py-7">
                                 <div class="container-fluid">
 
-                                    <button onclick="send_ask()" class="btn btn-lg btn-block btn-primary d-flex align-items-center" type="submit">
+                                    <button onclick="send_ask()" class="btn btn-lg btn-block btn-primary d-flex align-items-center" type="button">
                                         修改参数
                                         <span class="fe-edit ml-auto"></span>
                                     </button>

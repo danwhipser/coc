@@ -1429,6 +1429,12 @@
                                 }
                             {% endfor %}
                         }
+                        else if(kind==9){
+                            if(nid==79){
+                                var ccid = parseInt(value);
+                                get_objc(ccid, pname);
+                            }
+                        }
                     }
                     $("#dt_odeteil").html(str);
 
@@ -1471,8 +1477,8 @@
 
         }
 
-        //物品信息的框框
-        function set_objj(list,temp,col,name,pname=0,useskill="0",damage="0",skillplu="0",skillplu2="0",pid="0"){
+        //物品信息的框框 (列出物品的列表, 物品条的模板, 物品条的id, 物品名称, 人物名称, 使用技能, 伤害, 技能加成, 技能加成参数, 物品id, 类型(预设/自定义),描述 )
+        function set_objj(list,temp,col,name,pname=0,useskill="0",damage="0",skillplu="0",skillplu2="0",pid="0", zhong="0", kind="0",desc="0"){
             var cc = $("#"+temp).clone(true);
             var useskillid=0;
             cc.attr('id',col);
@@ -1482,19 +1488,27 @@
             $("#"+col+" .dt_atr_name").attr("title",name);
             //显示伤害,使用技能等等
             $("#"+col+" .dt_atr_sdlist").html("");
-            if(useskill=="0" && damage=="0" && skillplu=="0"){
+            if(useskill=="0" && damage=="0" && skillplu=="0" && desc=="0"){
                 var strr='<a class="dropdown-item dt_atr_other">特殊道具</a>';
                 $("#"+col+" .dt_atr_sdlist").append(strr);
             }
             if(useskill!="0"){
-                {% for nn in names %}
-                if(useskill=="{{nn.2}}"){
-                    useskillid = "{{nn.0}}";
+                if(useskill=="自定义"){
+                    var strr='<a class="dropdown-item dt_atr_useskill">命中率:'+zhong+'</a>\n' +
+                         '<div class="dropdown-divider"></div>';
+                    $("#"+col+" .dt_atr_sdlist").append(strr);
                 }
-                {% endfor %}
-                var strr='<a class="dropdown-item dt_atr_useskill">使用技能:'+useskill+'</a>\n' +
-                     '<div class="dropdown-divider"></div>';
-                $("#"+col+" .dt_atr_sdlist").append(strr);
+                else{
+                    {% for nn in names %}
+                    if(useskill=="{{nn.2}}"){
+                        useskillid = "{{nn.0}}";
+                    }
+                    {% endfor %}
+                    var strr='<a class="dropdown-item dt_atr_useskill">使用技能:'+useskill+'</a>\n' +
+                         '<div class="dropdown-divider"></div>';
+                    $("#"+col+" .dt_atr_sdlist").append(strr);
+                }
+
             }
             if(damage!="0"){
                 var strr='<a class="dropdown-item dt_atr_damage">伤害:'+damage+'</a>\n' +
@@ -1515,6 +1529,11 @@
                 $("#"+col+" .dt_atr_sdlist").append(strr);
             }
 
+            if(desc!="0"){
+                var strr='<a class="dropdown-item dt_atr_objcd">描述:'+desc+'</a>';
+                $("#"+col+" .dt_atr_sdlist").append(strr);
+            }
+
             if(pname==0){
                 pname="";
             }
@@ -1523,11 +1542,15 @@
             }
 
 
-            $("#"+col+" .dt_mingtou").attr("onclick","tou3("+useskillid+",'"+pname+name+"','"+damage+"','"+skillplu+"','"+skillplu2+"')");
-            $("#"+col+" .dt_mingtoum").attr("onclick","tou3("+useskillid+",'"+pname+name+"','"+damage+"','"+skillplu+"','"+skillplu2+"','mobile')");
+
+            // $("#"+col+" .dt_mingtou").attr("onclick","tou3("+useskillid+",'"+pname+name+"','"+damage+"','"+skillplu+"','"+skillplu2+"')");
+            // $("#"+col+" .dt_mingtoum").attr("onclick","tou3("+useskillid+",'"+pname+name+"','"+damage+"','"+skillplu+"','"+skillplu2+"','mobile')");
+            $("#"+col+" .dt_mingtou").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"')");
+            $("#"+col+" .dt_mingtoum").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"','mobile')");
+
             // console.log(pid);
             if(pid!="0"){
-                $("#"+col+" .dt_deltou").attr("onclick","delobj("+pid+")");
+                $("#"+col+" .dt_deltou").attr("onclick","delobj("+pid+",'"+kind+"')");
             }
             else{
                 $("#"+col+" .dt_deltou").remove();
@@ -1776,6 +1799,44 @@
 
         }
 
+
+        function tou4(skillid=0,skillname="0",pname="0",obj="0",damage="0", zhong="0",type=0){
+            if(mycid==0 || mycid=="0" || !mycid){
+                alert("请至少将一个卡组加入游戏再输入");
+                return
+            }
+            if(zhong=="0"){
+                if(skillid!=0){
+                    skillid="va_"+skillid;
+                    zhong = $("#"+skillid).val();
+                    // $("#"+touziid).click();
+                }
+            }
+
+            var db=$("#dt_s_db .dt_atr_value").val();
+            $.post("/tou_demage2", {
+                kind:5,
+                fromcid:mycid,
+                toid:"{{group_id}}",
+                damage: damage,
+                db: db,
+                obj : obj,
+                pname: pname,
+                skillname:skillname,
+                zhong : zhong,
+            },
+            function(myData , status){
+                // console.log(myData);
+                $("#chat-id-1-input").val("");
+                get_msg();
+                //设置手机界面
+                if(type=="mobile"){
+                    $("#chat-1-user-profile").attr("class","chat-sidebar");
+                }
+            });
+
+        }
+
         //----------------------------------------------------------------物品相关
         function add_obj() {
             var obj_id = $("#list_objs").val();
@@ -1800,12 +1861,17 @@
             }
         }
 
-        function delobj(pid=0){
+        function delobj(pid=0,kind=0){
             $.post("/delobj", {
                     pid: pid,
+                    kind:kind,
                     token:"{{token}}",
                 },
                 function(myData , status){
+                    if(myData=="0"){
+                        alert("出现迷之错误,请重新登录游戏");
+                        return;
+                    }
                     var ccid=$("#dtt_cid").val();
                     var uuid=$("#dtt_uid").val();
                     var jobbnm=$("#dtt_jobname").val();
@@ -1831,7 +1897,7 @@
         //自定义时出现命中率
         function get_ob_val() {
             var sele_skill = $('#list_obskills').val();
-            if(sele_skill==13){
+            if(sele_skill=="自定义" || sele_skill==0){
                 $('#objc_zhong').show();
             }
             else {
@@ -1848,9 +1914,15 @@
             var desc   = $("#objc_desc").val();       //特殊描述
             var uid = $("#dtt_uid").val();
             var cid = $("#dtt_cid").val();
+            var jobbnm=  $("#dtt_jobname").val();
             if(!name){
                 alert("请至少填写物品名称");
                 return;
+            }
+            if(usek==0){
+                if(zhong && zhong!=0){
+                    usek="自定义";
+                }
             }
             $.post("/add_objc", {
                     name: name,
@@ -1863,21 +1935,42 @@
                 },
                 function(myData , status){
                     if(myData=="1"){
-                        alert("成功添加");
                         $("#objc_name").val("");
                         $("#objc_zhong").val("");
                         $("#objc_damage").val("");
                         $("#objc_desc").val("");
+                        alert("成功添加");
+                        show_deteils(cid,uid,jobbnm);
                     }
                 });
         }
         
         //显示自定义物品
-        function get_objc(id) {
+        function get_objc(id, pname) {
             $.get("/get_objc", {
                     id:id
                 },
                 function(myData , status){
+                    var pid = id;
+                    for(data of myData){
+                        var aid = data[3];
+                        var v   = data[4];
+                        var v2  = data[5];
+                        if(aid=="90"){
+                            var name = v;
+                        }
+                        else if(aid=="86"){
+                            var useskill = v;
+                            var zhong = v2;
+                        }
+                        else if(aid=="87"){
+                            var damage = v;
+                        }
+                        else if(aid=="88"){
+                            var desc = v;
+                        }
+                    }
+                    set_objj("dt_objs_list","dt_obj","dt_sc_"+pid,name,pname,useskill,damage,"0","0",pid, zhong,"custom",desc);
                     // console.log(myData);
                 },"json");
         }
