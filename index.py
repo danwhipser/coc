@@ -10,6 +10,7 @@ from flask import redirect,url_for
 from flask import render_template, request
 from user import user
 from operation import opt
+from operation import page_opt as po
 import operation as op
 
 app = Flask(__name__)
@@ -34,7 +35,20 @@ def index():
         title = "欢迎来到深渊小屋,我们致力于开发与制作类克苏鲁跑团游戏"
         return render_template('dist/signin.html', message=title)
 
-#新页面
+
+# 侧边栏列表数据
+# 0:    0:name| 1:atrr| 2:infoe|
+# 1:    0:列出所有房间| 1:列出自己的房间| 2:列出所有模板人物| 3:列出自己所有卡组(名字,头像)
+@app.route('/set_index', methods=['GET'])
+def set_index():
+    myuid = session.get('uid')
+    setus = opt("user.db")
+    se = po(setus, myuid)
+    out = se.general_sel()
+    # out = se.out_all
+    return jsonify(out)
+
+# 新页面
 @app.route('/imboss')
 def imboss():
     if session.get('limit') == 1:
@@ -340,7 +354,7 @@ def get_rooms():
     r = []
     re = []
     us = opt("user.db")
-    if method=="myroom":
+    if method == "myroom":
         uid = session.get('uid')
         group_names = us.select_w("groupp","aid=68 and value2='%s'" % str(uid))
     else:
@@ -1306,7 +1320,7 @@ def checku():
 app.config['UPLOADED_PATH'] = os.getcwd() + '/static/upload'
 # need 上传路径需要更改
 def change_filename(filename):
-    rannum = random.randint(0,99999)
+    rannum = random.randint(10000,99999)
     timenum = int(time.time())
     fileinfo = os.path.splitext(filename)
     filename = str(timenum)+"_"+str(rannum)+fileinfo[-1]
