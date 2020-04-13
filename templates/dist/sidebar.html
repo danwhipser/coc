@@ -3,7 +3,7 @@
                 <div class="tab-content h-100" role="tablist">
 
 <!--                    建立游戏-->
-                    <div class="tab-pane fade h-100 {% if page == 'roomc' %}show active{% endif %}" id="tab-content-create-chat" role="tabpanel">
+                    <div class="tab-pane fade h-100" id="tab-content-create-chat" role="tabpanel">
                         <div class="d-flex flex-column h-100">
 
                             <div class="hide-scrollbar">
@@ -115,6 +115,8 @@
 
                         </div>
                     </div>
+
+                    {% include 'dist/roomc_kp.html' %}
 
                     <div class="tab-pane fade h-100" id="tab-content-friends" role="tabpanel">
                         <div class="d-flex flex-column h-100">
@@ -830,9 +832,10 @@
                                 $("#game_room_ppl").val("");
                                 $("#game_room_desc").val("");
                                 $("#game_room_photo").val("");
-                                get_rooms("myroom","list_createroom","t_showedroom", "myroom_");
-                                get_rooms("allroom","list_showedroom","t_showedroom", "allroom_");
-                                $("#game_find").click();
+                                // get_rooms("myroom","list_createroom","t_showedroom", "myroom_");
+                                // get_rooms("allroom","list_showedroom","t_showedroom", "allroom_");
+                                window.location.href="roomc?rid="+lastid;
+                                // $("#game_find").click();
                             }
                         });
                     });
@@ -973,7 +976,7 @@
               },
                 function(myData , status){
                     if(status=="success"){
-                        $("#ka_"+id).hide();
+                        $("#mykazu1_"+id).hide();
                     }
                     else{
                         alert("删除人物失败");
@@ -998,7 +1001,7 @@
         for(data of myData){
             var pid = data[0][0];
             var name = data[0][5];
-            console.log(name);
+            // console.log(name);
             var pic = data[1][5];
             var cc = $("#"+templates).clone(true);
             cc.attr('id',mytemp+pid);
@@ -1032,13 +1035,12 @@
         }
     }
 
-    // # 0:    0:name| 1:atrr| 2:infoe|
-    // # 1:    0:列出所有房间| 1:列出自己的房间| 2:列出所有模板人物| 3:列出自己所有卡组(名字,头像)
+    // # 0:列出所有房间| 1:列出自己的房间| 2:列出所有模板人物| 3:列出自己所有卡组(名字,头像)
     function get_siderall() {
         $.get("/set_index", {
               },
                 function(myData , status){
-                    console.log(myData);
+                    // console.log(myData);
                     // var name = myData[0][0];
                     // var attr = myData[0][1];
                     var list_allroom = myData[0];

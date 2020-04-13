@@ -1,0 +1,112 @@
+<div class="tab-pane fade h-100 {% if page == 'roomc' %}show active{% endif %}" id="tab-content-control-chat" role="tabpanel">
+                        <div class="d-flex flex-column h-100">
+
+                            <div class="hide-scrollbar">
+                                <div class="container-fluid py-6">
+
+                                    <!-- Title -->
+                                    <h2 class="font-bold mb-6">守密人工具台</h2>
+                                    <!-- Title -->
+
+                                    <!-- Search -->
+                                    <form class="mb-6">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control form-control-lg" placeholder="搜索" aria-label="搜索">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-lg btn-ico btn-secondary btn-minimal" type="submit">
+                                                    <i class="fe-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- Search -->
+
+                                    <!-- Tabs -->
+                                    <ul class="nav nav-tabs nav-justified mb-6" role="tablist">
+                                        <li class="nav-item">
+                                            <a href="#book-deteils" class="nav-link active" data-toggle="tab" role="tab" aria-selected="true">剧本工具</a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="#monster-list" class="nav-link" data-toggle="tab" role="tab" aria-selected="false">怪物设置</a>
+                                        </li>
+                                    </ul>
+                                    <!-- Tabs -->
+
+                                    <!-- 游戏详细内容 -->
+                                    <div class="tab-content" role="tablist">
+
+                                        <!-- 剧本工具 -->
+                                        <div id="book-deteils" class="tab-pane fade show active" role="tabpanel">
+                                            <form action="#">
+                                                <div class="form-group">
+                                                    <label class="small">封面图片</label>
+                                                    <div class="position-relative text-center bg-secondary rounded p-6">
+                                                        <!-- Placeholder -->
+                                                        <div class="avatar bg-primary text-white mb-5 dropzone-single-image-prew">
+                                                            <i class="icon-md fe-image"></i>
+                                                        </div>
+
+                                                        <!-- Preview -->
+                                                        <div class="dropzone-single-image-container"></div>
+
+                                                        <!-- Text -->
+                                                        <p class="small text-muted mb-0">上传类型 jpg, gif or png <br> 图片最大 3MB</p>
+
+                                                        <!-- Button with unique ID -->
+                                                        <input class="dropzone-button-js d-none" type="button">
+                                                        <label class="stretched-label mb-0" for="any-unique-id-2"></label>
+                                                    </div>
+                                                    <input type="hidden" value="0" />
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="small" for="new-chat-title">名称</label>
+                                                    <input class="form-control form-control-lg" name="new-chat-title" type="text" placeholder="房间名称">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="small" for="new-chat-topic">游戏类型 (可选)</label>
+                                                    <input class="form-control form-control-lg" name="new-chat-topic" type="text" placeholder="游戏类型">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="small" for="new-chat-topic">人数限制</label>
+                                                    <input class="form-control form-control-lg" name="new-chat-topic" type="text" placeholder="人数限制 (默认为4)">
+                                                </div>
+
+                                                <div class="form-group mb-0">
+                                                    <label class="small" for="new-chat-description">描述</label>
+                                                    <textarea class="form-control form-control-lg" name="new-chat-description" rows="6" placeholder="可以对您建立的游戏进行简单描述,例如背景介绍"></textarea>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p>&nbsp;</p>
+                                                <button class="btn btn-lg btn-primary btn-block" type="button">创建房间</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <!-- 剧本工具 -->
+
+                                        <!-- 怪物设置 -->
+                                        <div id="monster-list" class="tab-pane fade" role="tabpanel">
+                                            <nav class="list-group list-group-flush mb-n6">
+                                                sdfsdfsdfdfsf
+                                            </nav>
+                                        </div>
+                                        <!-- 怪物设置 -->
+
+                                    </div>
+                                    <!-- 游戏详细内容 -->
+
+                                </div>
+                            </div>
+
+                            <!-- Button -->
+<!--                            <div class="pb-6">-->
+<!--                                <div class="container-fluid">-->
+<!--                                    <button class="btn btn-lg btn-primary btn-block" type="submit">Create group</button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+                        </div>
+                    </div>

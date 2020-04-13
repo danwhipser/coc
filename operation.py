@@ -58,6 +58,7 @@ class opt:
 
     def select_w(self,table,where):
         sql = "select * from %s where %s" % (table, where)
+        # print(sql)
         c = self.comsql(sql)
         cc = c.fetchall()
         return cc
@@ -258,7 +259,7 @@ class page_opt_m:
             kazu = us.select_w("groupp", "aid=%d and link_kind=5 and link_id=%d" % (group_plyeraid, gid))
 
         for kk in kazu:
-            if method == "me":
+            if method == "me" or method == "listme":
                 kazu_id = kk[0]
                 kkr = kk
             elif method == "group":
@@ -281,7 +282,8 @@ class page_opt_m:
                     pic = ki
             r.append(kkr)
             r.append(pic)
-            r.append(work)
+            if method != "me":
+                r.append(work)
             re.append(r)
             r = []
 
@@ -396,17 +398,7 @@ class page_opt:
         listroom_me  = optm.list_room(1)
 
         listtemp = optm.list_temp()
-        # col = [self.aid_name, self.aid_headimg]
         listkazu = optm.list_kazu("me")
-        # out = []
-        # names = us.name_sel()
-        # atrr = us.atrn_sel()
-        # infoe = us.select_w("infoe", "1=1")
-        #
-        # out.append(names)
-        # out.append(atrr)
-        # out.append(infoe)
-        # self.out_all.append(out)
 
         out = []
         out.append(listroom_all)
@@ -425,8 +417,8 @@ class page_opt:
         self.out_all.append(out)
         return out
 
-    # 输入数组(0:kind 1:nid 2:aid 3:value 4:cid)
-    def setting_add(self, arry):
+    # 输入数组(0:kind 1:nid 2:aid 3:value),cid
+    def setting_add(self, arry, cid):
         myuid = self.myuid
         us = self.setus
         optm = page_opt_m(us,myuid)
@@ -435,7 +427,7 @@ class page_opt:
             nid = p[1]
             aid = p[2]
             value=p[3]
-            cid = p[4]
+            # cid = p[4]
             optm.add_user(kind,0,nid,aid,value,cid)
         return 1
 

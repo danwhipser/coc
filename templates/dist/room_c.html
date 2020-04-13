@@ -1348,7 +1348,7 @@
                                     if(nid=={{at.0}}){
                                         var str2="{{at.2}}";
                                         if(nid==29){
-                                            var tili=parseInt((tizhi+tixing)/10);
+                                            var tili=parseInt((tizhi+liliang)/10);
                                             set_ask("dt_atr_list1","dt_skill2","dt_s_"+pid,str2,value,pname,tili);
                                         }
                                         else if(nid==30){
@@ -1374,7 +1374,7 @@
                                 {% if at.0==55 %}
                                     if(nid=={{at.0}}){
                                         //加入db
-                                        var db=get_db(liliang,tixing);
+                                        var db=get_db(liliang,tizhi);
                                         set_ask("dt_atr_list1","dt_skill3","dt_s_db","DB",db,pname);
                                         //加入金钱
                                         var str2="{{at.2}}";

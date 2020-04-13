@@ -1,6 +1,7 @@
 import sqlite3 as lite
 import sys
 import re
+import json
 import hashlib
 import os
 import time
@@ -9,9 +10,11 @@ from flask import Flask,session, jsonify
 from flask import redirect,url_for
 from flask import render_template, request
 from user import user
+from stati import statics as stt
 from operation import opt
 from operation import page_opt as po
 import operation as op
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'd0b9791a0c389833d872d899df744ca8'
@@ -60,8 +63,16 @@ def imboss():
         return render_template('manage.html', message=title, clss=clss, names=names, atrr=atrr)
     else:
         message = "出现了迷之错误！"
-        return render_template('error.html', message="出现迷之错误")
+        return render_template('error.html', message=message)
 
+# 统计数据
+@app.route('/stati')
+def stati():
+    us = opt("user.db")
+    tit = "检定"
+    sta = stt(us)
+    re = sta.get_jianding()
+    return render_template('stati.html', sta=re)
 
 #新页面
 @app.route('/newpage')
@@ -265,61 +276,10 @@ def getwork():
 #获取技能点数相关
 @app.route('/getworkskill', methods=['GET'])
 def getworkskill():
-    worke = request.args.get("wid")
     cid = request.args.get("cid")
     cid = int(cid)
-    if not worke:
-        return 0
-    else:
-        worke = int(worke)
     us = opt("user.db")
     uid = session.get('uid')
-    re = []
-    names = []
-    names2 = []
-    # 找到职业属性
-    work_atr = us.select_w("infoe", "nid=%d and aid=4" % worke)
-    # 总共职业点数初始化
-    score = 0
-    for r in work_atr:
-        skillnid = int(r[3])
-        skilltime = int(r[4])
-        dianshu = us.select_w("plyer", "uid=%d AND kind=1 AND nid=%d AND c_kind=1 AND c_id=%d" % (int(uid), skillnid, cid))
-        # 总共职业点数
-        score = int(dianshu[0][5]) * skilltime + score
-        score = int(score/10)*5
-    # 职业技能
-    workskills = us.select_w("infoe", "nid=%d and aid=12" % worke)
-
-    for wks in workskills:
-        name = us.select_w("name", "kind=3 and id=%d" % int(wks[3]))
-        names.append(name)
-    # 可选职业技能
-    workskills2 = us.select_w("infoe", "nid=%d and aid=46" % worke)
-    if not workskills2:
-        workskills2 = 0
-        choose = 0
-        names2 = 0
-    else:
-        choose = workskills2[0][4]
-        for wks in workskills2:
-            name = us.select_w("name", "kind=3 and id=%d" % int(wks[3]))
-            names2.append(name)
-
-
-    # 找到职业金钱
-    work2 = us.select_w("infoe", "aid=44 and nid=%d" % worke)
-    if work2[0][4]:
-        geld = int(work2[0][4]) * 5
-    else:
-        geld = 0
-
-    # 拥有的钱
-    havegeld = us.select_w("plyer", "uid=%d AND nid=55 AND kind=1 AND c_kind=1 AND c_id=%d" % (int(uid), cid))
-    if havegeld:
-        havegeld = havegeld[0][5]
-    else:
-        havegeld = 0
 
     # 是否已经点了技能点
     skills = us.select_w("plyer", "uid=%d AND kind=3 AND c_kind=1 AND c_id=%d" % (int(uid), cid))
@@ -328,24 +288,7 @@ def getworkskill():
     else:
         skills = 0
 
-    objs = us.select_w("plyer", "uid=%d AND kind=4 AND c_kind=1 AND c_id=%d" % (int(uid), cid))
-    if objs:
-        objs = objs
-    else:
-        objs = 0
-
-
-
-    re.append(score)
-    # re.append(workskills)
-    re.append(names)
-    re.append(choose)
-    re.append(names2)
-    re.append(geld)
-    re.append(havegeld)
-    re.append(skills)
-    re.append(objs)
-    return jsonify(re)
+    return jsonify(skills)
 
 #获取技能点数相关
 @app.route('/get_rooms', methods=['GET'])
@@ -810,6 +753,17 @@ def addu():
     return str(re)
 
 
+@app.route('/addu3', methods=['POST'])
+def addu3():
+    arry = request.form['ary']
+    arry_list = json.loads(arry)
+    cid = request.form['cid']
+    myuid = session.get('uid')
+    setus = opt("user.db")
+    se = po(setus, myuid)
+    se.setting_add(arry_list,cid)
+    return jsonify(arry)
+
 @app.route('/addu2', methods=['POST'])
 def addu2():
     # table = request.form['table']
@@ -1080,7 +1034,8 @@ def del_room_msg():
     re = us.select_w("groupp", "id=%d" % id)
     guid = re[0][3]
     if uid == int(guid):
-        us.delet_w("msg", "kindid=5 and toid=%d" % id)
+        us.updata_w("msg","kindid=0","kindid=5 and toid=%d" % id)
+        # us.delet_w("msg", "kindid=5 and toid=%d" % id)
     else:
         return str("出现迷之错误")
     return str(1)
@@ -1242,40 +1197,40 @@ def gettemplates():
 @app.route('/getwinfo', methods=['GET'])
 def getwinfo():
     workatr = []
-    workatra = []
     workopt = []
+    worksx = []
     out = []
     nid = int(request.args.get("nid"))
 
-    # 12 本职技能
-    # 46 本职技能（可选）
-    # 76 特殊技能
+    # 0 职业技能id + 名称
+    # 1 职业特殊
+    # 2 职业属性id + 次数 + 名称
+    # 3 信誉
     us = opt("user.db")
 
-    re = us.select_w("infoe","nid=%d and aid=12" % (nid))
+    re = us.select_w("infoe","nid=%d" % (nid))
     for r in re:
-        nnid = r[3]
-        name = us.select_w("name", "id=%d" % (nnid))
-        workatr.append(name[0][2])
-
-    re = us.select_w("infoe", "nid=%d and aid=46" % (nid))
-    if re:
-        for r in re:
+        if r[2] == 12:
             nnid = r[3]
             name = us.select_w("name", "id=%d" % (nnid))
-            workatra.append(name[0][2])
-
-    re = us.select_w("infoe", "nid=%d and aid=76" % (nid))
-    if re:
-        for r in re:
+            workatr.append([nnid,name[0][2]])
+        elif r[2] == 76:
             teshu = r[4]
             workopt.append(teshu)
+        elif r[2] == 4:
+            shuxing  = r[3]
+            shuxingt = r[4]
+            name = us.select_w("attr", "id=%d" % (shuxing))
+            worksx.append([shuxing,shuxingt,name[0][2]])
+        elif r[2] == 44:
+            xingyu = r[4]
+    skilllist = us.select_w("name","kind=3")
 
-    if not workatra:
-        workatra = 0
     out.append(workatr)
-    out.append(workatra)
     out.append(workopt)
+    out.append(worksx)
+    out.append(xingyu)
+    out.append(skilllist)
     return jsonify(out)
 
 # 上传信息
