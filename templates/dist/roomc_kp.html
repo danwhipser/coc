@@ -28,7 +28,10 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="#monster-list" class="nav-link" data-toggle="tab" role="tab" aria-selected="false">怪物设置</a>
+                                            <a href="#monster-list" class="nav-link" data-toggle="tab" role="tab" aria-selected="false">怪物管理</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#show_themap" class="nav-link" data-toggle="tab" role="tab" aria-selected="false">图片管理</a>
                                         </li>
                                     </ul>
                                     <!-- Tabs -->
@@ -40,60 +43,100 @@
                                         <div id="book-deteils" class="tab-pane fade show active" role="tabpanel">
                                             <form action="#">
                                                 <div class="form-group">
-                                                    <label class="small">封面图片</label>
-                                                    <div class="position-relative text-center bg-secondary rounded p-6">
-                                                        <!-- Placeholder -->
-                                                        <div class="avatar bg-primary text-white mb-5 dropzone-single-image-prew">
-                                                            <i class="icon-md fe-image"></i>
-                                                        </div>
-
-                                                        <!-- Preview -->
-                                                        <div class="dropzone-single-image-container"></div>
-
-                                                        <!-- Text -->
-                                                        <p class="small text-muted mb-0">上传类型 jpg, gif or png <br> 图片最大 3MB</p>
-
-                                                        <!-- Button with unique ID -->
-                                                        <input class="dropzone-button-js d-none" type="button">
-                                                        <label class="stretched-label mb-0" for="any-unique-id-2"></label>
-                                                    </div>
-                                                    <input type="hidden" value="0" />
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="small" for="new-chat-title">名称</label>
-                                                    <input class="form-control form-control-lg" name="new-chat-title" type="text" placeholder="房间名称">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="small" for="new-chat-topic">游戏类型 (可选)</label>
-                                                    <input class="form-control form-control-lg" name="new-chat-topic" type="text" placeholder="游戏类型">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="small" for="new-chat-topic">人数限制</label>
-                                                    <input class="form-control form-control-lg" name="new-chat-topic" type="text" placeholder="人数限制 (默认为4)">
-                                                </div>
-
-                                                <div class="form-group mb-0">
-                                                    <label class="small" for="new-chat-description">描述</label>
+                                                    <label class="small">场景1：</label>
                                                     <textarea class="form-control form-control-lg" name="new-chat-description" rows="6" placeholder="可以对您建立的游戏进行简单描述,例如背景介绍"></textarea>
+
                                                 </div>
+
+                                                <div class="form-group">
+                                                    <label class="small">检定及线索</label>
+                                                    <input class="form-control form-control-lg" name="new-chat-title" type="text" placeholder="位置">
+                                                    <br />
+                                                    <input class="form-control form-control-lg" name="new-chat-title" type="text" placeholder="检定">
+                                                    <br />
+                                                    <textarea class="form-control form-control-lg" name="new-chat-description" rows="3" placeholder="线索"></textarea>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="small">场景2：</label>
+                                                    <textarea class="form-control form-control-lg" name="new-chat-description" rows="6" placeholder="可以对您建立的游戏进行简单描述,例如背景介绍"></textarea>
+
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="small">检定及线索</label>
+                                                    <input class="form-control form-control-lg" name="new-chat-title" type="text" placeholder="位置">
+                                                    <br />
+                                                    <input class="form-control form-control-lg" name="new-chat-title" type="text" placeholder="检定">
+                                                    <br />
+                                                    <textarea class="form-control form-control-lg" name="new-chat-description" rows="3" placeholder="线索"></textarea>
+
+                                                </div>
+
+
 
                                                 <div class="form-group">
                                                     <p>&nbsp;</p>
-                                                <button class="btn btn-lg btn-primary btn-block" type="button">创建房间</button>
+                                                <button class="btn btn-lg btn-primary btn-block" type="button">提交设置</button>
                                                 </div>
                                             </form>
                                         </div>
                                         <!-- 剧本工具 -->
 
-                                        <!-- 怪物设置 -->
+                                        <!-- 怪物管理 -->
                                         <div id="monster-list" class="tab-pane fade" role="tabpanel">
                                             <nav class="list-group list-group-flush mb-n6">
-                                                sdfsdfsdfdfsf
+                                                建设当中...
                                             </nav>
                                         </div>
-                                        <!-- 怪物设置 -->
+                                        <!-- 怪物管理 -->
+
+                                        <!-- 图片上传 -->
+                                        <div id="show_themap" class="tab-pane fade" role="tabpanel">
+                                            <div class="hide-scrollbar flex-fill">
+
+                                                <div class="border-bottom text-center py-9 px-10">
+                                                    <!-- map的 dropzone上传  -->
+                                                    <div id="dropzone-map-1" class="dropzone-map-js" data-dz-url="{{ url_for('upload_map') }}">
+
+                                                        <button id="map-upload-btn-1" class="btn btn-primary btn-lg dropzone-button-js" type="button">上传图片</button>
+
+                                                        <div class="container-xxl">
+                                                            <div class="dropzone-previews-js form-row py-4"></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <!-- Navs -->
+                                                <ul class="nav nav-tabs nav-justified bg-light rounded-0" role="tablist">
+                                                    <!-- <li class="nav-item">
+                                                        <a href="#chat-id-1-members" class="nav-link active" data-toggle="tab" role="tab" aria-selected="true">Members</a>
+                                                    </li> -->
+                                                    <li class="nav-item">
+                                                        <a>已上传文件</a>
+                                                    </li>
+                                                </ul>
+                                                <!-- Navs -->
+
+                                                <div class="tab-content">
+                                                    <!-- Members -->
+                <!--                                    <div id="chat-id-1-members" class="tab-pane fade show active">-->
+
+                <!--                                    </div>-->
+                                                    <!-- Members -->
+
+                                                    <!-- Files -->
+                                                    <div id="chat-id-2-files" class="tab-pane fade show active">
+                                                        <ul class="list-group list-group-flush list-group-no-border-first map_list">
+
+                                                        </ul>
+                                                    </div>
+                                                    <!-- Files -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 图片上传 -->
 
                                     </div>
                                     <!-- 游戏详细内容 -->
@@ -110,3 +153,110 @@
 
                         </div>
                     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- -----------------------------------------------------------------------------------------------------------------------模板-->
+
+
+
+
+        <!-- DropzoneJS: Template -->
+        <div id="dropzone-template-js">
+            <div class="col-lg-4 my-3">
+                <div class="card bg-light">
+                    <div class="card-body p-3">
+                        <div class="media align-items-center">
+
+                            <div class="dropzone-file-preview">
+                                <div class="avatar avatar rounded bg-secondary text-basic-inverse d-block mr-5">
+                                    <i class="fe-paperclip"></i>
+                                </div>
+                            </div>
+
+                            <div class="dropzone-image-preview">
+                                <div class="avatar avatar mr-5">
+                                    <img src="#" class="avatar-img rounded" data-dz-thumbnail="" alt="">
+                                </div>
+                            </div>
+
+                            <div class="media-body overflow-hidden">
+                                <h6 class="text-truncate small mb-0" data-dz-name></h6>
+                                <p class="extra-small" data-dz-size></p>
+                            </div>
+
+                            <div class="ml-5">
+                                <a href="#" class="btn btn-sm btn-link text-decoration-none text-muted" data-dz-remove>
+                                    <i class="fe-x"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- DropzoneJS: Template -->
+
+
+
+
+<!-- 文件显示列表：Template -->
+        <div id="file-list-template" class="d-none">
+            <li id="file-list-template-0" class="list-group-item py-6">
+                <div class="media">
+
+                    <div class="avatar avatar-sm mr-5">
+                                        <img class="avatar-img map_smallpic" src="" alt="">
+                                    </div>
+
+<!--                    <div class="icon-shape bg-primary text-white mr-5">-->
+<!--                        <i class="fe-paperclip"></i>-->
+<!--                    </div>-->
+
+                    <div class="media-body align-self-center overflow-hidden">
+                        <h6 class="text-truncate mb-0">
+                            <a href="#" class="text-reset map_name" title="file-list-template-filename">file-list-template-filename</a>
+                        </h6>
+                    </div>
+
+                    <div class="align-self-center ml-5">
+                        <div class="dropdown">
+                            <a href="#" class="btn btn-sm btn-ico btn-link text-muted w-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fe-more-vertical"></i>
+                            </a>
+                            <div imgurl="file-list-template-imgurl" class="dropdown-menu map_showu">
+                                <div class="file-list-template-display">
+                                     <a class="dropdown-item d-flex align-items-center map_send" onclick="" href="#">
+                                     图片发送 <span class="ml-auto fe-map"></span>
+                                     </a>
+                                 </div>
+                                <div class="file-list-template-display">
+                                     <a class="dropdown-item d-flex align-items-center map_showh" onclick="" href="#" data-toggle="modal" data-target="#dshowimg">
+                                     图片显示 <span class="ml-auto fe-map"></span>
+                                     </a>
+                                 </div>
+                                 <div class="file-list-template-delete">
+                                     <a class="dropdown-item d-flex align-items-center"  href="#">
+                                     删除 <span class="ml-auto fe-trash-2"></span>
+                                     </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </li>
+
+        </div>
+
+

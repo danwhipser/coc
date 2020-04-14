@@ -286,7 +286,6 @@
                                                         </div>
                                                             {% endif %}
                                                         {% endfor %}
-                                                        <p>&nbsp;</p>
                                                         <button onclick="add_s(rr2,1);" class="btn btn-lg btn-primary btn-block d-none" type="button">
                                                             提交属性
                                                         </button>
@@ -320,7 +319,7 @@
                                                 <div class="card-body">
                                                     <form action="#">
                                                         <div class="form-group">
-                                                        <textarea id="n_48" class="form-control" rows="5">{% for u in user %}{% if u.3 == 48 %}{{u.5}}{% endif %}{% endfor %}</textarea>
+                                                        <textarea id="n_48" class="form-control" rows="8">{% for u in user %}{% if u.3 == 48 %}{{u.5}}{% endif %}{% endfor %}</textarea>
                                                         </div>
                                                         <button onclick="add_o(48);" class="btn btn-lg btn-primary btn-block d-none" type="button">
                                                             提交背景
@@ -996,11 +995,11 @@
                 var nid = list_id[r];
                 if(frm==1){
                     var v = $("#s_"+nid).html();
-                    if(nid==23){
-                        quicke = parseInt(v);
-                        quicke = quicke/2;
-                        $(".quit").html(quicke);
-                    }
+                    // if(nid==23){
+                    //     quicke = parseInt(v);
+                    //     quicke = quicke/2;
+                    //     $(".quit").html(quicke);
+                    // }
                 }
                 else{
                     var v = $("#n_"+nid).val();

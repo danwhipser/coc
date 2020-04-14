@@ -986,6 +986,34 @@ def add_objc():
     us.add_u(9,uid,79,0,lastid,1,int(cid))
     return str(1)
 
+#捡起物品
+@app.route('/add_objt', methods=['POST'])
+def add_objt():
+    kkind = request.form['kkind']
+    kind = request.form['kind']
+    pname = request.form['pname']
+    pid = request.form['pid']
+    uid = request.form['uid']
+    cid = request.form['cid']
+    toid = request.form['toid']
+    obj = request.form['obj']
+    pid = int(pid)
+    kind = int(kind)
+    uid = int(uid)
+    cid = int(cid)
+    toid = int(toid)
+    kkind = int(kkind)
+    us = opt("user.db")
+    # 0预设物品 1自定义物品
+    if kind == 0:
+        us.add("plyer", "%d, %d, %d, %d,'%s', %d, %d" % (uid, 4, pid, 0, '0', 1, cid))
+    elif kind == 1:
+        us.add("plyer", "%d, %d, %d, %d,'%s', %d, %d" % (uid, 9, 79, 0, pid, 1, cid))
+    msg = pname+"捡起了 "+obj
+    re = send_msg(kkind,uid,cid,toid,msg)
+    return str(re)
+
+
 #获取自定义物品
 @app.route('/get_objc', methods=['GET'])
 def get_objc():
@@ -1052,8 +1080,8 @@ def delobj():
     us = opt("user.db")
     if token == "0":
         if kind == "custom":
-            us.delet_w("custom", "id=%d and uid=%d" % (pid, myuid))
-            us.delet_w("custom", "link_id=%d and uid=%d" % (pid, myuid))
+            # us.delet_w("custom", "id=%d and uid=%d" % (pid, myuid))
+            # us.delet_w("custom", "link_id=%d and uid=%d" % (pid, myuid))
             us.delet_w("plyer", "nid=79 and value='%s' and uid=%d" % (str(pid), myuid))
         else:
             us.delet_w("plyer", "id=%d and uid=%d" % (pid, myuid))
@@ -1061,8 +1089,6 @@ def delobj():
     check = checktoken(token)
     if check == 1:
         if kind == "custom":
-            us.delet_w("custom", "id=%d" % (pid))
-            us.delet_w("custom", "link_id=%d" % (pid))
             us.delet_w("plyer", "nid=79 and value='%s'" % (str(pid)))
         else:
             us.delet_w("plyer", "id=%d" % (pid))
@@ -1097,6 +1123,7 @@ def sendmsg():
 
     msg = request.form['msg']
     myuid = int(session.get('uid'))
+    msg = msg.replace("'", "\"")
     re = send_msg(kind, myuid, fromcid, toid, msg)
     return str(re)
 
@@ -1342,6 +1369,7 @@ def tou_demage2():
     skillname = request.form['skillname']
     pname = request.form['pname']
     zhong = request.form['zhong']
+    desctip = request.form['desc']
     myuid = int(session.get('uid'))
 
     zhong = int(zhong)
@@ -1369,9 +1397,15 @@ def tou_demage2():
     if dama != 0:
         for a in dama:
             cc = cc+int(a)
-    title = "伤害计算:"+str(damage)+"|"+str(ifbomb)
-    dmsg = "<a title=\"%s\">伤害检定:%s</a>" % (title, str(cc))
-    smsg = msg+dmsg
+    title = "伤害计算:"+str(damage)+"| DB:"+str(db)
+    if damage != "0":
+        dmsg = "<a title=\"%s\">伤害检定:%s</a>" % (title, str(cc))
+        smsg = msg + dmsg
+    else:
+        smsg = msg
+
+    if ifbomb != 0 and desctip != "0":
+        smsg = smsg + "<p>效果："+desctip+"</p>"
     re = send_msg(kind, myuid, fromcid, toid, smsg)
     return str(re)
 

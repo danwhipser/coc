@@ -173,6 +173,45 @@
                                 </div>
                                 <!-- Message -->
 
+                             <!-- Message -->
+                                <div id="msg_tp_kp" class="message" style="display: none;">
+                                    <!-- Avatar -->
+                                    <a class="avatar avatar-sm mr-4 mr-lg-5 msg_imgs" href="#">
+                                        <img class="avatar-img msg_imga" src="static/assets/images/avatars/9.jpg" alt="">
+                                        <div class="badge badge-sm badge-pill badge-success badge-border-basic badge-bottom-right">
+<!--                                            <span class="text-uppercase"></span>-->
+                                            <samll class="msg_img_name">大牛皮我</samll>
+                                        </div>
+                                    </a>
+                                    <a class="avatar avatar-sm ml-4 ml-lg-5 bg-success text-white text-truncate msg_img_p" href="#">
+                                        <span class="msg_img_pa">名称</span>
+                                    </a> &nbsp;&nbsp;
+
+                                    <!-- Message: body -->
+                                    <div class="message-body">
+
+                                        <!-- Message: row -->
+                                        <div class="message-row">
+                                            <div class="d-flex align-items-center">
+
+                                                <!-- Message: content -->
+                                                <div class="message-content bg-light">
+                                                    <div class="msg_main">内容内容内容</div>
+
+                                                    <div class="mt-1">
+                                                        <small class="opacity-65 msg_time">8 mins ago</small>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: content -->
+
+                                            </div>
+                                        </div>
+                                        <!-- Message: row -->
+
+                                    </div>
+                                    <!-- Message: body -->
+                                </div>
+                                <!-- Message -->
 <!--                                ---------------------------------------------------------------------------------------------------->
 
                                 <!-- Message -->
@@ -366,10 +405,10 @@
 <!--                                                        编辑房间-->
 <!--                                                        <span class="ml-auto fe-edit"></span>-->
 <!--                                                    </a>-->
-                                                    <a onclick="" class="dropdown-item d-flex align-items-center" href="#" data-chat-sidebar-toggle="#chat-2-info">
-                                                        上传图片
-                                                        <span class="ml-auto fe-map"></span>
-                                                    </a>
+<!--                                                    <a onclick="" class="dropdown-item d-flex align-items-center" href="#" data-chat-sidebar-toggle="#chat-2-info">-->
+<!--                                                        上传图片-->
+<!--                                                        <span class="ml-auto fe-map"></span>-->
+<!--                                                    </a>-->
                                                     <a onclick="clear_msg({{group_id}})" class="dropdown-item d-flex align-items-center" href="#">
                                                         清除对话
                                                         <span class="ml-auto fe-inbox"></span>
@@ -1056,7 +1095,7 @@
               },
                 function(myData , status){
                     if(myData!=0){
-                        var teshu = myData[2][0];
+                        var teshu = myData[1];
                         $("#"+showid).append("<p>职业特殊:"+teshu+"</p>");
                     }
             },"json");
@@ -1114,6 +1153,7 @@
                                 mycid = cid;
                                 $("#dtt_mycid").val(mycid);
                                 $("#dtt_myuid").val(uid);
+                                $("#dtt_myname").val(pname);
                                 $("#dtt_myjobname").val(workname);
                                 show_myde();
                                 var outtext="退出游戏";
@@ -1179,6 +1219,10 @@
                         var mytemp = "msg_my_";
                         set_msg_box(sia,"msg_box","msg_tp_my",mytemp,name,pic,msga);
                     }
+                    else if(uid == "{{group_creater}}"){
+                        var mytemp = "msg_oth_";
+                        set_msg_box(sia,"msg_box","msg_tp_kp",mytemp,name,pic,msga);
+                    }
                     else{
                         // console.log(name);
                         var mytemp = "msg_oth_";
@@ -1207,6 +1251,7 @@
             // $("#"+mytemp+sid+" .msg_imgs").attr("href","#"+mytemp+sid);
             var showmsg = msga[6];
             showmsg = cha("img",showmsg);
+            showmsg = cha("dian",showmsg);
             $("#"+mytemp+sid+" .msg_main").html(showmsg);
             var msg_time = currentTime(parseInt(msga[5]));
             $("#"+mytemp+sid+" .msg_time").html(msg_time);
@@ -1425,7 +1470,7 @@
                                         }
                                         {% endif %}
                                     {% endfor %}
-                                    set_objj("dt_objs_list","dt_obj","dt_s_"+pid,str2,pname,useskill,damage,skillplu,skillplu2,pid);
+                                    set_objj("dt_objs_list","dt_obj","dt_s_"+pid,str2,pname,useskill,damage,skillplu,skillplu2,pid,nid);
                                 }
                             {% endfor %}
                         }
@@ -1478,7 +1523,7 @@
         }
 
         //物品信息的框框 (列出物品的列表, 物品条的模板, 物品条的id, 物品名称, 人物名称, 使用技能, 伤害, 技能加成, 技能加成参数, 物品id, 类型(预设/自定义),描述 )
-        function set_objj(list,temp,col,name,pname=0,useskill="0",damage="0",skillplu="0",skillplu2="0",pid="0", zhong="0", kind="0",desc="0"){
+        function set_objj(list,temp,col,name,pname=0,useskill="0",damage="0",skillplu="0",skillplu2="0",pid="0",nid="0", zhong="0", kind="0",desc="0"){
             var cc = $("#"+temp).clone(true);
             var useskillid=0;
             cc.attr('id',col);
@@ -1530,7 +1575,9 @@
             }
 
             if(desc!="0"){
-                var strr='<a class="dropdown-item dt_atr_objcd">描述:'+desc+'</a>';
+                var strr='<a style="white-space: pre-wrap;\n' +
+                    'word-wrap: break-word;\n' +
+                    'max-width: 100%;" class="dropdown-item dt_atr_objcd">描述:'+desc+'</a>';
                 $("#"+col+" .dt_atr_sdlist").append(strr);
             }
 
@@ -1545,15 +1592,19 @@
 
             // $("#"+col+" .dt_mingtou").attr("onclick","tou3("+useskillid+",'"+pname+name+"','"+damage+"','"+skillplu+"','"+skillplu2+"')");
             // $("#"+col+" .dt_mingtoum").attr("onclick","tou3("+useskillid+",'"+pname+name+"','"+damage+"','"+skillplu+"','"+skillplu2+"','mobile')");
-            $("#"+col+" .dt_mingtou").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"')");
-            $("#"+col+" .dt_mingtoum").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"','mobile')");
+            $("#"+col+" .dt_mingtou").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"',0,'"+desc+"')");
+            $("#"+col+" .dt_mingtoum").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"','mobile','"+desc+"')");
 
+            $("#"+col+" .dt_jiaochu").attr("onclick","reng('"+pid+"','"+nid+"','"+kind+"',"+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"',0,'"+desc+"')");
+            $("#"+col+" .dt_jiaochum").attr("onclick","reng('"+pid+"','"+nid+"','"+kind+"',"+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"','mobile','"+desc+"')");
             // console.log(pid);
             if(pid!="0"){
                 $("#"+col+" .dt_deltou").attr("onclick","delobj("+pid+",'"+kind+"')");
             }
             else{
                 $("#"+col+" .dt_deltou").remove();
+                $("#"+col+" .dt_jiaochu").remove();
+                $("#"+col+" .dt_jiaochum").remove();
             }
 
 
@@ -1614,10 +1665,10 @@
                     var uuid=$("#dtt_uid").val();
                     var jobbnm=$("#dtt_jobname").val();
                     show_deteils(ccid,uuid,jobbnm);
-                    // console.log(myData);
+                    alert("成功修改");
                 });
             }
-            alert("成功修改");
+
         }
 
         //添加调查员笔记
@@ -1800,7 +1851,7 @@
         }
 
 
-        function tou4(skillid=0,skillname="0",pname="0",obj="0",damage="0", zhong="0",type=0){
+        function tou4(skillid=0,skillname="0",pname="0",obj="0",damage="0", zhong="0",type=0, desc="0"){
             if(mycid==0 || mycid=="0" || !mycid){
                 alert("请至少将一个卡组加入游戏再输入");
                 return
@@ -1824,6 +1875,7 @@
                 pname: pname,
                 skillname:skillname,
                 zhong : zhong,
+                desc:desc
             },
             function(myData , status){
                 // console.log(myData);
@@ -1837,6 +1889,56 @@
 
         }
 
+        //交出物品
+        function reng(pid,nid,kind,skillid=0,skillname="0",pname="0",obj="0",damage="0", zhong="0",type=0, desc="0") {
+            if(kind!=0){
+                kind=1;
+                var ppid = pid;
+            }
+            else{
+                var ppid = nid;
+            }
+            var ht = pname+'交出了 <a  class="text-muted" onclick=take('+ppid+','+kind+',"'+obj+'"); href="#"><strong>'+obj+'</strong></a>';
+            if(skillname!=0){
+                ht = ht+"<br />技能使用："+skillname;
+            }
+            if(zhong!=0){
+                ht = ht+"<br />命中："+zhong;
+            }
+            if(damage!=0){
+                ht = ht+"<br />伤害："+damage;
+            }
+            if(desc!=0){
+                ht = ht+"<br />描述："+desc;
+            }
+            send_msg(ht);
+            if(type=="mobile"){
+                $("#chat-1-user-profile").attr("class","chat-sidebar");
+            }
+        }
+
+        function take(pid,kind,obj){
+            var uid = $("#dtt_uid").val();
+            var mycid = $("#dtt_cid").val();
+            var myname = $("#dtt_myname").val();
+            var jobbnm=  $("#dtt_jobname").val();
+            $.post("/add_objt", {
+                    kkind:5,
+                    pid: pid,
+                    kind: kind,
+                    toid:"{{group_id}}",
+                    pname: myname,
+                    uid:uid,
+                    cid:mycid,
+                    obj:obj
+                },
+                function(myData , status){
+                    show_deteils(mycid,uid,jobbnm);
+                    $("#chat-id-1-input").val("");
+                    get_msg();
+                });
+
+        }
         //----------------------------------------------------------------物品相关
         function add_obj() {
             var obj_id = $("#list_objs").val();
@@ -1952,6 +2054,7 @@
                 },
                 function(myData , status){
                     var pid = id;
+
                     for(data of myData){
                         var aid = data[3];
                         var v   = data[4];
@@ -1970,7 +2073,7 @@
                             var desc = v;
                         }
                     }
-                    set_objj("dt_objs_list","dt_obj","dt_sc_"+pid,name,pname,useskill,damage,"0","0",pid, zhong,"custom",desc);
+                    set_objj("dt_objs_list","dt_obj","dt_sc_"+pid,name,pname,useskill,damage,"0","0",pid,"0", zhong,"custom",desc);
                     // console.log(myData);
                 },"json");
         }
@@ -2069,16 +2172,17 @@
             var filelistname=arry;
             var template = filelisttemplate;
             // console.log(template)
-            $("#chat-id-1-files .map_list").empty();
+            $("#chat-id-2-files .map_list").empty();
             filelistname.forEach(function(val){
                 template = $("#file-list-template-0").clone(true);
                 template.attr('id','map_'+val[0]);
-                $("#chat-id-1-files .map_list").append(template);
+                $("#chat-id-2-files .map_list").append(template);
                 $("#map_"+val[0]+" .map_name").text(val[2]);
                 $("#map_"+val[0]+" .map_name").attr("title",val[2]);
                 $("#map_"+val[0]+" .map_smallpic").attr("src",val[2]);
                 $("#map_"+val[0]+" .map_showu").attr("imgurl",val[2]);
                 $("#map_"+val[0]+" .map_showh").attr("onclick","showh_img('"+val[2]+"')");
+                $("#map_"+val[0]+" .map_send").attr("onclick","send_msg('img "+val[2]+"')");
 
                 // $("[title ='file-list-template-filename']").text(val)
                 // $("[title ='file-list-template-filename']").attr("title",val)
@@ -2179,6 +2283,14 @@
                 }
             });
         }
+
+        $('#chat-id-1-input').keydown(function (e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode == 13) {
+                send_msg();
+                return false;
+            }
+        });
         </script>
     </body>
 </html>

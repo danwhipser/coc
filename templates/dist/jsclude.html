@@ -13,7 +13,13 @@
     function cha(method, str){
         if(method=="img"){
             var objRegExp= /img\s(.+)$/;
-            var repla = "<div class=\"col\"><img class=\"img-fluid rounded\" src=\"$1\" data-action=\"zoom\" alt=\"\"></div>"
+            var repla = "<div class=\"col\"><img class=\"img-fluid rounded\" src=\"$1\" data-action=\"zoom\" alt=\"\"></div>";
+            str = str.replace(objRegExp, repla);
+            return str;
+        }
+        else if(method=="dian"){
+            var objRegExp= /@d$/;
+            var repla = "\'";
             str = str.replace(objRegExp, repla);
             return str;
         }
