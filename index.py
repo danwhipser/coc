@@ -377,10 +377,22 @@ def signin():
     title = "欢迎来到克苏鲁pao团"
     return render_template('dist/signin.html', message=title)
 
-#kp页面
-@app.route('/kppage2')
-def kppage2():
-    return render_template('kppage2.html')
+#kp数据获取
+@app.route('/getkprom', methods=['POST'])
+def getkprom():
+    gid = request.form['gid']
+    token = request.form['token']
+    if token == "0":
+        return jsonify("")
+    check = checktoken(token)
+    if check != 1:
+        return jsonify("")
+    myuid = session.get('uid')
+    setus = opt("user.db")
+    se = po(setus, myuid)
+    out = se.kp_sel(gid)
+    # out = se.out_all
+    return jsonify(out)
 
 
 #地图页面
@@ -1120,11 +1132,12 @@ def sendmsg():
     kind = int(request.form['kind'])
     toid = int(request.form['toid'])
     fromcid = int(request.form['fromcid'])
+    toid_p = int(request.form['toid_p'])
 
     msg = request.form['msg']
     myuid = int(session.get('uid'))
     msg = msg.replace("'", "\"")
-    re = send_msg(kind, myuid, fromcid, toid, msg)
+    re = send_msg(kind, myuid, fromcid, toid, msg,toid_p)
     return str(re)
 
 #获取要显示的图片
@@ -1163,7 +1176,8 @@ def getmsg_group():
     else:
         return jsonify(0)
     us = opt("user.db")
-    re = us.select_w("msg","kindid=5 and toid=%d order by id desc limit 0,100" % (gid))
+    myuid = int(session.get('uid'))
+    re = us.select_w("msg","(kindid=5 or (kindid=2 and (toid_p=%d or fromid=%d))) and toid=%d order by id desc limit 0,100" % (myuid, myuid, gid))
     for r in re:
         uid = r[2]
         fromcid = r[3]
@@ -1308,10 +1322,69 @@ def change_filename(filename):
     filename = str(timenum)+"_"+str(rannum)+fileinfo[-1]
     return filename
 
+
+@app.route('/toul', methods=['POST'])
+def toul():
+    kind = int(request.form['kind'])
+    toid = int(request.form['toid'])
+    toid_p = int(request.form['toid_p'])
+    fromcid = int(request.form['fromcid'])
+
+    nnid = int(request.form['nnid'])
+    shuxing = int(request.form['sx'])
+    jineng = int(request.form['jn'])
+    diffi = int(request.form['diffi'])
+    ppname = request.form['ppname']
+
+    us = opt("user.db")
+    nnamei = us.select_w("name","kind=10 and id=%d" % nnid)
+    nname = nnamei[0][2]
+    # 产生3个随机数
+    ro1 = op.roll(100)
+    ro1 = op.reset_num(ro1)
+    ro2 = op.roll(100)
+    ro2 = op.reset_num(ro2)
+    ro3 = op.roll(100)
+    ro3 = op.reset_num(ro3)
+
+    msg = ppname+" "+nname + "检定:"
+    ms = set_secces(ro1, shuxing)
+    inf1 = ms[0]
+    seccnum1 = ms[1]-7
+    ms = set_secces(ro2, jineng)
+    inf2 = ms[0]
+    seccnum2 = ms[1]-7
+    if diffi == 0:
+        ro3 = 100
+        inf3 = "大失败!100"
+        seccnum3 = -7
+    elif diffi == 100:
+        ro3 = 1
+        seccnum3 = 7
+        inf3 = "大成功!1"
+    else:
+        ms = set_secces(ro3, diffi)
+        inf3 = ms[0]
+        seccnum3 = ms[1] - 7
+    sse = seccnum1+seccnum2
+    mmsg = "%s + %s | %s" % (inf1, inf2, inf3)
+    # mmsg = "%d/%d(%d)+%d/%d(%d) | %d/%d(%d)" % (ro1,shuxing,seccnum1,ro2,jineng,seccnum2,ro3,diffi,seccnum3)
+    if sse > seccnum3:
+        msg = msg+"成功!"
+    else:
+        msg = msg + "失败!"
+    msg = "<h5 title=\""+mmsg+"\">"+msg+"</h5>"
+    myuid = int(session.get('uid'))
+    re = send_msg(kind, myuid, fromcid, toid, msg, toid_p)
+    return msg
+
+
+
 @app.route('/tou', methods=['POST'])
 def tou():
     kind = int(request.form['kind'])
     toid = int(request.form['toid'])
+    toid_p = int(request.form['toid_p'])
     fromcid = int(request.form['fromcid'])
     value = request.form['value']
     obj = request.form['obj']
@@ -1330,7 +1403,7 @@ def tou():
         ms = set_secces(ro, value, msg)
         msg = ms[0]
     myuid = int(session.get('uid'))
-    re = send_msg(kind,myuid,fromcid,toid, msg)
+    re = send_msg(kind,myuid,fromcid,toid, msg,toid_p)
     return str(re)
 
 # 把伤害投出来
@@ -1362,6 +1435,7 @@ def tou_demage():
 def tou_demage2():
     kind = int(request.form['kind'])
     toid = int(request.form['toid'])
+    toid_p = int(request.form['toid_p'])
     fromcid = int(request.form['fromcid'])
     damage = request.form['damage']
     db = request.form['db']
@@ -1386,11 +1460,11 @@ def tou_demage2():
     else:
         seccnum = 3
 
-    if seccnum>=5:
+    if seccnum >= 12:
         ifbomb = "max"
-    elif seccnum>=3 and seccnum<5:
+    elif seccnum >= 8 and seccnum < 12:
         ifbomb = "normal"
-    elif seccnum<3:
+    elif seccnum < 7:
         ifbomb = 0
     dama = op.roll_str2(damage,db,ifbomb)
     cc = 0
@@ -1406,7 +1480,7 @@ def tou_demage2():
 
     if ifbomb != 0 and desctip != "0":
         smsg = smsg + "<p>效果："+desctip+"</p>"
-    re = send_msg(kind, myuid, fromcid, toid, smsg)
+    re = send_msg(kind, myuid, fromcid, toid, smsg,toid_p)
     return str(re)
 
 # 疯狂检定
@@ -1441,37 +1515,37 @@ def tou_creacy():
 
 
 # 检测成功程度 c参数,value最大值,msg+"成功"+数字
-def set_secces(c,value,msg):
+def set_secces(c,value,msg=""):
     out = []
     v2 = int(value / 2)
     v3 = int(value / 5)
     if c > value:
         if c > 95:
             msg = msg+"大失败!"+str(c)
-            re =1
+            re =0
         else:
             msg = msg+"失败!"+str(c)
-            re = 2
+            re = 6
     elif c <= value and c > v2:
         msg = msg+"成功!"+str(c)
-        re = 3
+        re = 8
     elif c == 1:
         msg = msg+"大成功!"+str(c)
-        re = 6
+        re = 14
     elif c <= v2 and c > v3:
         msg = msg+"困难成功!"+str(c)
-        re = 4
+        re = 10
     elif c <= v3:
         msg = msg+"极限成功!"+str(c)
-        re = 5
+        re = 12
     out.append(msg)
     out.append(re)
     return out
 
-def send_msg(kind,myuid,fromcid,toid,msg):
+def send_msg(kind,myuid,fromcid,toid,msg,toid_p=0):
     us = opt("user.db")
     myuid = int(myuid)
     t = int(time.time())
-    plus = "%d, %d, %d, %d, '%s', '%s' " % (kind, myuid, fromcid, toid, t, msg)
+    plus = "%d, %d, %d, %d, '%s', '%s', %d " % (kind, myuid, fromcid, toid, t, msg,toid_p)
     re = us.add("msg", plus)
     return re

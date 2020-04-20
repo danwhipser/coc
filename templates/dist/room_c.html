@@ -1,6 +1,12 @@
 {% include 'dist/header.html' %}
 <!-- Head -->
-<style>.modal-backdrop{z-index:1019;}</style>
+<style>
+    .modal-backdrop{z-index:1019;}
+    .text-white h5{color: #ffffff;}
+</style>
+<!-- Scripts -->
+{% include 'dist/jsclude.html' %}
+<!-- Scripts -->
     <body>
 
         <div class="layout">
@@ -11,7 +17,7 @@
             <div class="main main-visible" data-mobile-height="">
 
                 <!-- Chat -->
-                <div id="chat-1" class="chat dropzone-form-js" data-dz-url="some.php">
+                <div id="chat-1" class="chat">
 
                     <!-- Chat: body -->
                     <div class="chat-body">
@@ -171,6 +177,44 @@
                                     </div>
                                     <!-- Message: body -->
                                 </div>
+
+                            <div id="msg_tp_other_p" class="message" style="display: none;">
+                                    <!-- Avatar -->
+                                    <a class="avatar avatar-sm mr-4 mr-lg-5 msg_imgs" href="#">
+                                        <img class="avatar-img msg_imga" src="static/assets/images/avatars/9.jpg" alt="">
+                                        <div class="badge badge-sm badge-pill badge-primary badge-border-basic badge-bottom-right">
+<!--                                            <span class="text-uppercase"></span>-->
+                                            <samll class="msg_img_name">大牛皮我</samll>
+                                        </div>
+                                    </a>
+                                    <a class="avatar avatar-sm ml-4 ml-lg-5 bg-primary text-white text-truncate msg_img_p" href="#">
+                                        <span class="msg_img_pa">名称</span>
+                                    </a> &nbsp;&nbsp;
+
+                                    <!-- Message: body -->
+                                    <div class="message-body">
+
+                                        <!-- Message: row -->
+                                        <div class="message-row">
+                                            <div class="d-flex align-items-center">
+
+                                                <!-- Message: content -->
+                                                <div class="message-content bg-dark text-white">
+                                                    <div class="msg_main">内容内容内容</div>
+
+                                                    <div class="mt-1">
+                                                        <small class="opacity-65 msg_time">8 mins ago</small>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: content -->
+
+                                            </div>
+                                        </div>
+                                        <!-- Message: row -->
+
+                                    </div>
+                                    <!-- Message: body -->
+                                </div>
                                 <!-- Message -->
 
                              <!-- Message -->
@@ -196,6 +240,45 @@
 
                                                 <!-- Message: content -->
                                                 <div class="message-content bg-light">
+                                                    <div class="msg_main">内容内容内容</div>
+
+                                                    <div class="mt-1">
+                                                        <small class="opacity-65 msg_time">8 mins ago</small>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: content -->
+
+                                            </div>
+                                        </div>
+                                        <!-- Message: row -->
+
+                                    </div>
+                                    <!-- Message: body -->
+                                </div>
+
+
+                            <div id="msg_tp_kp_p" class="message" style="display: none;">
+                                    <!-- Avatar -->
+                                    <a class="avatar avatar-sm mr-4 mr-lg-5 msg_imgs" href="#">
+                                        <img class="avatar-img msg_imga" src="static/assets/images/avatars/9.jpg" alt="">
+                                        <div class="badge badge-sm badge-pill badge-success badge-border-basic badge-bottom-right">
+<!--                                            <span class="text-uppercase"></span>-->
+                                            <samll class="msg_img_name">大牛皮我</samll>
+                                        </div>
+                                    </a>
+                                    <a class="avatar avatar-sm ml-4 ml-lg-5 bg-success text-white text-truncate msg_img_p" href="#">
+                                        <span class="msg_img_pa">名称</span>
+                                    </a> &nbsp;&nbsp;
+
+                                    <!-- Message: body -->
+                                    <div class="message-body">
+
+                                        <!-- Message: row -->
+                                        <div class="message-row">
+                                            <div class="d-flex align-items-center">
+
+                                                <!-- Message: content -->
+                                                <div class="message-content bg-dark text-white">
                                                     <div class="msg_main">内容内容内容</div>
 
                                                     <div class="mt-1">
@@ -251,6 +334,45 @@
                                     </div>
                                     <!-- Message: body -->
                                 </div>
+
+
+
+                            <div id="msg_tp_my_p" class="message message-right" style="display: none;">
+                                    <!-- Avatar -->
+                                    <div class="avatar avatar-sm ml-4 ml-lg-5 msg_imgs">
+                                        <img class="avatar-img msg_imga" src="static/assets/images/avatars/12.jpg" alt="" title="名称">
+                                        <div class="badge badge-sm badge-pill badge-info badge-border-basic badge-bottom-left">
+<!--                                            <span class="text-uppercase"></span>-->
+                                            <samll class="msg_img_name">大牛皮我</samll>
+                                        </div>
+                                    </div>
+                                     <div class="avatar avatar-sm ml-4 ml-lg-5 bg-primary text-white text-truncate msg_img_p">
+                                                            <span class="msg_img_pa">名称</span>
+                                                        </div>
+                                    <!-- Message: body -->
+                                    <div class="message-body">
+
+                                        <!-- Message: row -->
+                                        <div class="message-row">
+                                            <div class="d-flex align-items-center justify-content-end">
+
+                                                <!-- Message: content -->
+                                                <div class="message-content bg-dark text-white">
+                                                    <div class="msg_main">内容内容内容</div>
+
+                                                    <div class="mt-1">
+                                                        <small class="opacity-65 msg_time">8 mins ago</small>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: content -->
+
+                                            </div>
+                                        </div>
+                                        <!-- Message: row -->
+
+                                    </div>
+                                    <!-- Message: body -->
+                                </div>
                                 <!-- Message -->
 <!--                            聊天窗口模板----------------------------------------------------------------->
 
@@ -268,43 +390,30 @@
                         <div class="chat-footer border-top py-4 py-lg-6 px-lg-8">
                             <div class="container-xxl">
 
-                                <form id="chat-id-1-form" action="static/assets/php/upload.php" data-emoji-form="">
-                                    <div class="form-row align-items-center">
-                                        <div class="col">
+                                <div id="sent_more" class="form-row align-items-center" style="display: none;">
+                                    <div class="col">
                                             <div class="input-group">
 
-                                                <!-- Textarea -->
-                                                <textarea id="chat-id-1-input" class="form-control bg-transparent border-0" placeholder="人物卡加入游戏之后再输入..." rows="1" data-emoji-input="" data-autosize="true"></textarea>
 
-                                                <!-- Emoji button -->
-                                                <div class="input-group-append">
-                                                    <button id="emo" class="btn btn-ico btn-secondary btn-minimal btn-sm bg-transparent border-0" type="button" data-emoji-btn="" title="表情包">
-                                                        <img src="static/assets/images/xiaolian.svg" data-inject-svg="" alt="">
+
+
+
+
+
+                                                <div>
+                                                    <button onclick="creacy()" class="btn btn-ico btn-minimal" type="button" title="疯狂检定">
+                                                        <i class="fe-target"></i>
+                                                    </button>
+                                                    <button id="showo_imgi" onclick="showo_img()" class="btn btn-ico btn-minimal"  data-toggle="modal" data-target="#dshowimg" type="button" title="显示图片">
+                                                        <i class="fe-image"></i>
+                                                    </button>
+                                                    <button onclick="showo_img()" class="btn btn-ico btn-minimal" data-toggle="modal" data-target="#dnotebook" type="button" title="调查员笔记">
+                                                        <i class="fe-book-open"></i>
                                                     </button>
                                                 </div>
-                                                <!-- shu button -->
-                                                <div class="input-group-append">
-                                                    <button id="listother" class="btn btn-ico btn-secondary btn-minimal btn-sm bg-transparent border-0" type="button" title="其他" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <img src="static/assets/images/shu.svg" data-inject-svg="" alt="">
-                                                    </button>
-<!--                                                    筛子数字-->
-                                                    <div class="dropdown-menu" aria-labelledby="cussaizi">
-                                                        <a onclick="creacy()" class="dropdown-item d-flex align-items-center" href="#">
-                                                            疯狂检定 <span class="ml-auto fe-target"></span>
-                                                        </a>
-                                                        <a id="showo_imgi" onclick="showo_img()" class="dropdown-item d-flex align-items-center" href="#" data-toggle="modal" data-target="#dshowimg">
-                                                            显示图片 <span class="ml-auto fe-image"></span>
-                                                        </a>
-                                                        <a class="dropdown-item d-flex align-items-center" href="#" data-toggle="modal" data-target="#dnotebook">
-                                                            调查员笔记 <span class="ml-auto fe-book-open"></span>
-                                                        </a>
-
-
-                                                    </div>
-                                                </div>
-                                                <div class="input-group-append">
-                                                    <button id="cussaizi" class="btn btn-ico btn-secondary btn-minimal btn-sm bg-transparent border-0" type="button" title="特殊骰子" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <img src="static/assets/images/saizi.svg" data-inject-svg="" alt="">
+                                                <div>
+                                                    <button id="cussaizi" class="btn btn-ico btn-minimal" type="button" title="特殊骰子" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fe-slack"></i>
                                                     </button>
 <!--                                                    筛子数字-->
                                                     <div class="dropdown-menu" aria-labelledby="cussaizi">
@@ -322,7 +431,13 @@
                                                         <a onclick="tou2(0,'d2',2);" class="dropdown-item" href="#!">d2</a>
                                                     </div>
                                                 </div>
+                                                &nbsp;&nbsp;
+                                                <select onchange="ssent()" id="send_toto" class="form-control custom-select">
+                                                    <option value="public" selected="selected">公共信息</option>
 
+                                                </select>
+                                                <input id="send_toto_id" type="hidden" value="public" />
+                                                <input id="send_toto_text" type="hidden" value="public" />
                                             </div>
 <!--                                            调查员笔记-->
                                             <div class="modal fade" id="dnotebook" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -354,17 +469,27 @@
                                                 </div>
                                             </div>
                                         </div>
+                                </div>
 
-                                        <!-- Submit button -->
+                                    <div class="form-row align-items-center">
+                                        <div class="col">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <button onclick="$('#sent_more').toggle('fast')" class="btn btn-ico btn-minimal" type="button" title="更多">
+                                                        <i class="fe-list"></i>
+                                                    </button>
+                                                </div>
+                                                <textarea id="chat-id-1-input" class="form-control bg-transparent border-0" placeholder="人物卡加入游戏之后再输入..." rows="1" data-emoji-input="" data-autosize="true"></textarea>
+                                            </div>
+                                        </div>
+                                            <!-- Submit button -->
                                         <div class="col-auto">
-                                            <button onclick="send_msg()" class="btn btn-ico btn-primary rounded-circle" type="button">
+                                            <button onclick="sub_send_msg()" class="btn btn-ico btn-primary rounded-circle" type="button">
                                                 <span class="fe-send"></span>
                                             </button>
                                         </div>
 
                                     </div>
-
-                                </form>
 
                             </div>
                         </div>
@@ -1035,9 +1160,7 @@
         </div>
         <!-- Modal: Invite friends -->
 
-        <!-- Scripts -->
-        {% include 'dist/jsclude.html' %}
-        <!-- Scripts -->
+
     <script>
         var pids = new Array();
         var noteid=0;
@@ -1088,6 +1211,11 @@
            // get_objc(13);
         });
 
+        $("[data-toggle='tooltip']").tooltip({
+        //指定显示时延迟和消失时延迟
+        delay: {show: 50, hide: 100}
+        });
+
         //获取职业描述
         function get_winfo(id,showid){
             $.get("/getwinfo", {
@@ -1128,6 +1256,14 @@
                             var work = 0;
                             var workname = "未设定职业";
                         }
+
+                        // 私信的地方加入玩家列表
+                        if(method=="allkazu"){
+                            var list_pl = "<option value='"+uid+"'>"+pname+"</option>";
+                            $("#send_toto").prepend(list_pl);
+                        }
+
+                        //在玩家列表中列出来
                         var cc = $("#"+templates).clone(true);
                         cc.attr('id',mytemp+cid);
                         // cc.attr('href',"roomc?rid="+roomid);
@@ -1156,6 +1292,7 @@
                                 $("#dtt_myname").val(pname);
                                 $("#dtt_myjobname").val(workname);
                                 show_myde();
+                                $("#chat-id-1-input").attr("placeholder","输入信息...");
                                 var outtext="退出游戏";
                             }
                             else{
@@ -1212,22 +1349,42 @@
                     var name = data[1];
                     var pic = data[2];
                     var msga = data[3];
+                    var kind = msga[1];
                     var timestamp=new Date().getTime();
                     var radn = randomNum(1000,9999);
                     var sia = timestamp+radn;
-                    if(uid == "{{myuid}}"){
-                        var mytemp = "msg_my_";
-                        set_msg_box(sia,"msg_box","msg_tp_my",mytemp,name,pic,msga);
-                    }
-                    else if(uid == "{{group_creater}}"){
-                        var mytemp = "msg_oth_";
-                        set_msg_box(sia,"msg_box","msg_tp_kp",mytemp,name,pic,msga);
+                    if(kind==2){
+                        if(uid == "{{myuid}}"){
+                            var mytemp = "msg_my_";
+                            set_msg_box(sia,"msg_box","msg_tp_my_p",mytemp,name,pic,msga);
+                        }
+                        else if(uid == "{{group_creater}}"){
+                            var mytemp = "msg_oth_";
+                            set_msg_box(sia,"msg_box","msg_tp_kp_p",mytemp,name,pic,msga);
+                        }
+                        else{
+                            // console.log(name);
+                            var mytemp = "msg_oth_";
+                            set_msg_box(sia,"msg_box","msg_tp_other_p",mytemp,name,pic,msga);
+                        }
+
                     }
                     else{
-                        // console.log(name);
-                        var mytemp = "msg_oth_";
-                        set_msg_box(sia,"msg_box","msg_tp_other",mytemp,name,pic,msga);
+                        if(uid == "{{myuid}}"){
+                            var mytemp = "msg_my_";
+                            set_msg_box(sia,"msg_box","msg_tp_my",mytemp,name,pic,msga);
+                        }
+                        else if(uid == "{{group_creater}}"){
+                            var mytemp = "msg_oth_";
+                            set_msg_box(sia,"msg_box","msg_tp_kp",mytemp,name,pic,msga);
+                        }
+                        else{
+                            // console.log(name);
+                            var mytemp = "msg_oth_";
+                            set_msg_box(sia,"msg_box","msg_tp_other",mytemp,name,pic,msga);
+                        }
                     }
+
                     lastidd = "#"+mytemp+sia;
                 }
                 window.location.href=lastidd;
@@ -1257,8 +1414,46 @@
             $("#"+mytemp+sid+" .msg_time").html(msg_time);
         }
 
+        //修改私信去向
+        function ssent(toto=0, totext=0) {
+            if(toto==0){
+                toto = $("#send_toto").val();
+            }
+            if(totext==0){
+                totext = $("#send_toto").find("option:selected").text();
+            }
+            $("#send_toto_id").val(toto);
+            $("#send_toto_text").val(totext);
+            if(toto=="public"){
+                $("#chat-id-1-input").attr("placeholder","输入信息...");
+            }
+            else{
+                $("#chat-id-1-input").attr("placeholder","向 "+totext+" 发送私信..");
+            }
+        }
+        //按发送键
+        function sub_send_msg() {
+            var value = $("#chat-id-1-input").val();
+            if(!value){
+                alert("请输入内容再提交");
+                $("#chat-id-1-input").focus();
+                return;
+            }
+            var toto = $("#send_toto_id").val();
+            var totext = $("#send_toto_text").val();
+            if(toto=="public"){
+                var kind=5;
+                var toidp=0;
+            }
+            else{
+                var kind=2;
+                var toidp=toto;
+                value = "To "+totext+":<br/>"+value;
+            }
+            send_msg(value, kind, toidp);
+        }
         //发送信息
-        function send_msg(v=0) {
+        function send_msg(v=0, kind=5, toidp=0) {
             if(mycid==0 || mycid=="0" || !mycid){
                 alert("请至少将一个卡组加入游戏再输入");
                 return
@@ -1274,10 +1469,14 @@
             else {
                 var value = v;
             }
+            if(toidp=="kp"){
+                toidp="{{group_creater}}";
+            }
             $.post("/sendmsg", {
-                kind:5,
+                kind:kind,
                 fromcid:mycid,
                 toid:"{{group_id}}",
+                toid_p:toidp,
                 msg: value
             },
             function(myData , status){
@@ -1334,7 +1533,7 @@
                                 $("#dt_name").html(value);
 
                                 //添加空手攻击
-                                set_objj("dt_objs_list","dt_obj","dt_s_hand","空手",pname,"战斗","1d3");
+                                set_objj("dt_objs_list","dt_obj","dt_s_hand","空手",pname,"近战攻击","1d3+0.5db");
                             }
                             if(nid==75){
                                 if(value=="0"){
@@ -1382,7 +1581,7 @@
                                             yizhi = parseInt(value);
                                         }
                                         var str2="{{at.2}}";
-                                        set_ask("dt_atr_list2","dt_skill","dt_s_"+pid,str2,value,pname);
+                                        set_ask("dt_atr_list2","dt_skill","dt_s_"+pid,str2,value,pname,0,0,nid);
                                         pids.push(pid);
                                     }
                                 {% endif %}
@@ -1393,7 +1592,7 @@
                                     if(nid=={{at.0}}){
                                         var str2="{{at.2}}";
                                         if(nid==29){
-                                            var tili=parseInt((tizhi+liliang)/10);
+                                            var tili=parseInt((tizhi+60)/10);
                                             set_ask("dt_atr_list1","dt_skill2","dt_s_"+pid,str2,value,pname,tili);
                                         }
                                         else if(nid==30){
@@ -1488,7 +1687,7 @@
         }
 
         //修改用户信息的框框
-        function set_ask(list,temp,col,name,value,pname=0,apend=0,nid=0){
+        function set_ask(list,temp,col,name,value,pname=0,apend=0,nid=0,aid=0){
             var cc = $("#"+temp).clone(true);
             cc.attr('id',col);
             cc.attr('style','');
@@ -1514,10 +1713,16 @@
             }
             $("#"+col+" .dt_mingtou").attr("onclick","tou2("+value+",'"+pname+name+"')");
             $("#"+col+" .dt_mingtoum").attr("onclick","tou2("+value+",'"+pname+name+"',100,'mobile')");
+            $("#"+col+" .dt_antou").attr("onclick","tou2("+value+",'"+pname+name+"',100,0,1)");
+            $("#"+col+" .dt_antoum").attr("onclick","tou2("+value+",'"+pname+name+"',100,'mobile',1)");
+
             //骰子 和 参数的nid
             if(nid!=0){
                 $("#"+col+" .dt_atr_value").attr("id","va_"+nid);
                 $("#"+col+" .dt_mingtou").attr("id","touzi_"+nid);
+            }
+            if(aid!=0){
+                $("#"+col+" .dt_atr_value").attr("id","va2_"+aid);
             }
 
         }
@@ -1595,6 +1800,9 @@
             $("#"+col+" .dt_mingtou").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"',0,'"+desc+"')");
             $("#"+col+" .dt_mingtoum").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"','mobile','"+desc+"')");
 
+            $("#"+col+" .dt_antou").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"',0,'"+desc+"',1)");
+            $("#"+col+" .dt_antoum").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"','mobile','"+desc+"',1)");
+
             $("#"+col+" .dt_jiaochu").attr("onclick","reng('"+pid+"','"+nid+"','"+kind+"',"+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"',0,'"+desc+"')");
             $("#"+col+" .dt_jiaochum").attr("onclick","reng('"+pid+"','"+nid+"','"+kind+"',"+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"','mobile','"+desc+"')");
             // console.log(pid);
@@ -1665,9 +1873,10 @@
                     var uuid=$("#dtt_uid").val();
                     var jobbnm=$("#dtt_jobname").val();
                     show_deteils(ccid,uuid,jobbnm);
-                    alert("成功修改");
+                    // alert("成功修改");
                 });
             }
+            alert("成功修改");
 
         }
 
@@ -1795,18 +2004,27 @@
             return Y+M+D+h+m+s;
         }
 
-        function tou2(value=0,obj=0,max=100,type=0) {
+        function tou2(value=0,obj=0,max=100,type=0,an=0) {
             if(mycid==0 || mycid=="0" || !mycid){
                 alert("请至少将一个卡组加入游戏再投");
                 return
             }
+            if(an==1){
+                var kind = 2;
+                var toid_p="{{group_creater}}";
+            }
+            else{
+                var kind = 5;
+                var toid_p=0;
+            }
             $.post("/tou", {
-                kind:5,
+                kind:kind,
                 fromcid:mycid,
                 toid:"{{group_id}}",
                 value: value,
                 obj : obj,
-                max : max
+                max : max,
+                toid_p:toid_p
             },
             function(myData , status){
                 $("#chat-id-1-input").val("");
@@ -1851,7 +2069,7 @@
         }
 
 
-        function tou4(skillid=0,skillname="0",pname="0",obj="0",damage="0", zhong="0",type=0, desc="0"){
+        function tou4(skillid=0,skillname="0",pname="0",obj="0",damage="0", zhong="0",type=0, desc="0",an=0){
             if(mycid==0 || mycid=="0" || !mycid){
                 alert("请至少将一个卡组加入游戏再输入");
                 return
@@ -1863,10 +2081,18 @@
                     // $("#"+touziid).click();
                 }
             }
+            if(an==1){
+                var kind = 2;
+                var toid_p="{{group_creater}}";
+            }
+            else{
+                var kind = 5;
+                var toid_p=0;
+            }
 
             var db=$("#dt_s_db .dt_atr_value").val();
             $.post("/tou_demage2", {
-                kind:5,
+                kind:kind,
                 fromcid:mycid,
                 toid:"{{group_id}}",
                 damage: damage,
@@ -1875,7 +2101,8 @@
                 pname: pname,
                 skillname:skillname,
                 zhong : zhong,
-                desc:desc
+                desc:desc,
+                toid_p:toid_p
             },
             function(myData , status){
                 // console.log(myData);
@@ -1887,6 +2114,48 @@
                 }
             });
 
+        }
+
+        //属性和技能的联合骰子(最终技能id，属性id，技能id)
+        function toul(nnid, sxid, jnid, diffi, an=0) {
+            if(mycid==0 || mycid=="0" || !mycid){
+                alert("请点击一个人物卡之后再进行检定！");
+                return
+            }
+            var shuxing=$("#va2_"+sxid).val();
+            var jineng =$("#va_"+jnid).val();
+            if(!jineng){
+                jineng=10;
+            }
+            var ppname = $("#dtt_myname").val();
+            if(!shuxing){
+                alert("请点击一个人物卡之后再进行检定！");
+                return
+            }
+            if(an==1){
+                var kind = 2;
+                var toid_p="{{group_creater}}";
+            }
+            else{
+                var kind = 5;
+                var toid_p=0;
+            }
+            $.post("/toul", {
+                kind:kind,
+                fromcid:mycid,
+                toid:"{{group_id}}",
+                toid_p:toid_p,
+                nnid:nnid,
+                sx:shuxing,
+                jn:jineng,
+                ppname:ppname,
+                diffi:diffi
+            },
+            function(myData , status){
+                // console.log(myData);
+                $("#chat-id-1-input").val("");
+                get_msg();
+            });
         }
 
         //交出物品

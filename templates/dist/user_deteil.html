@@ -201,7 +201,10 @@
                                                             <i class="fe-slack"></i>
                                                         </button>
                                                          {% if page=="roomc" %}
-                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_antou" type="button" title="暗骰">
+                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_antou d-none d-xl-block" type="button" title="暗骰">
+                                                            <i class="fe-x-square"></i>
+                                                        </button>
+                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_antoum d-xl-none d-block" type="button" title="暗骰">
                                                             <i class="fe-x-square"></i>
                                                         </button>
                                                          {% endif %}
@@ -235,7 +238,10 @@
                                                             <i class="fe-slack"></i>
                                                         </button>
                                                          {% if page=="roomc" %}
-                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_antou" type="button" title="暗骰">
+                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_antou d-none d-xl-block" type="button" title="暗骰">
+                                                            <i class="fe-x-square"></i>
+                                                        </button>
+                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_antoum d-xl-none d-block" type="button" title="暗骰">
                                                             <i class="fe-x-square"></i>
                                                         </button>
                                                          {% endif %}
@@ -295,12 +301,13 @@
                                                     </div>
                                             </div>
                                             <a href="javascript:;" class="dt_mingtou d-none d-xl-block" title="明骰"><i class="fe-slack"></i></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                            <a href="javascript:;" class="dt_jiaochu d-none d-xl-block" title="交出"><i class="fe-external-link"></i></a>
                                         {% if page=="roomc" %}
                                             &nbsp;&nbsp;&nbsp;&nbsp;
                                             <a href="javascript:;" class="dt_antou d-none d-xl-block" title="暗骰"><i class="fe-x-square"></i><a>
                                         {% endif %}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <a href="javascript:;" class="dt_jiaochu d-none d-xl-block" title="交出"><i class="fe-external-link"></i></a>
+
                                             &nbsp;&nbsp;&nbsp;&nbsp;
                                             <a href="javascript:;" class="dt_deltou d-none d-xl-block" title="删除"><i class="fe-trash-2"></i><a>
 
@@ -313,14 +320,15 @@
                                                         <a class="dt_mingtoum dropdown-item d-flex align-items-center" href="#!">
                                                             明骰 <span class="ml-auto pl-5 fe-slack"></span>
                                                         </a>
-                                                        <a class="dt_jiaochum dropdown-item d-flex align-items-center" href="#!">
-                                                            交出 <span class="ml-auto pl-5 fe-external-link"></span>
-                                                        </a>
                                                         {% if page=="roomc" %}
-                                                        <a class="dt_antou dropdown-item d-flex align-items-center" href="#!">
+                                                        <a class="dt_antoum dropdown-item d-flex align-items-center" href="#!">
                                                             暗骰 <span class="ml-auto pl-5 fe-x-square"></span>
                                                         </a>
                                                         {% endif %}
+                                                        <a class="dt_jiaochum dropdown-item d-flex align-items-center" href="#!">
+                                                            交出 <span class="ml-auto pl-5 fe-external-link"></span>
+                                                        </a>
+
                                                         <a class="dt_deltou dropdown-item d-flex align-items-center" href="#" data-chat-sidebar-toggle="#chat-1-info">
                                                             删除 <span class="ml-auto pl-5 fe-trash-2"></span>
                                                         </a>

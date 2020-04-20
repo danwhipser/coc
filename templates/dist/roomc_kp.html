@@ -1,4 +1,4 @@
-<div class="tab-pane fade h-100 {% if page == 'roomc' %}show active{% endif %}" id="tab-content-control-chat" role="tabpanel">
+<div class="tab-pane fade h-100 show active" id="tab-content-control-chat" role="tabpanel">
                         <div class="d-flex flex-column h-100">
 
                             <div class="hide-scrollbar">
@@ -7,6 +7,24 @@
                                     <!-- Title -->
                                     <h2 class="font-bold mb-6">守密人工具台</h2>
                                     <!-- Title -->
+
+                                    <!-- Tabs -->
+                                    <ul class="nav nav-tabs nav-justified mb-6" role="tablist">
+                                        <li class="nav-item">
+                                            <a href="#book-deteils" class="nav-link active" data-toggle="tab" role="tab" aria-selected="true">剧本</a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="#monster-list" class="nav-link" data-toggle="tab" role="tab" aria-selected="false">怪物</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#tou-list" class="nav-link" data-toggle="tab" role="tab" aria-selected="false">骰子</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#show_themap" class="nav-link" data-toggle="tab" role="tab" aria-selected="false">图片</a>
+                                        </li>
+                                    </ul>
+                                    <!-- Tabs -->
 
                                     <!-- Search -->
                                     <form class="mb-6">
@@ -21,26 +39,95 @@
                                     </form>
                                     <!-- Search -->
 
-                                    <!-- Tabs -->
-                                    <ul class="nav nav-tabs nav-justified mb-6" role="tablist">
-                                        <li class="nav-item">
-                                            <a href="#book-deteils" class="nav-link active" data-toggle="tab" role="tab" aria-selected="true">剧本工具</a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="#monster-list" class="nav-link" data-toggle="tab" role="tab" aria-selected="false">怪物管理</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#show_themap" class="nav-link" data-toggle="tab" role="tab" aria-selected="false">图片管理</a>
-                                        </li>
-                                    </ul>
-                                    <!-- Tabs -->
 
                                     <!-- 游戏详细内容 -->
                                     <div class="tab-content" role="tablist">
 
                                         <!-- 剧本工具 -->
                                         <div id="book-deteils" class="tab-pane fade show active" role="tabpanel">
+
+
+
+                                            <div class="accordion" id="accordionExample">
+                                              <div class="card">
+                                                <div class="card-header" id="headingOne">
+                                                  <h2 class="mb-0">
+                                                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                      Collapsible Group Item #1
+                                                    </button>
+                                                  </h2>
+                                                </div>
+
+                                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                                  <div class="card-body">
+                                                      <textarea class="form-control form-control-lg" name="new-chat-description" rows="1" data-autosize="true" placeholder="文字">
+                                                          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                                      </textarea>
+
+
+
+
+                                                      <div class="accordion" id="accordionExample1">
+                                                          <div class="card">
+                                                            <div class="card-header" id="headingOne1">
+                                                              <h2 class="mb-0">
+                                                                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1">
+                                                                  Collapsible Group Item #1
+                                                                </button>
+                                                              </h2>
+                                                            </div>
+
+                                                            <div id="collapseOne1" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample1">
+                                                              <div class="card-body">
+                                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div class="card">
+                                                <div class="card-header" id="headingTwo">
+                                                  <h2 class="mb-0">
+                                                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                      Collapsible Group Item #2
+                                                    </button>
+                                                  </h2>
+                                                </div>
+                                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                                  <div class="card-body">
+                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div class="card">
+                                                <div class="card-header" id="headingThree">
+                                                  <h2 class="mb-0">
+                                                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                      Collapsible Group Item #3
+                                                    </button>
+                                                  </h2>
+                                                </div>
+                                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                                                  <div class="card-body">
+                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+
+
+
+
+
+
+
+
+
+
+
                                             <form action="#">
                                                 <div class="form-group">
                                                     <label class="small">场景1：</label>
@@ -90,6 +177,49 @@
                                             </nav>
                                         </div>
                                         <!-- 怪物管理 -->
+
+                                        <!-- 骰子提示管理 -->
+                                        <div id="tou-list" class="tab-pane fade" role="tabpanel">
+                                            <h5>难度</h5>
+                                            <select id="toul_dif" onchange="send_tdi()" class="form-control custom-select">
+                                              <option value="0">几乎必中 (npc必然大失败)</option>
+                                              <option value="10">非常简单 (难度值10)</option>
+                                              <option value="25">简单 (难度值25)</option>
+                                              <option value="50" selected="selected">普通 (难度值50)</option>
+                                              <option value="75">困难 (难度值75)</option>
+                                              <option value="100">超难 (npc必然大成功)</option>
+                                            </select>
+                                            <input id="toul_diffi" type="hidden" value="50" />
+                                            <p> </p>
+                                            <nav id="list_toulist" class="list-group list-group-flush mb-n6">
+
+                                            </nav>
+                                        </div>
+<!--                                        骰子组合的模板-->
+                                            <div class="d-none">
+                                                <a id="temp_toulist" class="text-reset nav-link p-0 mb-6" href="#">
+                                                    <div class="card card-active-listener">
+                                                        <div class="card-body">
+                                                            <div class="media">
+                                                                <div class="media-body overflow-hidden">
+                                                                    <div class="d-flex align-items-center mb-1">
+                                                                        <h6 class="text-truncate mb-0 mr-auto ttext">撞击：<small>(力量+运动)</small></h6>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                    <div id="temp_toulist2">
+                                                        <h6><a class="text-dark tile" data-toggle="collapse" href="#" role="button" aria-expanded="true" aria-controls="">
+                                                        点击查看房间简介</a></h6>
+                                                        <div class="collapse detl" style="">
+                                                        <p>好房间</p>
+                                                        </div>
+                                                    </div>
+                                            </div>
+
+                                        <!-- 骰子提示管理 -->
 
                                         <!-- 图片上传 -->
                                         <div id="show_themap" class="tab-pane fade" role="tabpanel">
@@ -260,3 +390,117 @@
         </div>
 
 
+<script>
+    var tou_list_cl=0;
+    var tou_list_li=0;
+    $(document).ready(function() {
+        get_kprom();
+    });
+    function get_kprom() {
+        // 0:name| 1:atrr| 2:infoe|
+        $.post("/getkprom", {
+                token:"{{token}}",
+                gid:"{{group_id}}"
+              },
+                function(myData , status){
+                    // console.log(myData);
+                    var names = myData[0];
+                    var attr  = myData[1];
+                    var infoe = myData[2];
+                    for(ii in names){
+                        nam = names[ii];
+                        if(nam[1]==10){
+                            var nid = nam[0];
+                            var nn = nam[2];
+                            var des=n_infoe(infoe,nid);
+                            for(iii in des){
+                                if(des[iii][2]==91){
+                                    var shuxing = des[iii];
+                                }
+                                else if(des[iii][2]==92){
+                                    var jineng  = des[iii];
+                                }
+                            }
+                            var shuxing_aid =shuxing[4];
+                            var jineng_nid  =jineng[4];
+                            var shuxing_n = n_na(attr,shuxing_aid);
+                            var jineng_n = n_na(names,jineng_nid);
+                            set_kptoulist("list_toulist","temp_toulist2","tl2_"+jineng_n[0],"temp_toulist","tl_"+nid,nid,nn,shuxing_n,jineng_n);
+                        }
+                    }
+                    tou_list_cl=0;
+                },"json");
+    }
+    //列表
+    function set_kptoulist(list,temp2,chid2,temp,chid,nid,name,vv1,vv2) {
+        var v1 = vv1[2];
+        var v2 = vv2[2];
+        var v1id = vv1[0];
+        var v2id = vv2[0];
+        if(tou_list_cl!=v2){
+            var template2 = $("#"+temp2).clone(true);
+            template2.attr('id',chid2);
+            var chid3 = chid2+"p";
+            $("#"+list).append(template2);
+            $("#"+chid2+" .tile").html(v2);
+            $("#"+chid2+" .tile").attr("href","#"+chid3);
+            $("#"+chid2+" .tile").attr("aria-controls",chid3);
+            $("#"+chid2+" .detl").html("");
+            $("#"+chid2+" .detl").attr("id",chid3);
+            tou_list_cl=v2;
+        }
+
+        var template = $("#"+temp).clone(true);
+        template.attr('id',chid);
+
+        // $("#"+list).append(template);
+        $("#"+chid2+" .detl").append(template);
+
+        var ht = name+" = <small>"+v1+"+"+v2+"</small>";
+        $("#"+chid).attr("onclick","send_mst('"+name+"',"+nid+","+v1id+",'"+v1+"',"+v2id+",'"+v2+"')");
+        $("#"+chid+" .ttext").html(ht);
+    }
+
+    function send_mst(name, nid, v1id, v1, v2id, v2) {
+        var ht = name+" = <small>"+v1+"+"+v2+"</small>";
+        var diffi = $("#toul_diffi").val();
+        var mg = ht+" <a href=\"#\" onclick=\"toul("+nid+","+v1id+","+v2id+","+diffi+")\" class=\"btn btn-info btn-sm\">投骰子</a>";
+        send_msg(mg);
+    }
+
+    //infoe中取出参数
+    function n_infoe(infoe, nid, aid = 0){
+        var out = new Array();
+        for(ii in infoe){
+            var nnid = infoe[ii][1];
+            var aaid = infoe[ii][2];
+            if(aid==0){
+                if(nid==nnid){
+                    out.push(infoe[ii]);
+                }
+            }
+            else{
+                if(nid==nnid && aid==aaid){
+                    out.push(infoe[ii]);
+                }
+            }
+        }
+        return out;
+    }
+
+    //names中取出参数
+    function n_na(na, nid){
+        for(ii in na){
+            var nnid = na[ii][0];
+            if(nid==nnid){
+                return na[ii];
+            }
+        }
+    }
+
+    function send_tdi(){
+        var td = $("#toul_dif").val();
+        $("#toul_diffi").val(td);
+    }
+
+</script>

@@ -36,10 +36,19 @@
 
                     <!-- Create group -->
                     <li class="nav-item mt-xl-9">
-                        <a id="cont_game" class="nav-link position-relative p-0 py-xl-3 {% if page == 'roomc' %}active{% endif %}" data-toggle="tab" href="#tab-content-create-chat" title="创建游戏" role="tab">
+                        <a id="cont_game" class="nav-link position-relative p-0 py-xl-3" data-toggle="tab" href="#tab-content-create-chat" title="创建游戏" role="tab">
                             <i class="icon-lg fe-edit"></i>
                         </a>
                     </li>
+
+                     <!-- Manage group -->
+                    {% if page == 'roomc' %}
+                    <li class="nav-item mt-xl-9">
+                        <a id="cont_thegame" class="nav-link position-relative p-0 py-xl-3 active" data-toggle="tab" href="#tab-content-control-chat" title="守密人工具台" role="tab">
+                            <i class="icon-lg fe-edit-3"></i>
+                        </a>
+                    </li>
+                    {% endif %}
 
 
                     <!-- Friend -->

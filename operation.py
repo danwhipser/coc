@@ -408,6 +408,26 @@ class page_opt:
         self.out_all.append(out)
         return out
 
+    # 获取kp栏信息
+    # 0:name| 1:atrr| 2:infoe|
+    def kp_sel(self, gid):
+        myuid = self.myuid
+        us = self.setus
+
+        optm = page_opt_m(us, myuid)
+
+        names = us.name_sel()
+        atrr = us.atrn_sel()
+        infos = us.select_c("infoe")
+
+        out = []
+        out.append(names)
+        out.append(atrr)
+        out.append(infos)
+        self.out_all.append(out)
+        return out
+
+
     # 获取自己的个人信息数据
     def setting_sel(self, cid):
         myuid = self.myuid
@@ -509,7 +529,8 @@ def roll_str2(strg,dbv,ifbomb):
     if ifbomb == 0:
         return 0
     out = []
-    dbv = roll_str(dbv)
+    # 没有ifbomb就不算极端值
+    dbv = roll_str(dbv,ifbomb)
     r = re.split('\+', strg)
     p1 = re.compile('(0.5db|0.5DB)')
     p2 = re.compile('(db|DB)')
