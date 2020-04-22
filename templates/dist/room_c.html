@@ -4,10 +4,10 @@
     .modal-backdrop{z-index:1019;}
     .text-white h5{color: #ffffff;}
 </style>
-<!-- Scripts -->
+    <body>
+ <!-- Scripts -->
 {% include 'dist/jsclude.html' %}
 <!-- Scripts -->
-    <body>
 
         <div class="layout">
             {% include 'dist/navibar.html' %}
@@ -383,7 +383,6 @@
                         </div>
                         <!-- Chat: Content -->
 
-                        <!-- Chat: DropzoneJS container -->
                         <!-- Chat: DropzoneJS container -->
 
                         <!-- Chat: Footer -->
@@ -1171,9 +1170,12 @@
         var tixing;
         var yizhi;
         $(document).ready(function() {
+
+            $('<audio id="chatAudio"><source src="static/msg.mp3" type="audio/mpeg"></audio>').appendTo('body');
+
             get_kazu("mykazu","list_npc","tp_list_rp","list_rp_");
             get_kazu("allkazu","list_players","tp_list_rp","list_pp_");
-            get_msg_lastid();
+            get_msg_lastid(1);
             setInterval(function(){
                 get_msg_lastid();
               }, 3000);
@@ -1319,7 +1321,7 @@
 
         //----------------------------------------------------------------message
         //获取最后一个id
-        function get_msg_lastid(){
+        function get_msg_lastid(silence=0){
             $.get("/getmsg_lastid", {
                 gid:"{{group_id}}"
               },
@@ -1328,7 +1330,7 @@
                 if(myData!=0){
                     if(lastid!=myData){
                         lastid=myData;
-                        get_msg();
+                        get_msg(silence);
                     }
                 }
 
@@ -1336,7 +1338,7 @@
         }
 
         // 获取message
-        function get_msg(){
+        function get_msg(silence=0){
             $.get("/getmsg_group", {
                 gid:"{{group_id}}"
               },
@@ -1388,7 +1390,9 @@
                     lastidd = "#"+mytemp+sia;
                 }
                 window.location.href=lastidd;
-
+                if(silence!=1){
+                    $('#chatAudio')[0].play();
+                }
             });
         }
         function set_msg_box(sid,list, templates, mytemp,name,pic,msga){
@@ -1481,7 +1485,7 @@
             },
             function(myData , status){
                 $("#chat-id-1-input").val("");
-                get_msg();
+                get_msg_lastid(1);
                 // alert("成功提交");
             });
 
@@ -1912,7 +1916,8 @@
                     alert("出现迷之错误")
                 }
                 $("#chat-id-1-input").val("");
-                get_msg();
+                get_msg_lastid(1);
+                // get_msg();
             });
         }
         //----------------------------------------------------------------人物卡
@@ -1971,7 +1976,8 @@
                 },
                 function(myData , status){
                     $("#chat-id-1-input").val("");
-                    get_msg();
+                    get_msg_lastid(1);
+                    // get_msg();
                 });
             } else {
                 return;
@@ -2028,7 +2034,8 @@
             },
             function(myData , status){
                 $("#chat-id-1-input").val("");
-                get_msg();
+                get_msg_lastid(1);
+                // get_msg();
                 //设置手机界面
                 if(type=="mobile"){
                     $("#chat-1-user-profile").attr("class","chat-sidebar");
@@ -2107,7 +2114,8 @@
             function(myData , status){
                 // console.log(myData);
                 $("#chat-id-1-input").val("");
-                get_msg();
+                get_msg_lastid(1);
+                // get_msg();
                 //设置手机界面
                 if(type=="mobile"){
                     $("#chat-1-user-profile").attr("class","chat-sidebar");
@@ -2154,7 +2162,8 @@
             function(myData , status){
                 // console.log(myData);
                 $("#chat-id-1-input").val("");
-                get_msg();
+                get_msg_lastid(1);
+                // get_msg();
             });
         }
 
@@ -2204,7 +2213,8 @@
                 function(myData , status){
                     show_deteils(mycid,uid,jobbnm);
                     $("#chat-id-1-input").val("");
-                    get_msg();
+                    get_msg_lastid(1);
+                    // get_msg();
                 });
 
         }
@@ -2395,7 +2405,7 @@
 
                 this.on("success", function(file, responseText) {
                         // 回传信息 可以使用其他方法 只是测试用
-                        console.log(responseText);
+                        // console.log(responseText);
                         send_img(responseText);
                     })
                 }
@@ -2481,6 +2491,7 @@
             function(myData , status){
                 if(myData!="0"){
                     showo_img();
+                    // alert("已显示图片");
                     // console.log(myData);
                 }
             });
@@ -2508,7 +2519,7 @@
                 gid: "{{group_id}}"
             },
             function(myData , status){
-                console.log(myData);
+                // console.log(myData);
                 if(myData!=0){
                     // var imglist = new Array();
                     // for(data of myData){

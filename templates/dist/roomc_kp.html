@@ -46,28 +46,57 @@
                                         <!-- 剧本工具 -->
                                         <div id="book-deteils" class="tab-pane fade show active" role="tabpanel">
 
+                                            <div id="show_jb_list" class="accordion">
+                                                <h3>剧本</h3>
 
+                                            </div>
 
-                                            <div class="accordion" id="accordionExample">
-                                              <div class="card">
+                                            <div style="display: none">
+                                                <div id="temp_jb_s" class="card">
                                                 <div class="card-header" id="headingOne">
-                                                  <h2 class="mb-0">
-                                                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                      Collapsible Group Item #1
-                                                    </button>
-                                                  </h2>
+                                                    <div class="input-group">
+                                                    <input type="text" class="form-control jb_c_textt" placeholder="剧本名称">
+                                                     <div class="input-group-append">
+                                                         <button onclick="del_jbcj()" type="button" class="btn btn-secondary jb_cj_del" title="删除场景">
+                                                                    <i class="fe-x"></i>
+                                                                </button>
+                                                         <button type="button" onclick="" class="btn btn-secondary jb_c_text" title="展开" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                                <i class="fe-chevron-down"></i>
+                                                            </button>
+                                                    </div>
+                                                </div>
                                                 </div>
 
-                                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                                <div id="collapseOne" class="collapse jb_c_deteil" aria-labelledby="headingOne" data-parent="#accordionExample">
                                                   <div class="card-body">
-                                                      <textarea class="form-control form-control-lg" name="new-chat-description" rows="1" data-autosize="true" placeholder="文字">
-                                                          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                                      <textarea class="form-control form-control-lg jb_c_deteil_text" name="new-chat-description" rows="3" data-autosize="true" placeholder="文字">
+
                                                       </textarea>
 
+                                                      <div class="pluss"></div>
 
+                                                      <p> </p>
+                                                      <a class="text-muted jb_xs_pp" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false">
+                                                            添加线索/次级场景
+                                                        </a>
+                                                      <div class="collapse jb_xs_ppin" id="collapseExample">
+                                                      <div class="card card-body">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control jb_xs_name" placeholder="线索/次级场景">
+                                                                 <div class="input-group-append">
+                                                                     <button onclick="send_jbcj()" type="button" class="btn btn-primary jb_xs_sub" title="确认添加">
+                                                                            <i class="fe-plus"></i>
+                                                                        </button>
+                                                                </div>
+                                                            </div>
+                                                      </div>
+                                                      </div>
 
+                                                  </div>
+                                                </div>
+                                              </div>
 
-                                                      <div class="accordion" id="accordionExample1">
+                                                <div class="accordion" id="accordionExample1">
                                                           <div class="card">
                                                             <div class="card-header" id="headingOne1">
                                                               <h2 class="mb-0">
@@ -85,86 +114,41 @@
                                                           </div>
                                                         </div>
 
-                                                  </div>
+                                                <div id="temp_jbcj" class="card">
+                                                    <div class="card-body">
+                                                    <div class="input-group">
+
+                                                         <div class="input-group-prepend">
+                                                            <label class="input-group-text">
+                                                                <span class="jb_cji_label">添加场景</span>:&nbsp;&nbsp;
+                                                            </label>
+                                                        </div>
+                                                        <input type="text" class="form-control jb_cji_name" placeholder="场景名称">
+                                                         <div class="input-group-append">
+                                                             <button onclick="send_jbcj()" type="button" class="btn btn-primary jb_cj_sub" title="确认添加">
+                                                                    <i class="fe-plus"></i>
+                                                                </button>
+                                                        </div>
+                                                    </div>
+                                                    </div>
                                                 </div>
-                                              </div>
-                                              <div class="card">
-                                                <div class="card-header" id="headingTwo">
-                                                  <h2 class="mb-0">
-                                                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                      Collapsible Group Item #2
-                                                    </button>
-                                                  </h2>
-                                                </div>
-                                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                                                  <div class="card-body">
-                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                                  </div>
-                                                </div>
-                                              </div>
-                                              <div class="card">
-                                                <div class="card-header" id="headingThree">
-                                                  <h2 class="mb-0">
-                                                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                      Collapsible Group Item #3
-                                                    </button>
-                                                  </h2>
-                                                </div>
-                                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                                                  <div class="card-body">
-                                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                                  </div>
-                                                </div>
-                                              </div>
+
                                             </div>
-
-
-
-
-
-
-
-
-
-
-
+<!-- ---------------------------------------------------------------------------前面是框内的内容 -------------------------------- -->
+                                            <p> </p>
                                             <form action="#">
-                                                <div class="form-group">
-                                                    <label class="small">场景1：</label>
-                                                    <textarea class="form-control form-control-lg" name="new-chat-description" rows="6" placeholder="可以对您建立的游戏进行简单描述,例如背景介绍"></textarea>
-
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="small">检定及线索</label>
-                                                    <input class="form-control form-control-lg" name="new-chat-title" type="text" placeholder="位置">
-                                                    <br />
-                                                    <input class="form-control form-control-lg" name="new-chat-title" type="text" placeholder="检定">
-                                                    <br />
-                                                    <textarea class="form-control form-control-lg" name="new-chat-description" rows="3" placeholder="线索"></textarea>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="small">场景2：</label>
-                                                    <textarea class="form-control form-control-lg" name="new-chat-description" rows="6" placeholder="可以对您建立的游戏进行简单描述,例如背景介绍"></textarea>
-
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="small">检定及线索</label>
-                                                    <input class="form-control form-control-lg" name="new-chat-title" type="text" placeholder="位置">
-                                                    <br />
-                                                    <input class="form-control form-control-lg" name="new-chat-title" type="text" placeholder="检定">
-                                                    <br />
-                                                    <textarea class="form-control form-control-lg" name="new-chat-description" rows="3" placeholder="线索"></textarea>
-
-                                                </div>
-
-
-
-                                                <div class="form-group">
-                                                    <p>&nbsp;</p>
-                                                <button class="btn btn-lg btn-primary btn-block" type="button">提交设置</button>
+                                                <div class="input-group">
+                                                     <div class="input-group-prepend">
+                                                        <label class="input-group-text">
+                                                            <span class="jb_n_label">添加剧本</span>:&nbsp;&nbsp;
+                                                        </label>
+                                                    </div>
+                                                    <input id="jb_name_input" type="text" class="form-control jb_name" placeholder="剧本名称">
+                                                     <div class="input-group-append">
+                                                         <button onclick="send_jbname()" type="button" class="btn btn-info" title="确认添加">
+                                                                <i class="fe-plus"></i>
+                                                            </button>
+                                                    </div>
                                                 </div>
                                             </form>
                                         </div>
@@ -395,7 +379,10 @@
     var tou_list_li=0;
     $(document).ready(function() {
         get_kprom();
+        // 获取剧本相关信息
+        get_jbinfo();
     });
+    //取出所有初始数据
     function get_kprom() {
         // 0:name| 1:atrr| 2:infoe|
         $.post("/getkprom", {
@@ -431,6 +418,8 @@
                     tou_list_cl=0;
                 },"json");
     }
+
+    //------------------------------------------------------------------骰子相关
     //列表
     function set_kptoulist(list,temp2,chid2,temp,chid,nid,name,vv1,vv2) {
         var v1 = vv1[2];
@@ -498,9 +487,194 @@
         }
     }
 
+    //骰子难度
     function send_tdi(){
         var td = $("#toul_dif").val();
         $("#toul_diffi").val(td);
     }
+
+    //-------------------------------------------------------------------剧本相关
+    // 插入剧本名称
+    function send_jbname() {
+        var jb_name = $("#jb_name_input").val();
+        var method = "jb_name";
+        $.post("/add_jb", {
+            method:method,
+            value:jb_name,
+            token: "{{token}}",
+            gid:"{{group_id}}"
+            },
+            function(myData , status){
+                $("#jb_name_input").val("");
+                get_jbinfo();
+                // alert("成功加入剧本");
+                // console.log(myData);
+            });
+    }
+
+    //获取剧本信息
+    function get_jbinfo() {
+        $.get("/get_jb", {
+            gid:"{{group_id}}"
+            },
+            function(myData , status){
+                $("#show_jb_list").html("");
+                for(ii in myData){
+                    var data = myData[ii];
+                    var id = data[0];
+                    var name = data[1];
+                    var list_v =data[2];
+                    $("#show_jb_list").append("<div id='jb_list_"+id+"'></div><p> </p>");
+                    $("#jb_list_"+id).append("<h3>"+name+"</h3>");
+                    $("#jb_list_"+id).append("<p align='right'><a class='text-muted' href='#' onclick='del_jb(\""+id+"\",\"juben\")'><small>删除剧本</small></a></p>");
+                    for(iii in list_v){
+                        var iid = list_v[iii][0];
+                        var title =list_v[iii][4];
+                        var detei =list_v[iii][5];
+                        set_cjxs("changjing", "jb_list_", "jb_s_", id,iid,title,detei);
+                    }
+
+                    var temp_cj = $("#temp_jbcj").clone(true);
+                    temp_cj.attr("id","temp_jbcj_"+id);
+                    $("#jb_list_"+id).append(temp_cj);
+
+                    $("#temp_jbcj_"+id+" .jb_cji_name").attr("id","jb_cji_name_"+id);
+                    $("#temp_jbcj_"+id+" .jb_cj_sub").attr("onclick","send_jbcj("+id+",'changjing','jb_cji_name_"+id+"')");
+
+                    autosize($('textarea'));
+                }
+                // console.log(myData);
+            });
+    }
+    
+    //获取一个场景下的线索
+    function get_xs(id, list_xs, method,idd=0) {
+        $.get("/get_xs", {
+            id:id
+            },
+            function(myData , status){
+                if(!myData){
+                    return;
+                }
+                $("#"+list_xs+idd).html("");
+                for(ii in myData){
+                    var data = myData[ii];
+                    var iid = data[0];
+                    var title = data[4];
+                    var detei = data[5];
+                    var upid  = data[6];
+                    var upid2 = data[7];
+                    set_cjxs(method, list_xs, "jb_xs_", id, iid, title, detei, upid, idd);
+                }
+            });
+
+    }
+
+
+    //给场景和线索设定模板 set_cjxs(method, jb_list_, jb_s_, id,iid,title,detei)
+    function set_cjxs(method, list_id, set_id, id,iid,title,detei, upid=0 ,idd=0) {
+        if(method=="changjing"){
+            var xid = iid
+            var method2= "xiansuo";
+            idd = id
+        }
+        else if(method=="xiansuo"){
+            var xid = upid
+            var method2= "xiansuo";
+
+        }
+        var temp = $("#temp_jb_s").clone(true);
+        temp.attr("id",set_id+iid);
+        $("#"+list_id+idd).append(temp);
+        $("#"+set_id+iid+" .jb_c_deteil").attr("data-parent","#"+list_id+idd);
+        $("#"+set_id+iid+" .jb_c_deteil").attr("id","collapse_"+iid);
+
+        //场景1
+        $("#"+set_id+iid+" .jb_c_textt").val(title);
+        $("#"+set_id+iid+" .jb_c_textt").attr("id","jb_c_textt_"+iid);
+        $("#"+set_id+iid+" .jb_c_textt").attr("onblur","update_jb("+iid+",1, 'jb_c_textt_"+iid+"')");
+        //展开按钮
+        $("#"+set_id+iid+" .jb_c_text").attr("data-target","#collapse_"+iid);
+        $("#"+set_id+iid+" .jb_c_text").attr("aria-controls","#collapse_"+iid);
+        //展开后显示列表
+        $("#"+set_id+iid+" .pluss").attr("id","list_xs_"+iid); //列表赋一个id
+        $("#"+set_id+iid+" .jb_c_text").attr("onclick","get_xs("+iid+",'list_xs_','"+method2+"',"+iid+")");
+
+
+        $("#"+set_id+iid+" .jb_c_deteil_text").val(detei);
+        $("#"+set_id+iid+" .jb_c_deteil_text").attr("id","jb_c_deteil_text_"+iid);
+        $("#"+set_id+iid+" .jb_c_deteil_text").attr("onblur","update_jb("+iid+",2, 'jb_c_deteil_text_"+iid+"')");
+
+
+        //删除按钮
+        $("#"+set_id+iid+" .jb_cj_del").attr("onclick","del_jb("+iid+",'"+method+"',"+xid+","+idd+")");
+
+        //显示隐藏添加按钮
+        $("#"+set_id+iid+" .jb_xs_pp").attr("href","#xs_pluk_"+iid);
+        $("#"+set_id+iid+" .jb_xs_ppin").attr("id","xs_pluk_"+iid);
+
+        //添加线索/次级场景
+        $("#xs_pluk_"+iid+" .jb_xs_name").attr("id","xs_name_"+iid);
+        $("#xs_pluk_"+iid+" .jb_xs_sub").attr("onclick","send_jbcj("+xid+",'"+method2+"','xs_name_"+iid+"',"+iid+")");
+    }
+
+    function update_jb(id,num,valid) {
+        var value = $("#"+valid).val();
+        $.post("/update_jb", {
+            id:id,
+            method:num,
+            value:value,
+            token: "{{token}}"
+            },
+            function(myData , status){
+            });
+    }
+
+    //加入场景/线索
+    function send_jbcj(id, method=0, valueid=0, upid2=0) {
+        var value = $("#"+valueid).val();
+        $.post("/add_jb", {
+            method:method,
+            value:value,
+            upid:id,
+            upid2:upid2,
+            token: "{{token}}",
+            gid:"{{group_id}}"
+            },
+            function(myData , status){
+                $("#"+valueid).val("");
+                if(method=="changjing"){
+                    $("#jb_name_input").val("");
+                    get_jbinfo();
+                }
+                else{
+                    get_xs(upid2,'list_xs_',method,upid2)
+                }
+
+            });
+    }
+
+    function del_jb(id, method, upid=0, iid=0){
+        var r = confirm("确定删除这个场景吗？");
+        if (r == false) {
+            return
+        }
+        $.post("/delet_jb", {
+            method:method,
+            id:id,
+            token: "{{token}}",
+            gid:"{{group_id}}"
+            },
+            function(myData , status){
+                if(method=="changjing"){
+                    $("#jb_name_input").val("");
+                    get_jbinfo();
+                }
+                else{
+                    get_xs(iid,'list_xs_',method,iid)
+                }
+            });
+    }
+
 
 </script>

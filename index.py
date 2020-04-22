@@ -990,11 +990,11 @@ def add_objc():
         desc=0
     uid = int(uid)
     us = opt("user.db")
-    lastid = us.addla("custom", "4, %d, %d, '%s', '%s', 0" % (uid,85,name,"0"))
-    us.add("custom", "4, %d, %d, '%s', '%s',%d" % (uid, 90, name, "0", int(lastid)))
-    us.add("custom", "4, %d, %d, '%s', '%s',%d" % (uid, 86, use_skill, zhong, int(lastid)))
-    us.add("custom", "4, %d, %d, '%s', '%s',%d" % (uid, 87, damage, "0", int(lastid)))
-    us.add("custom", "4, %d, %d, '%s', '%s',%d" % (uid, 88, desc, "0", int(lastid)))
+    lastid = us.addla("custom", "4, %d, %d, '%s', '%s', 0, 0" % (uid,85,name,"0"))
+    us.add("custom", "4, %d, %d, '%s', '%s',%d, 0" % (uid, 90, name, "0", int(lastid)))
+    us.add("custom", "4, %d, %d, '%s', '%s',%d, 0" % (uid, 86, use_skill, zhong, int(lastid)))
+    us.add("custom", "4, %d, %d, '%s', '%s',%d, 0" % (uid, 87, damage, "0", int(lastid)))
+    us.add("custom", "4, %d, %d, '%s', '%s',%d, 0" % (uid, 88, desc, "0", int(lastid)))
     us.add_u(9,uid,79,0,lastid,1,int(cid))
     return str(1)
 
@@ -1158,7 +1158,9 @@ def get_showimg():
 def getmsg_lastid():
     gid = int(request.args.get("gid"))
     us = opt("user.db")
-    re = us.select_w("msg", "kindid=5 and toid=%d order by id desc limit 1" % (gid))
+    myuid = int(session.get('uid'))
+    re = us.select_w("msg","(kindid=5 or (kindid=2 and (toid_p=%d or fromid=%d))) and toid=%d order by id desc limit 1" % (myuid, myuid, gid))
+    # re = us.select_w("msg", "kindid=5 and toid=%d order by id desc limit 1" % (gid))
     if re:
         lastid = re[0][0]
     else:
@@ -1312,6 +1314,112 @@ def checku():
     uid = session.get('uid')
     if not uid:
         return redirect(url_for('index'))
+
+# 添加剧本
+@app.route('/add_jb', methods=['POST'])
+def add_jb():
+    method = request.form['method']
+    value = request.form['value']
+    token = request.form['token']
+    gid = int(request.form['gid'])
+    myuid = int(session.get('uid'))
+    if token == 0:
+        return "0"
+    kind = 11
+    aid = 94
+    aid2 = 95
+    aid3 = 96
+    us = opt("user.db")
+    if method == "jb_name":
+        lastid = us.addla("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, aid, value, "0", 0))
+        us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, aid2, "场景1", "场景细节", lastid))
+        us.add("groupp", "%d, '%s', %d, %d, %d" % (aid, value, lastid, 5, gid))
+        return str(lastid)
+    elif method == "changjing":
+        # 上层的id
+        upid = int(request.form['upid'])
+        us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, aid2, value, "场景细节", upid))
+    elif method == "xiansuo" or method == "xiansuo2":
+        upid = int(request.form['upid'])
+        upid2 = int(request.form['upid2'])
+        us.add("custom", "%d, %d, %d, '%s', '%s', %d, %d" % (kind, myuid, aid3, value, "次级场景/线索细节", upid, upid2))
+    return "1"
+
+# 修改场景参数
+@app.route('/update_jb', methods=['POST'])
+def update_jb():
+    method = request.form['method']
+    value = request.form['value']
+    token = request.form['token']
+    id = int(request.form['id'])
+    myuid = int(session.get('uid'))
+    if token == 0:
+        return "0"
+    us = opt("user.db")
+    if method == "1":
+        col = "value"
+    elif method == "2":
+        col = "value2"
+    us.updata_w("custom","%s='%s'" % (col, value), "id=%d and uid=%d" % (id, myuid))
+    return "1"
+
+# 删除场景
+@app.route('/delet_jb', methods=['POST'])
+def delet_jb():
+    method = request.form['method']
+    token = request.form['token']
+    cid = int(request.form['id'])
+    gid = int(request.form['gid'])
+    aid = 94
+    aid2 = 95
+    aid3 = 96
+    if token == 0:
+        return "0"
+    us = opt("user.db")
+    if method == "juben":
+        us.delet_w("groupp", "aid=%d and value2='%s' and link_kind=5 and link_id=%d" % (aid, cid, gid))
+    elif method == "changjing":
+        us.delet_w("custom", "aid=%d and id=%d" % (aid2, cid))
+        us.delet_w("custom", "aid=%d and link_id=%d" % (aid3, cid))
+    elif method == "xiansuo" or method == "xiansuo2":
+        us.delet_w("custom", "aid=%d and id=%d" % (aid3, cid))
+        us.delet_w("custom", "aid=%d and link_id=%d" % (aid3, cid))
+    return "1"
+
+# 获取线索
+@app.route('/get_xs', methods=['GET'])
+def get_xs():
+    cid = int(request.args.get("id"))
+    us = opt("user.db")
+    aid = 96
+    re = us.select_w("custom", "aid=%d and link_id2=%d" % (aid, cid))
+    return jsonify(re)
+
+# 查看剧本相关
+# 0剧本名称 1剧本2级菜单信息
+@app.route('/get_jb', methods=['GET'])
+def get_jb():
+    out = []
+    gid = int(request.args.get("gid"))
+    aid = 94
+    aid2 = 95
+    us = opt("user.db")
+    jba = us.select_w("groupp", "aid=%d and link_kind=5 and link_id=%d" % (aid, gid))
+    if jba:
+        for jj in jba:
+            ou = []
+            jb_name = jj[2]
+            jb_id = int(jj[3])
+            ou.append(jb_id)
+            ou.append(jb_name)
+            jbinfos = us.select_w("custom", "aid=%d and link_id=%d" % (aid2, jb_id))
+            if jbinfos:
+                ou.append(jbinfos)
+            out.append(ou)
+
+    return jsonify(out)
+
+
 
 app.config['UPLOADED_PATH'] = os.getcwd() + '/static/upload'
 # need 上传路径需要更改
