@@ -57,6 +57,9 @@
                                                     <div class="input-group">
                                                     <input type="text" class="form-control jb_c_textt" placeholder="剧本名称">
                                                      <div class="input-group-append">
+                                                         <button onclick="sent_jbcj()" type="button" class="btn btn-secondary jb_cj_sent" title="发出">
+                                                                    <i class="fe-corner-down-right"></i>
+                                                                </button>
                                                          <button onclick="del_jbcj()" type="button" class="btn btn-secondary jb_cj_del" title="删除场景">
                                                                     <i class="fe-x"></i>
                                                                 </button>
@@ -565,6 +568,7 @@
                     var upid  = data[6];
                     var upid2 = data[7];
                     set_cjxs(method, list_xs, "jb_xs_", id, iid, title, detei, upid, idd);
+                    autosize($('textarea'));
                 }
             });
 
@@ -605,6 +609,8 @@
         $("#"+set_id+iid+" .jb_c_deteil_text").attr("id","jb_c_deteil_text_"+iid);
         $("#"+set_id+iid+" .jb_c_deteil_text").attr("onblur","update_jb("+iid+",2, 'jb_c_deteil_text_"+iid+"')");
 
+        //将场景/线索发送至公屏
+        $("#"+set_id+iid+" .jb_cj_sent").attr("onclick","sent_jb("+iid+")");
 
         //删除按钮
         $("#"+set_id+iid+" .jb_cj_del").attr("onclick","del_jb("+iid+",'"+method+"',"+xid+","+idd+")");
@@ -630,6 +636,13 @@
             });
     }
 
+    //将场景/信息发送出来
+    function sent_jb(id) {
+        var title = $("#jb_c_textt_"+id).val();
+        var detei = $("#jb_c_deteil_text_"+id).val();
+        var ht = "<h5>"+title+"</h5>"+detei;
+        send_msg(ht);
+    }
     //加入场景/线索
     function send_jbcj(id, method=0, valueid=0, upid2=0) {
         var value = $("#"+valueid).val();
