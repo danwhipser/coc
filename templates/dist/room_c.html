@@ -2296,6 +2296,7 @@
             var uid = $("#dtt_uid").val();
             var cid = $("#dtt_cid").val();
             var jobbnm=  $("#dtt_jobname").val();
+            var method = "player";
             if(!name){
                 alert("请至少填写物品名称");
                 return;
@@ -2307,6 +2308,7 @@
             }
             $.post("/add_objc", {
                     name: name,
+                    method:method,
                     use_skill: usek,
                     zhong: zhong,
                     damage: damage,

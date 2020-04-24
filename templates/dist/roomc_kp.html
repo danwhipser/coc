@@ -5,7 +5,18 @@
                                 <div class="container-fluid py-6">
 
                                     <!-- Title -->
+                                    <div class="row">
+                                    <div class="col-10 col-xl-10">
                                     <h2 class="font-bold mb-6">守密人工具台</h2>
+                                    </div>
+                                    <div class="col-1 col-xl-1">
+                                        <div class="d-xl-none d-block">
+                                        <a href="#" onclick="$('.main').attr('class','main main-visible')" class="btn btn-sm btn-ico btn-link text-muted">
+                                            <i class="fe-chevron-right"></i>
+                                        </a>
+                                        </div>
+                                    </div>
+                                    </div>
                                     <!-- Title -->
 
                                     <!-- Tabs -->
@@ -160,9 +171,164 @@
                                         <!-- 怪物管理 -->
                                         <div id="monster-list" class="tab-pane fade" role="tabpanel">
                                             <nav class="list-group list-group-flush mb-n6">
-                                                建设当中...
+                                                <div id="list_mon">
+
+                                                </div>
                                             </nav>
                                         </div>
+                                                        <!-- 怪物管理模板 -->
+                                                        <div style="display: none">
+
+                                                            <div id="mon_root" class="card">
+                                                                <div class="card-header">
+                                                                    <h5 class="mon_jb">剧本名称</h5>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <div class="card-text">
+                                                                        <div class="list_monster">
+                                                                        在这里可以添加怪物或npc
+                                                                        </div>
+                                                                    </div>
+                                                                    <p> </p>
+                                                                    <div class="input-group">
+                                                                         <div class="input-group-prepend">
+                                                                            <label class="input-group-text">
+                                                                                <span>添加怪物</span>:&nbsp;&nbsp;
+                                                                            </label>
+                                                                        </div>
+                                                                        <input type="text" class="form-control mon_add_tx" placeholder="怪物名称">
+                                                                         <div class="input-group-append">
+                                                                             <button onclick="mon_add()" type="button" class="btn btn-info mon_add_sub" title="确认添加">
+                                                                                    <i class="fe-plus"></i>
+                                                                                </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div id="mon_deteil" class="card">
+                                                                <div class="card-header">
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control mon_namee" placeholder="怪物名称" onchange="">
+                                                                         <div class="input-group-append">
+                                                                             <button onclick="" type="button" class="btn btn-secondary mon_copy" title="复制怪物">
+                                                                                        <i class="fe-file-text"></i>
+                                                                                    </button>
+                                                                             <button onclick="" type="button" class="btn btn-secondary mon_del" title="删除怪物">
+                                                                                        <i class="fe-x"></i>
+                                                                                    </button>
+                                                                             <button type="button" onclick="" class="btn btn-secondary mon_xl" title="展开" data-toggle="collapse" data-target="#mon_desc" aria-expanded="false" >
+<!--                                                                                 aria-controls="#mon_desc"-->
+                                                                                    <i class="fe-chevron-down"></i>
+                                                                                </button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <br />
+                                                                    <div class="input-group">
+                                                                         <div class="input-group-prepend">
+                                                                            <label class="input-group-text">
+                                                                                <span class="mon_hp_t">怪物体力</span>:&nbsp;&nbsp;
+                                                                            </label>
+                                                                        </div>
+                                                                         <input type="text" class="form-control mon_hp" placeholder="怪物体力">
+                                                                    </div>
+                                                                    <div class="mon_objs_list">
+                                                                    </div>
+                                                                    <br />
+                                                                    <a href="#" onclick="" class="text-muted mon_togopt">添加攻击方式</a>
+                                                                        <li class="list-group-item py-6 mon_optobj" style="display: none;">
+                                                                              <h4>新增自定义攻击方式:</h4>
+                                                                            <div class="media align-items-center">
+                                                                                <div class="media-body">
+                                                                                    <input class="form-control mon_opt_name" placeholder="名称">
+                                                                                </div>
+                                                                                </div>
+                                                                              <br />
+                                                                            <div class="media align-items-center">
+                                                                                <div class="media-body">
+                                                                                    <div class="input-group">
+                                                                                        <div class="input-group-prepend">
+                                                                                            <select class="form-control custom-select mon_opt_skill">
+                                                                                                    <option value="0" selected="selected">使用技能</option>
+                                                                                                    <option value="近攻">近攻</option>
+                                                                                                    <option value="远攻">远攻</option>
+                                                                                                    <option value="闪避">闪避</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <input class="form-control mon_opt_zhong" placeholder="命中率">
+                                                                                    </div>
+                                                                                </div>
+                                                                                </div>
+                                                                              <br />
+                                                                            <div class="media align-items-center">
+                                                                                <div class="media-body">
+                                                                                    <div class="input-group">
+                                                                                        <input class="form-control mon_opt_demage" placeholder="伤害">
+                                                                                    </div>
+                                                                                </div>
+                                                                                </div>
+                                                                              <br />
+                                                                            <div class="media align-items-center">
+                                                                                <div class="media-body">
+                                                                                    <div class="input-group">
+                                                                                        <textarea class="form-control mon_opt_desc" placeholder="特殊描述"></textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                                </div>
+                                                                              <br />
+                                                                            <div class="media align-items-center">
+                                                                                <div class="media-body">
+                                                                                    <button onclick="" type="button" class="btn btn-primary form-control mon_opt_sub">添加</button>
+                                                                                </div>
+                                                                                </div>
+                                                                            </li>
+<!--                                                                     自定义物品-->
+                                                                    <div class="mon_list_opt"></div>
+
+                                                                </div>
+                                                                <div id="mon_desc" class="collapse mon_xl_list">
+                                                                    <div class="card-body">
+                                                                        <div class="card-text">
+                                                                            <div class="list_monster"></div>
+                                                                            <div class="list_monster2"></div>
+                                                                            <div class="mon_moli" style="display: none;">
+                                                                            <div class="input-group">
+                                                                                 <div class="input-group-prepend">
+                                                                                    <label class="input-group-text">
+                                                                                        <span class="moli_t">魔法/理智</span>:&nbsp;&nbsp;
+                                                                                    </label>
+                                                                                </div>
+                                                                                 <input type="text" class="form-control moli_v" placeholder="魔法/理智">
+                                                                            </div>
+                                                                            </div>
+                                                                            <br />
+                                                                            <div class="mon_shuxing" style="display: none;">
+                                                                            <div class="input-group">
+                                                                                 <div class="input-group-prepend">
+                                                                                    <label class="input-group-text">
+                                                                                        <span class="shuxing_t">力量</span>:&nbsp;&nbsp;
+                                                                                    </label>
+                                                                                </div>
+                                                                                 <input type="text" class="form-control shuxing_v" placeholder="力量">
+                                                                                 <div class="input-group-append">
+                                                                                     <button onclick="" type="button" class="btn btn-secondary mon_mingtou" title="明骰">
+                                                                                            <i class="fe-slack"></i>
+                                                                                        </button>
+                                                                                     <button onclick="" type="button" class="btn btn-secondary mon_antou" title="暗骰">
+                                                                                            <i class="fe-x-square"></i>
+                                                                                        </button>
+
+                                                                                </div>
+                                                                            </div>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                         <!-- 怪物管理 -->
 
                                         <!-- 骰子提示管理 -->
@@ -522,6 +688,7 @@
             },
             function(myData , status){
                 $("#show_jb_list").html("");
+                $("#list_mon").html("");
                 for(ii in myData){
                     var data = myData[ii];
                     var id = data[0];
@@ -530,6 +697,11 @@
                     $("#show_jb_list").append("<div id='jb_list_"+id+"'></div><p> </p>");
                     $("#jb_list_"+id).append("<h3>"+name+"</h3>");
                     $("#jb_list_"+id).append("<p align='right'><a class='text-muted' href='#' onclick='del_jb(\""+id+"\",\"juben\")'><small>删除剧本</small></a></p>");
+
+                    //怪物界面
+                    set_mon(id,name);
+                    get_mon(id);
+
                     for(iii in list_v){
                         var iid = list_v[iii][0];
                         var title =list_v[iii][4];
@@ -624,6 +796,18 @@
         $("#xs_pluk_"+iid+" .jb_xs_sub").attr("onclick","send_jbcj("+xid+",'"+method2+"','xs_name_"+iid+"',"+iid+")");
     }
 
+    //设定怪物部分的模板
+    function set_mon(id, name) {
+        var temp_mon = $("#mon_root").clone(true);
+        temp_mon.attr("id","mon_root_"+id);
+        $("#list_mon").append(temp_mon);
+        $("#mon_root_"+id+" .mon_jb").html(name);
+        $("#mon_root_"+id+" .mon_add_tx").attr("id","mon_add_tx_"+id);
+        $("#mon_root_"+id+" .mon_add_sub").attr("onclick","mon_add("+id+", 'mon_add_tx_"+id+"')");
+        $("#mon_root_"+id+" .list_monster").attr("id","list_monster_"+id);
+
+    }
+
     function update_jb(id,num,valid) {
         var value = $("#"+valid).val();
         $.post("/update_jb", {
@@ -641,7 +825,8 @@
         var title = $("#jb_c_textt_"+id).val();
         var detei = $("#jb_c_deteil_text_"+id).val();
         var ht = "<h5>"+title+"</h5>"+detei;
-        send_msg(ht);
+        $("#chat-id-1-input").val(ht);
+        sub_send_msg();
     }
     //加入场景/线索
     function send_jbcj(id, method=0, valueid=0, upid2=0) {
@@ -689,5 +874,359 @@
             });
     }
 
+
+//    -------------------------------------------------------怪物相关
+    // 添加怪物
+    function mon_add(juben_id, mon_add_tx) {
+        var mon_name = $("#"+mon_add_tx).val();
+        if(!mon_name){
+            alert("请输入怪物名称再添加");
+            return;
+        }
+        $.post("/add_mon", {
+            mon_name:mon_name,
+            juben_id:juben_id,
+            token: "{{token}}"
+            },
+            function(myData , status){
+                $("#"+mon_add_tx).val("");
+                get_mon(juben_id);
+            });
+
+    }
+
+    //删除/copy怪物
+    function del_mon(mon_id, juben_id, mon_add_tx) {
+        var r = confirm("确定删除这个怪物吗？");
+        if (r == false) {
+            return
+        }
+        $.post("/del_mon", {
+            kid:mon_id,
+            token: "{{token}}"
+            },
+            function(myData , status){
+                $("#"+mon_add_tx).val("");
+                get_mon(juben_id);
+            });
+    }
+    function copy_mon(mon_id, juben_id, mon_add_tx) {
+        $.post("/copy_mon", {
+            kid:mon_id,
+            token: "{{token}}"
+            },
+            function(myData , status){
+                $("#"+mon_add_tx).val("");
+                get_mon(juben_id);
+            });
+    }
+
+    // 获取怪物列表
+    function get_mon(juben_id) {
+        $.get("/get_mon", {
+            juben_id:juben_id
+            },
+            function(myData , status){
+                $("#list_monster_"+juben_id).html("");
+                for(ii in myData){
+                    var datas = myData[ii];
+                    var did  = datas[0];
+                    var name = datas[1];
+                    var detei= datas[2];
+                    var objs = datas[3];
+                    set_mon_deteil("list_monster_"+juben_id,"mon_deteil",did,name,juben_id,detei,objs)
+                }
+                // console.log(myData);
+            },"json");
+    }
+    
+    function set_mon_deteil(list,temp,did,name,juben_id,detei,objs) {
+        var temp_mon = $("#"+temp).clone(true);
+        var set_id = temp+"_"+did;
+        temp_mon.attr("id",set_id);
+        var namee = "";
+
+        $("#"+list).append(temp_mon);
+        $("#"+set_id+" .list_monster").html("");
+        $("#"+set_id+" .list_monster2").html("");
+        for(ii in detei){
+            var data = detei[ii];
+            var kid = data[0];
+            var aid = data[3];
+            var value = data[4];
+            var title = data[5];
+            if(aid==1){
+                //名称
+                namee = value;
+                $("#"+set_id+" .mon_namee").val(namee);
+                $("#"+set_id+" .mon_namee").attr("id","mon_de_"+kid);
+                $("#"+set_id+" .mon_namee").attr("onchange","mon_change("+kid+",'name')");
+
+                $("#"+set_id+" .mon_del").attr("onclick","del_mon("+did+", "+juben_id+", 'mon_add_tx_"+juben_id+"')");
+                $("#"+set_id+" .mon_copy").attr("onclick","copy_mon("+did+", "+juben_id+", 'mon_add_tx_"+juben_id+"')");
+                //下拉菜单
+                $("#"+set_id+" .mon_xl").attr("data-target","#mon_desc_"+did);
+                $("#"+set_id+" .mon_xl_list").attr("id","mon_desc_"+did);
+
+            }
+            else if(aid==29){
+                //体力
+                $("#"+set_id+" .mon_hp").val(value);
+                $("#"+set_id+" .mon_hp_t").html(title);
+                $("#"+set_id+" .mon_hp").attr("id","mon_de_"+kid);
+                $("#"+set_id+" .mon_hp").attr("onchange","mon_change("+kid+",'hp')");
+            }
+            else if(aid==30 || aid==32 || aid==50){
+                //理智和魔法
+                var tml = $("#"+set_id+" .mon_moli").clone(true);
+                tml.attr("id","mon_de_"+kid);
+                tml.attr("class","");
+                tml.attr("style","");
+                $("#"+set_id+" .list_monster").append(tml);
+                $("#"+set_id+" .list_monster").append("<br />");
+                $("#mon_de_"+kid+" .moli_t").html(title);
+                $("#mon_de_"+kid+" .moli_v").val(value);
+                $("#mon_de_"+kid+" .moli_v").attr("onchange","mon_change("+kid+",'moli_v')");
+                $("#mon_de_"+kid+" .moli_v").attr("class", "form-control moli_v dede_"+aid);
+            }
+            else if((aid>=20 && aid<=27) || aid>=98){
+                //其他7个属性
+                var tml = $("#"+set_id+" .mon_shuxing").clone(true);
+                tml.attr("id","mon_de_"+kid);
+                tml.attr("class","");
+                tml.attr("style","");
+                $("#"+set_id+" .list_monster2").append(tml);
+                $("#"+set_id+" .list_monster2").append("<br />");
+                $("#mon_de_"+kid+" .shuxing_t").html(title);
+                $("#mon_de_"+kid+" .shuxing_v").val(value);
+                $("#mon_de_"+kid+" .shuxing_v").attr("onchange","mon_change("+kid+",'shuxing_v','"+namee+"','"+title+"')");
+                $("#mon_de_"+kid+" .shuxing_v").attr("class", "form-control shuxing_v dede_"+aid);
+                $("#mon_de_"+kid+" .mon_mingtou").attr("onclick","tou2("+value+",'"+namee+" "+title+"')");
+                $("#mon_de_"+kid+" .mon_antou").attr("onclick","tou2("+value+",'"+namee+" "+title+"',100,0,1)");
+
+            }
+        }
+
+    //    设定添加物品
+        $("#"+set_id+" .mon_optobj").attr("id","mon_optobj_"+did);
+        $("#"+set_id+" .mon_togopt").attr("onclick","$('#mon_optobj_"+did+"').toggle();");
+        $("#"+set_id+" .mon_opt_sub").attr("onclick","add_objc2("+did+",'mon_optobj_"+did+"',"+juben_id+")");
+
+        // 自定义物品的显示
+        $("#"+set_id+" .mon_objs_list").html("");
+        //所有的物品列表
+        for(iii in objs){
+            var objj = objs[iii];
+            var obj_id = objj[0];
+            var obj_temp = $("#dt_obj").clone(true);
+            obj_temp.attr("id","mon_obj_"+obj_id);
+            obj_temp.attr("style","");
+            $("#"+set_id+" .mon_objs_list").append(obj_temp);
+            var obj_detei = objj[1];
+            //一个物品列出所有属性
+            for(iiii in obj_detei){
+                var obji = obj_detei[iiii];
+                var obj_aid = obji[3];
+                var value  = obji[4];
+                var value2 = obji[5];
+                if(obj_aid==90){
+                    var obj_name = value;
+                    $("#mon_obj_"+obj_id+" .dt_atr_name").html(obj_name);
+                }
+                else if(obj_aid==86){
+                    var obj_skill = value;
+                    var obj_zhong = value2;
+                    if(obj_skill!="0"){
+                        $("#mon_obj_"+obj_id+" .dt_atr_useskill").append(obj_skill);
+                        var zhong;
+                        if(obj_skill=="闪避"){
+                            zhong = $("#"+set_id+" .dede_98").val();
+                        }
+                        else if(obj_skill=="近攻"){
+                            zhong = $("#"+set_id+" .dede_99").val();
+                        }
+                        else if(obj_skill=="远攻"){
+                            zhong = $("#"+set_id+" .dede_100").val();
+                        }
+                        var skillname = obj_skill;
+                    }
+                    if(obj_zhong!="0"){
+                        $("#mon_obj_"+obj_id+" .dt_atr_useskill").html("命中率:"+obj_zhong);
+                        var zhong = obj_zhong;
+                        var skillname = "0";
+                    }
+                }
+                else if(obj_aid==87){
+                    var obj_demage = value;
+                    $("#mon_obj_"+obj_id+" .dt_atr_name").attr("title",obj_demage);
+                    $("#mon_obj_"+obj_id+" .dt_atr_damage").append(obj_demage);
+
+                }
+                else if(obj_aid==88){
+                    var obj_special = value;
+                    $("#mon_obj_"+obj_id+" .dt_atr_skillplu").append(obj_special);
+                }
+            }
+            var dbb = $("#"+set_id+" .dede_50").val();
+            $("#mon_obj_"+obj_id+" .dt_mingtou").attr("onclick","tou5('"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"','"+zhong+"','"+dbb+"',0,'"+obj_special+"')");
+            $("#mon_obj_"+obj_id+" .dt_antou").attr("onclick","tou5('"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"','"+zhong+"','"+dbb+"',0,'"+obj_special+"',1)");
+            $("#mon_obj_"+obj_id+" .dt_jiaochu").attr("onclick","mon_reng("+obj_id+",'"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"', "+obj_zhong+",0, '"+obj_special+"')");
+            $("#mon_obj_"+obj_id+" .dt_deltou").attr("onclick","mon_delobj("+obj_id+","+juben_id+")");
+            $("#mon_obj_"+obj_id+" .dt_mingtoum").attr("onclick","tou5('"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"','"+zhong+"','"+dbb+"','mobile','"+obj_special+"')");
+            $("#mon_obj_"+obj_id+" .dt_antoum").attr("onclick","tou5('"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"','"+zhong+"','"+dbb+"','mobile','"+obj_special+"',1)");
+            $("#mon_obj_"+obj_id+" .dt_jiaochum").attr("onclick","mon_reng("+obj_id+",'"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"', "+obj_zhong+",'mobile', '"+obj_special+"')");
+        }
+
+    }
+
+    // 怪物修改
+    function mon_change(kid, method=0, namee=0, title=0) {
+        if(method=="name" || method=="hp"){
+            var value = $("#mon_de_"+kid).val();
+        }
+        else{
+            var value = $("#mon_de_"+kid+" ."+method).val();
+        }
+        $.post("/update_mon", {
+            kid:kid,
+            value:value,
+            method:method,
+            token: "{{token}}"
+            },
+            function(myData , status){
+            if(myData!="1"){
+                alert("出现错误"+status);
+            }
+            else {
+                if(method=="shuxing_v"){
+                    $("#mon_de_"+kid+" .mon_mingtou").attr("onclick","tou2("+value+",'"+namee+" "+title+"')");
+                    $("#mon_de_"+kid+" .mon_antou").attr("onclick","tou2("+value+",'"+namee+" "+title+"',100,0,1)");
+                }
+            }
+            });
+        // console.log(value);
+    }
+
+    // 增加自定义物品
+    function add_objc2(did,list,juben_id) {
+        var name   = $("#"+list+" .mon_opt_name").val();        //名称
+        var usek   = $("#"+list+" .mon_opt_skill").val();       //使用技能
+        var zhong  = $("#"+list+" .mon_opt_zhong").val();       //命中率
+        var damage = $("#"+list+" .mon_opt_demage").val();      //伤害
+        var desc   = $("#"+list+" .mon_opt_desc").val();        //特殊描述
+        var cid = did;
+        var method = "monster";
+        if(!name){
+            alert("请至少填写物品名称");
+            return;
+        }
+        if(usek==0){
+            if(zhong && zhong!=0){
+                usek="自定义";
+            }
+        }
+        $.post("/add_objc", {
+                    name: name,
+                    method:method,
+                    use_skill: usek,
+                    zhong: zhong,
+                    damage: damage,
+                    desc:desc,
+                    uid:0,
+                    cid:cid
+                },
+                function(myData , status){
+                    if(myData=="1"){
+                        $("#"+list+" .mon_opt_name").val("");        //名称
+                        $("#"+list+" .mon_opt_skill").val("");       //使用技能
+                        $("#"+list+" .mon_opt_zhong").val("");       //命中率
+                        $("#"+list+" .mon_opt_demage").val("");      //伤害
+                        $("#"+list+" .mon_opt_desc").val("");        //特殊描述
+                        alert("成功添加");
+                        $("#mon_add_tx_"+juben_id).val("");
+                        get_mon(juben_id);
+                    }
+                });
+
+
+    }
+
+    // 怪物投骰子
+    function tou5(skillname="0",pname="0",obj="0",damage="0", zhong="0", db="0",type=0, desc="0",an=0){
+            if(mycid==0 || mycid=="0" || !mycid){
+                alert("请至少将一个卡组加入游戏再输入");
+                return
+            }
+            if(an==1){
+                var kind = 2;
+                var toid_p="{{group_creater}}";
+            }
+            else{
+                var kind = 5;
+                var toid_p=0;
+            }
+
+            $.post("/tou_demage2", {
+                kind:kind,
+                fromcid:mycid,
+                toid:"{{group_id}}",
+                damage: damage,
+                db: db,
+                obj : obj,
+                pname: pname,
+                skillname:skillname,
+                zhong : zhong,
+                desc:desc,
+                toid_p:toid_p
+            },
+            function(myData , status){
+                $("#chat-id-1-input").val("");
+                get_msg_lastid(1);
+                //设置手机界面
+                if(type=="mobile"){
+                    $('.main').attr('class','main main-visible');
+                }
+            });
+
+        }
+
+    //交出物品
+    function mon_reng(pid, skillname="0",pname="0",obj="0",damage="0", zhong="0",type=0, desc="0") {
+        var kind = 1;
+        var ht = pname+'交出了 <a  class="text-muted" onclick=take('+pid+','+kind+',"'+obj+'"); href="#"><strong>'+obj+'</strong></a>';
+        if(skillname!=0){
+            ht = ht+"<br />技能使用："+skillname;
+        }
+        if(zhong!=0){
+            ht = ht+"<br />命中："+zhong;
+        }
+        if(damage!=0){
+            ht = ht+"<br />伤害："+damage;
+        }
+        if(desc!=0){
+            ht = ht+"<br />描述："+desc;
+        }
+        send_msg(ht);
+        if(type=="mobile"){
+            $('.main').attr('class','main main-visible');
+        }
+    }
+
+    //删除物品
+    function mon_delobj(pid,juben_id){
+            $.post("/delobj", {
+                    pid: pid,
+                    kind:"monster",
+                    token:"{{token}}",
+                },
+                function(myData , status){
+                    if(myData=="0"){
+                        alert("出现迷之错误,请重新登录游戏");
+                        return;
+                    }
+                    $("#mon_add_tx_"+juben_id).val("");
+                    get_mon(juben_id);
+                });
+        }
 
 </script>

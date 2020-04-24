@@ -434,7 +434,7 @@ def login():
             return render_template('dist/signin.html', message=message)
             # return render_template('login.html', message=message)
     else:
-        message = "欢迎来到克苏鲁pao团,我们致力于开发与制作类克苏鲁游戏"
+        message = "欢迎来到深渊小屋，我们致力于开发与制作TRPG游戏"
         return render_template('dist/signin.html', message=message)
         # return render_template('login.html', message="克苏鲁炮团")
 
@@ -978,6 +978,7 @@ def add_objc():
     desc = request.form['desc']
     uid = request.form['uid']
     cid = request.form['cid']
+    method = request.form['method']
     if not name:
         return str(0)
     if not use_skill:
@@ -988,14 +989,19 @@ def add_objc():
         damage=0
     if not desc:
         desc=0
-    uid = int(uid)
+    uid = int(request.form['uid'])
+    if uid == 0:
+        uid = int(session.get('uid'))
     us = opt("user.db")
     lastid = us.addla("custom", "4, %d, %d, '%s', '%s', 0, 0" % (uid,85,name,"0"))
     us.add("custom", "4, %d, %d, '%s', '%s',%d, 0" % (uid, 90, name, "0", int(lastid)))
     us.add("custom", "4, %d, %d, '%s', '%s',%d, 0" % (uid, 86, use_skill, zhong, int(lastid)))
     us.add("custom", "4, %d, %d, '%s', '%s',%d, 0" % (uid, 87, damage, "0", int(lastid)))
     us.add("custom", "4, %d, %d, '%s', '%s',%d, 0" % (uid, 88, desc, "0", int(lastid)))
-    us.add_u(9,uid,79,0,lastid,1,int(cid))
+    if method == "player":
+        us.add_u(9,uid,79,0,lastid,1,int(cid))
+    elif method == "monster":
+        us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (9, uid,79,lastid,"0",int(cid)))
     return str(1)
 
 #捡起物品
@@ -1095,6 +1101,8 @@ def delobj():
             # us.delet_w("custom", "id=%d and uid=%d" % (pid, myuid))
             # us.delet_w("custom", "link_id=%d and uid=%d" % (pid, myuid))
             us.delet_w("plyer", "nid=79 and value='%s' and uid=%d" % (str(pid), myuid))
+        elif kind == "monster":
+            return "0"
         else:
             us.delet_w("plyer", "id=%d and uid=%d" % (pid, myuid))
         return str(1)
@@ -1102,6 +1110,11 @@ def delobj():
     if check == 1:
         if kind == "custom":
             us.delet_w("plyer", "nid=79 and value='%s'" % (str(pid)))
+        # 是怪物时删除自定义物品
+        elif kind == "monster":
+            us.delet_w("custom", "aid=79 and value='%s' and uid=%d" % (str(pid), myuid))
+            us.delet_w("custom", "id=%d and uid=%d" % (pid, myuid))
+            us.delet_w("custom", "link_id=%d and uid=%d" % (pid, myuid))
         else:
             us.delet_w("plyer", "id=%d" % (pid))
         return str(1)
@@ -1419,6 +1432,115 @@ def get_jb():
 
     return jsonify(out)
 
+# 添加怪物
+@app.route('/add_mon', methods=['POST'])
+def mon_add():
+    mon_name = request.form['mon_name']
+    juben_id = int(request.form['juben_id'])
+    token = request.form['token']
+    myuid = int(session.get('uid'))
+    if token == 0:
+        return "0"
+    us = opt("user.db")
+    kind = 11
+    aid = 97
+    lastid = us.addla("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, aid, mon_name, "0", juben_id))
+    kind2 = 1
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 1, mon_name, "名称", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 20, "0", "力量", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 21, "0", "体质", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 23, "0", "敏捷", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 24, "0", "外貌", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 25, "0", "智力", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 26, "0", "意志", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 27, "0", "教育", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 29, "0", "体力", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 30, "0", "理智", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 32, "0", "魔法", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 50, "0", "DB", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, 98, "0", "闪避", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, 99, "0", "近攻", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, 100, "0", "远攻", lastid))
+    return str(lastid)
+
+# 删除怪物
+@app.route('/del_mon', methods=['POST'])
+def del_mon():
+    kid = int(request.form['kid'])
+    token = request.form['token']
+    myuid = int(session.get('uid'))
+    if token == 0:
+        return "0"
+    us = opt("user.db")
+    us.delet_w("custom", "id=%d and uid =%d" % (kid, myuid))
+    us.delet_w("custom", "link_id=%d and uid =%d" % (kid, myuid))
+    return "1"
+
+# copy怪物
+@app.route('/copy_mon', methods=['POST'])
+def copy_mon():
+    kid = int(request.form['kid'])
+    token = request.form['token']
+    myuid = int(session.get('uid'))
+    if token == 0:
+        return "0"
+    us = opt("user.db")
+    tempinfo = us.select_w("custom", "id=%d and uid =%d" % (kid, myuid))
+    tempinfo2 = us.select_w("custom", "link_id=%d and uid =%d" % (kid, myuid))
+    if tempinfo:
+        ti = tempinfo[0]
+        kind = 11
+        aid = 97
+        lastid = us.addla("custom","%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, aid, ti[4], ti[5], ti[6]))
+        for info in tempinfo2:
+            ti = info
+            us.add("custom","%d, %d, %d, '%s', '%s', %d, 0" % (ti[1], myuid, ti[3], ti[4], ti[5], lastid))
+
+    return "1"
+
+
+# 修改怪物参数
+@app.route('/update_mon', methods=['POST'])
+def update_mon():
+    kid = int(request.form['kid'])
+    value = request.form['value']
+    method = request.form['method']
+    token = request.form['token']
+    myuid = int(session.get('uid'))
+    if token == 0:
+        return "0"
+    us = opt("user.db")
+    us.updata_w("custom", "value='%s'" % (value), "id=%d and uid=%d" % (kid, myuid))
+    return "1"
+
+# 获取怪物信息
+@app.route('/get_mon', methods=['GET'])
+def get_mon():
+    out = []
+    juben_id = int(request.args.get("juben_id"))
+    aid = 97
+    us = opt("user.db")
+    mon_list = us.select_w("custom", "aid=%d and link_id=%d" % (aid, juben_id))
+    for mon in mon_list:
+        re = []
+        objs = []
+        mon_id = mon[0]
+        mon_name = mon[4]
+        mon_dete = us.select_w("custom", "link_id=%d" % (mon_id))
+        for mon_d in mon_dete:
+            if mon_d[3]==79:
+                obji = []
+                obj_id = int(mon_d[4])
+                obj_deteils = us.select_w("custom", "link_id=%d" % (obj_id))
+                obji.append(obj_id)
+                obji.append(obj_deteils)
+                objs.append(obji)
+        re.append(mon_id)
+        re.append(mon_name)
+        re.append(mon_dete)
+        re.append(objs)
+        out.append(re)
+    return jsonify(out)
 
 
 app.config['UPLOADED_PATH'] = os.getcwd() + '/static/upload'

@@ -246,6 +246,17 @@
 
                                             <div id="profile-settings-security" class="collapse" data-parent="#profile-settings">
                                                 <div class="card-body">
+                                                    <button type="button" onclick="$('#opt_shuxing').toggle('fast')" class="btn btn-secondary btn-sm btn-block">
+                                                        自定义属性上限
+                                                    </button>
+                                                    <p> </p>
+                                                  <div id="opt_shuxing" style="display: none">
+                                                      <input id="opt_shuxings" onchange="resetscore();" class="form-control form-control-lg" type="text" placeholder="自定义上限（数字）">
+                                                      <p> </p>
+                                                      <p> </p>
+                                                  </div>
+
+
                                                     <form action="#">
 
                                                         {% for n in atrr %}
@@ -781,6 +792,7 @@
         var totalskill=0;
         // 总共的点数
         var allpoints = 460;
+        var allpointsb = 460;
         //物品
         var objs=[];
 
@@ -808,6 +820,24 @@
             //标签显示
             $('[data-toggle="popover"]').popover()
         });
+
+        //重新计算属性上限
+        function resetscore() {
+            var rescore = $("#opt_shuxings").val();
+            if(!rescore){
+                rescore = 0;
+            }
+            rescore = parseInt(rescore);
+            if(rescore==0){
+                allpoints = allpointsb;
+            }
+            else{
+                allpoints = rescore;
+            }
+            var skillpoint = co_skillpoint();
+            scoremax = allpoints-skillpoint;
+            $("#restd").html(scoremax);
+        }
 
         // 计算技能点数综合
         function co_skillpoint(){
