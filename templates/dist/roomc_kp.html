@@ -232,6 +232,7 @@
                                                                         </div>
                                                                          <input type="text" class="form-control mon_hp" placeholder="怪物体力">
                                                                     </div>
+                                                                    <div class="list_monster0"></div>
                                                                     <div class="mon_objs_list">
                                                                     </div>
                                                                     <br />
@@ -250,6 +251,7 @@
                                                                                         <div class="input-group-prepend">
                                                                                             <select class="form-control custom-select mon_opt_skill">
                                                                                                     <option value="0" selected="selected">使用技能</option>
+                                                                                                    <option value="0">自定义命中</option>
                                                                                                     <option value="近攻">近攻</option>
                                                                                                     <option value="远攻">远攻</option>
                                                                                                     <option value="闪避">闪避</option>
@@ -291,6 +293,7 @@
                                                                         <div class="card-text">
                                                                             <div class="list_monster"></div>
                                                                             <div class="list_monster2"></div>
+                                                                            <div class="list_monster3"></div>
                                                                             <div class="mon_moli" style="display: none;">
                                                                             <div class="input-group">
                                                                                  <div class="input-group-prepend">
@@ -944,7 +947,7 @@
         var temp_mon = $("#"+temp).clone(true);
         var set_id = temp+"_"+did;
         temp_mon.attr("id",set_id);
-        var namee = "";
+        var namee = name;
 
         $("#"+list).append(temp_mon);
         $("#"+set_id+" .list_monster").html("");
@@ -960,7 +963,7 @@
                 namee = value;
                 $("#"+set_id+" .mon_namee").val(namee);
                 $("#"+set_id+" .mon_namee").attr("id","mon_de_"+kid);
-                $("#"+set_id+" .mon_namee").attr("onchange","mon_change("+kid+",'name')");
+                $("#"+set_id+" .mon_namee").attr("onchange","mon_change("+kid+","+aid+",'name')");
 
                 $("#"+set_id+" .mon_del").attr("onclick","del_mon("+did+", "+juben_id+", 'mon_add_tx_"+juben_id+"')");
                 $("#"+set_id+" .mon_copy").attr("onclick","copy_mon("+did+", "+juben_id+", 'mon_add_tx_"+juben_id+"')");
@@ -974,32 +977,44 @@
                 $("#"+set_id+" .mon_hp").val(value);
                 $("#"+set_id+" .mon_hp_t").html(title);
                 $("#"+set_id+" .mon_hp").attr("id","mon_de_"+kid);
-                $("#"+set_id+" .mon_hp").attr("onchange","mon_change("+kid+",'hp')");
+                $("#"+set_id+" .mon_hp").attr("onchange","mon_change("+kid+","+aid+",'hp')");
             }
-            else if(aid==30 || aid==32 || aid==50){
-                //理智和魔法
+            else if(aid==30 || aid==32 || aid==50 || aid==101){
+                //理智,魔法,db,盔甲
                 var tml = $("#"+set_id+" .mon_moli").clone(true);
                 tml.attr("id","mon_de_"+kid);
                 tml.attr("class","");
                 tml.attr("style","");
-                $("#"+set_id+" .list_monster").append(tml);
-                $("#"+set_id+" .list_monster").append("<br />");
+                if(aid!=50 && value!="0"){
+                    $("#"+set_id+" .list_monster0").append("<br />");
+                    $("#"+set_id+" .list_monster0").append(tml);
+                }
+                else{
+                    $("#"+set_id+" .list_monster").append(tml);
+                    $("#"+set_id+" .list_monster").append("<br />");
+                }
                 $("#mon_de_"+kid+" .moli_t").html(title);
                 $("#mon_de_"+kid+" .moli_v").val(value);
-                $("#mon_de_"+kid+" .moli_v").attr("onchange","mon_change("+kid+",'moli_v')");
+                $("#mon_de_"+kid+" .moli_v").attr("onchange","mon_change("+kid+","+aid+",'moli_v',0,0,"+juben_id+",'"+value+"')");
                 $("#mon_de_"+kid+" .moli_v").attr("class", "form-control moli_v dede_"+aid);
             }
-            else if((aid>=20 && aid<=27) || aid>=98){
-                //其他7个属性
+            else if((aid>=20 && aid<=27) || (aid>=98 && aid<=100)){
+                //其他7个属性+闪避,近攻,远攻
                 var tml = $("#"+set_id+" .mon_shuxing").clone(true);
                 tml.attr("id","mon_de_"+kid);
                 tml.attr("class","");
                 tml.attr("style","");
-                $("#"+set_id+" .list_monster2").append(tml);
-                $("#"+set_id+" .list_monster2").append("<br />");
+                if(aid<98){
+                    $("#"+set_id+" .list_monster3").append(tml);
+                    $("#"+set_id+" .list_monster3").append("<br />");
+                }
+                else {
+                    $("#"+set_id+" .list_monster2").append(tml);
+                    $("#"+set_id+" .list_monster2").append("<br />");
+                }
                 $("#mon_de_"+kid+" .shuxing_t").html(title);
                 $("#mon_de_"+kid+" .shuxing_v").val(value);
-                $("#mon_de_"+kid+" .shuxing_v").attr("onchange","mon_change("+kid+",'shuxing_v','"+namee+"','"+title+"')");
+                $("#mon_de_"+kid+" .shuxing_v").attr("onchange","mon_change("+kid+","+aid+",'shuxing_v','"+namee+"','"+title+"',"+juben_id+")");
                 $("#mon_de_"+kid+" .shuxing_v").attr("class", "form-control shuxing_v dede_"+aid);
                 $("#mon_de_"+kid+" .mon_mingtou").attr("onclick","tou2("+value+",'"+namee+" "+title+"')");
                 $("#mon_de_"+kid+" .mon_antou").attr("onclick","tou2("+value+",'"+namee+" "+title+"',100,0,1)");
@@ -1068,19 +1083,23 @@
                 }
             }
             var dbb = $("#"+set_id+" .dede_50").val();
-            $("#mon_obj_"+obj_id+" .dt_mingtou").attr("onclick","tou5('"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"','"+zhong+"','"+dbb+"',0,'"+obj_special+"')");
-            $("#mon_obj_"+obj_id+" .dt_antou").attr("onclick","tou5('"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"','"+zhong+"','"+dbb+"',0,'"+obj_special+"',1)");
+            // $("#mon_obj_"+obj_id+" .dt_mingtou").attr("onclick","tou5('"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"','"+zhong+"','"+dbb+"',0,'"+obj_special+"')");
+            // $("#mon_obj_"+obj_id+" .dt_antou").attr("onclick","tou5('"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"','"+zhong+"','"+dbb+"',0,'"+obj_special+"',1)");
+            $("#mon_obj_"+obj_id+" .dt_mingtou").attr("onclick","mon_tou('"+set_id+"', '"+skillname+"','"+obj_name+"','"+obj_demage+"', '"+zhong+"' ,0, '"+obj_special+"')");
+            $("#mon_obj_"+obj_id+" .dt_antou").attr("onclick","mon_tou('"+set_id+"', '"+skillname+"','"+obj_name+"','"+obj_demage+"', '"+zhong+"' ,0, '"+obj_special+"',1)");
             $("#mon_obj_"+obj_id+" .dt_jiaochu").attr("onclick","mon_reng("+obj_id+",'"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"', "+obj_zhong+",0, '"+obj_special+"')");
             $("#mon_obj_"+obj_id+" .dt_deltou").attr("onclick","mon_delobj("+obj_id+","+juben_id+")");
-            $("#mon_obj_"+obj_id+" .dt_mingtoum").attr("onclick","tou5('"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"','"+zhong+"','"+dbb+"','mobile','"+obj_special+"')");
-            $("#mon_obj_"+obj_id+" .dt_antoum").attr("onclick","tou5('"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"','"+zhong+"','"+dbb+"','mobile','"+obj_special+"',1)");
+            $("#mon_obj_"+obj_id+" .dt_mingtoum").attr("onclick","mon_tou('"+set_id+"', '"+skillname+"','"+obj_name+"','"+obj_demage+"', '"+zhong+"' ,'mobile', '"+obj_special+"')");
+            $("#mon_obj_"+obj_id+" .dt_antoum").attr("onclick","mon_tou('"+set_id+"', '"+skillname+"','"+obj_name+"','"+obj_demage+"', '"+zhong+"' ,'mobile', '"+obj_special+"',1)");
+            // $("#mon_obj_"+obj_id+" .dt_mingtoum").attr("onclick","tou5('"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"','"+zhong+"','"+dbb+"','mobile','"+obj_special+"')");
+            // $("#mon_obj_"+obj_id+" .dt_antoum").attr("onclick","tou5('"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"','"+zhong+"','"+dbb+"','mobile','"+obj_special+"',1)");
             $("#mon_obj_"+obj_id+" .dt_jiaochum").attr("onclick","mon_reng("+obj_id+",'"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"', "+obj_zhong+",'mobile', '"+obj_special+"')");
         }
 
     }
 
     // 怪物修改
-    function mon_change(kid, method=0, namee=0, title=0) {
+    function mon_change(kid, aid, method=0, namee=0, title=0, juben_id=0, yuanval=0) {
         if(method=="name" || method=="hp"){
             var value = $("#mon_de_"+kid).val();
         }
@@ -1101,6 +1120,17 @@
                 if(method=="shuxing_v"){
                     $("#mon_de_"+kid+" .mon_mingtou").attr("onclick","tou2("+value+",'"+namee+" "+title+"')");
                     $("#mon_de_"+kid+" .mon_antou").attr("onclick","tou2("+value+",'"+namee+" "+title+"',100,0,1)");
+                }
+                //理智和魔法窜上去
+                if(juben_id!=0 && (aid==30 || aid==32 || aid==101)){
+                    if(yuanval=='0'){
+                        $("#mon_add_tx_"+juben_id).val("");
+                        get_mon(juben_id);
+                    }
+                    else if(value==0){
+                        $("#mon_add_tx_"+juben_id).val("");
+                        get_mon(juben_id);
+                    }
                 }
             }
             });
@@ -1152,6 +1182,20 @@
     }
 
     // 怪物投骰子
+    function mon_tou(set_id, skillname="0",obj="0",damage="0", zhong="0" ,type=0, desc="0",an=0) {
+        var pname = $("#"+set_id+" .mon_namee").val();
+        var dbb = $("#"+set_id+" .dede_50").val();
+        if(skillname=="闪避"){
+            zhong = $("#"+set_id+" .dede_98").val();
+        }
+        else if(skillname=="近攻"){
+            zhong = $("#"+set_id+" .dede_99").val();
+        }
+        else if(skillname=="远攻"){
+            zhong = $("#"+set_id+" .dede_100").val();
+        }
+        tou5(skillname,pname,obj,damage, zhong, dbb,type, desc,an);
+    }
     function tou5(skillname="0",pname="0",obj="0",damage="0", zhong="0", db="0",type=0, desc="0",an=0){
             if(mycid==0 || mycid=="0" || !mycid){
                 alert("请至少将一个卡组加入游戏再输入");

@@ -300,16 +300,16 @@
                                 <!-- Message -->
                                 <div id="msg_tp_my" class="message message-right" style="display: none;">
                                     <!-- Avatar -->
-                                    <div class="avatar avatar-sm ml-4 ml-lg-5 msg_imgs">
+                                    <a class="avatar avatar-sm ml-4 ml-lg-5 msg_imgs">
                                         <img class="avatar-img msg_imga" src="static/assets/images/avatars/12.jpg" alt="" title="名称">
                                         <div class="badge badge-sm badge-pill badge-info badge-border-basic badge-bottom-left">
 <!--                                            <span class="text-uppercase"></span>-->
                                             <samll class="msg_img_name">大牛皮我</samll>
                                         </div>
-                                    </div>
-                                     <div class="avatar avatar-sm ml-4 ml-lg-5 bg-primary text-white text-truncate msg_img_p">
+                                    </a>
+                                     <a class="avatar avatar-sm ml-4 ml-lg-5 bg-primary text-white text-truncate msg_img_p">
                                                             <span class="msg_img_pa">名称</span>
-                                                        </div>
+                                                        </a>
                                     <!-- Message: body -->
                                     <div class="message-body">
 
@@ -339,16 +339,16 @@
 
                             <div id="msg_tp_my_p" class="message message-right" style="display: none;">
                                     <!-- Avatar -->
-                                    <div class="avatar avatar-sm ml-4 ml-lg-5 msg_imgs">
+                                    <a class="avatar avatar-sm ml-4 ml-lg-5 msg_imgs">
                                         <img class="avatar-img msg_imga" src="static/assets/images/avatars/12.jpg" alt="" title="名称">
                                         <div class="badge badge-sm badge-pill badge-info badge-border-basic badge-bottom-left">
 <!--                                            <span class="text-uppercase"></span>-->
                                             <samll class="msg_img_name">大牛皮我</samll>
                                         </div>
-                                    </div>
-                                     <div class="avatar avatar-sm ml-4 ml-lg-5 bg-primary text-white text-truncate msg_img_p">
+                                    </a>
+                                     <a class="avatar avatar-sm ml-4 ml-lg-5 bg-primary text-white text-truncate msg_img_p">
                                                             <span class="msg_img_pa">名称</span>
-                                                        </div>
+                                                        </a>
                                     <!-- Message: body -->
                                     <div class="message-body">
 
@@ -1358,32 +1358,32 @@
                     if(kind==2){
                         if(uid == "{{myuid}}"){
                             var mytemp = "msg_my_";
-                            set_msg_box(sia,"msg_box","msg_tp_my_p",mytemp,name,pic,msga);
+                            set_msg_box(sia,"msg_box","msg_tp_my_p",mytemp,name,pic,msga,uid);
                         }
                         else if(uid == "{{group_creater}}"){
                             var mytemp = "msg_oth_";
-                            set_msg_box(sia,"msg_box","msg_tp_kp_p",mytemp,name,pic,msga);
+                            set_msg_box(sia,"msg_box","msg_tp_kp_p",mytemp,name,pic,msga,uid);
                         }
                         else{
                             // console.log(name);
                             var mytemp = "msg_oth_";
-                            set_msg_box(sia,"msg_box","msg_tp_other_p",mytemp,name,pic,msga);
+                            set_msg_box(sia,"msg_box","msg_tp_other_p",mytemp,name,pic,msga,uid);
                         }
 
                     }
                     else{
                         if(uid == "{{myuid}}"){
                             var mytemp = "msg_my_";
-                            set_msg_box(sia,"msg_box","msg_tp_my",mytemp,name,pic,msga);
+                            set_msg_box(sia,"msg_box","msg_tp_my",mytemp,name,pic,msga,uid);
                         }
                         else if(uid == "{{group_creater}}"){
                             var mytemp = "msg_oth_";
-                            set_msg_box(sia,"msg_box","msg_tp_kp",mytemp,name,pic,msga);
+                            set_msg_box(sia,"msg_box","msg_tp_kp",mytemp,name,pic,msga,uid);
                         }
                         else{
                             // console.log(name);
                             var mytemp = "msg_oth_";
-                            set_msg_box(sia,"msg_box","msg_tp_other",mytemp,name,pic,msga);
+                            set_msg_box(sia,"msg_box","msg_tp_other",mytemp,name,pic,msga,uid);
                         }
                     }
 
@@ -1395,17 +1395,29 @@
                 }
             });
         }
-        function set_msg_box(sid,list, templates, mytemp,name,pic,msga){
+        function set_msg_box(sid,list, templates, mytemp,name,pic,msga,uid=0){
             var cc = $("#"+templates).clone(true);
             cc.attr('id',mytemp+sid);
             cc.attr('style','');
             $("#"+list).append(cc);
             if(pic=="0"){
                 $("#"+mytemp+sid+" .msg_imgs").hide();
+                if(uid!=0){
+                    if(uid == "{{myuid}}"){
+                        uid = "public";
+                    }
+                    $("#"+mytemp+sid+" .msg_img_p").attr("onclick", "ssent("+uid+", '"+name+"')");
+                }
                 $("#"+mytemp+sid+" .msg_img_pa").html(name);
             }
             else{
                 $("#"+mytemp+sid+" .msg_img_p").hide();
+                if(uid!=0){
+                    if(uid == "{{myuid}}"){
+                        uid = "public";
+                    }
+                    $("#"+mytemp+sid+" .msg_imgs").attr("onclick", "ssent("+uid+", '"+name+"')");
+                }
                 $("#"+mytemp+sid+" .msg_imga").attr("src",pic);
                 $("#"+mytemp+sid+" .msg_img_name").html(name);
             }
@@ -2569,7 +2581,7 @@
         $('#chat-id-1-input').keydown(function (e) {
             var keyCode = e.keyCode || e.which;
             if (keyCode == 13) {
-                send_msg();
+                sub_send_msg();
                 return false;
             }
         });

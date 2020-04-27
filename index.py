@@ -1461,6 +1461,7 @@ def mon_add():
     us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, 98, "0", "闪避", lastid))
     us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, 99, "0", "近攻", lastid))
     us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, 100, "0", "远攻", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, 101, "0", "盔甲", lastid))
     return str(lastid)
 
 # 删除怪物
@@ -1494,7 +1495,12 @@ def copy_mon():
         lastid = us.addla("custom","%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, aid, ti[4], ti[5], ti[6]))
         for info in tempinfo2:
             ti = info
-            us.add("custom","%d, %d, %d, '%s', '%s', %d, 0" % (ti[1], myuid, ti[3], ti[4], ti[5], lastid))
+            # 给复制的怪物加个标号
+            if ti[1] == 1 and ti[3] == 1:
+                name = ti[4]+"C"
+                us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (ti[1], myuid, ti[3], name, ti[5], lastid))
+            else:
+                us.add("custom","%d, %d, %d, '%s', '%s', %d, 0" % (ti[1], myuid, ti[3], ti[4], ti[5], lastid))
 
     return "1"
 
