@@ -10,6 +10,10 @@ from flask import session
 class opt:
     def __init__(self, database):
         try:
+            if self.checku() == 0:
+                print("Error : no uid")
+                sys.exit(1)
+                return 0
             self.con = lite.connect('db/' + database)
             self.cur = self.con.cursor()
         except lite.Error:
@@ -210,6 +214,13 @@ class opt:
         self.comsql(sql)
         return 1
 
+    def checku(self):
+        uid = session.get('uid')
+        if not uid:
+            return 0
+        else:
+            return 1
+
 class page_opt_m:
     aid_group_name = 68  # 组团名称
     aid_group_plyr = 72  # 玩家id/玩家卡组
@@ -230,9 +241,9 @@ class page_opt_m:
         myuid = self.myuid
         re = []
         if ifme == 1:
-            group_names = us.select_w("groupp", "aid=%d and value2='%s'" % (gnameaid, str(myuid)))
+            group_names = us.select_w("groupp", "aid=%d and value2='%s' order by id desc" % (gnameaid, str(myuid)))
         else:
-            group_names = us.select_w("groupp", "aid=%d" % gnameaid)
+            group_names = us.select_w("groupp", "aid=%d order by id desc" % gnameaid)
         for group_name in group_names:
             group_id = group_name[0]
             group_deteils = us.select_w("groupp", "link_kind=5 and link_id='%d'" % int(group_id))
@@ -552,6 +563,18 @@ def reset_num(num):
         num = num-n
         return num
 
-# -------------------------------------------------------------扔骰子
-# us=opt("user.db")
-# us.sele_v(5,8)
+
+def changetext(strg):
+    aa = "/roll\s([0-9a-zA-Z\_]+)"
+    it = re.finditer(aa, strg)
+    cc = ""
+    for match in it:
+        ce = match.group(1)
+        cc = cc+ce
+    return cc
+#
+def ifkey(arr,key):
+    if key in arr:
+        return 1
+    else:
+        return 0

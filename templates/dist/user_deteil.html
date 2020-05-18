@@ -75,9 +75,11 @@
                                     <input type="hidden" id="dtt_mycid" value="0" />
                                     <input type="hidden" id="dtt_myuid" value="0" />
                                     <input type="hidden" id="dtt_myname" value="0" />
+                                    <input type="hidden" id="dtt_mypic" value="0" />
                                     <input type="hidden" id="dtt_myjobname" value="0" />
                                     <input type="hidden" id="dtt_cid" value="0" />
                                     <input type="hidden" id="dtt_uid" value="0" />
+                                    <input type="hidden" id="dtt_name" value="0" />
                                     <input type="hidden" id="dtt_jobname" value="0" />
                                   <h4 id="dt_shuxing">属性点数:</h4>
 <!--                                技能属性点数-->
@@ -167,7 +169,27 @@
                                                 </div>
                                             </div>
                                             </div>
-                                          <br />
+                                          <a href="#" onclick="$('#obj_opt_more').toggle('fast');">高级选项</a>
+                                          <div id="obj_opt_more" style="display: none">
+                                          <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <select class="form-control custom-select objc_ifdod">
+                                                                <option value="1" selected="selected">可闪避</option>
+                                                                <option value="0">不可闪避</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <select class="form-control custom-select objc_ifreata">
+                                                                <option value="1" selected="selected">可用于反击</option>
+                                                                <option value="0">不可用于反击</option>
+                                                        </select>
+                                                </div>
+                                            </div>
+                                            </div>
+                                              <br />
+                                          </div>
                                         <div class="media align-items-center">
                                             <div class="media-body">
                                                 <button onclick="add_objc()" type="button" class="btn btn-primary form-control">添加自定义物品</button>
@@ -296,6 +318,8 @@
                                                         <a class="dropdown-item dt_atr_skillplu">技能加成:</a>
                                                     </div>
                                             </div>
+                                            <input type="hidden" class="dt_ifdod" value="1" />
+                                            <input type="hidden" class="dt_ifreat" value="1" />
                                             <a href="javascript:;" class="dt_mingtou d-none d-xl-block" title="明骰"><i class="fe-slack"></i></a>
                                             &nbsp;&nbsp;&nbsp;&nbsp;
                                             <a href="javascript:;" class="dt_antou d-none d-xl-block" title="暗骰"><i class="fe-x-square"></i><a>
@@ -304,6 +328,8 @@
 
                                             &nbsp;&nbsp;&nbsp;&nbsp;
                                             <a href="javascript:;" class="dt_deltou d-none d-xl-block" title="删除"><i class="fe-trash-2"></i><a>
+
+                                                <a href="javascript:;" class="dt_ftou d-none" title="自动骰"><i class="fe-x-square"></i><a>
 
                                             <span class="nav-item list-inline-item d-xl-none d-block">
                                                 <div class="dropdown">

@@ -1327,6 +1327,7 @@
             add_user(1,52,0,"这里放入调查员笔记"); // 52	调查员笔记
             // console.log(suba);
             var geld = $("#geld_wp").val();
+            geld=parseInt(geld)*5;
             add_user(1,55,0,geld); // 55	金钱
             sub_add(suba);
             alert("成功提交用户信息!");

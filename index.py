@@ -9,6 +9,9 @@ import random
 from flask import Flask,session, jsonify
 from flask import redirect,url_for
 from flask import render_template, request
+from flask_socketio import SocketIO
+from flask_socketio import send, emit
+from flask_socketio import join_room, leave_room
 from user import user
 from stati import statics as stt
 from operation import opt
@@ -18,7 +21,8 @@ import operation as op
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'd0b9791a0c389833d872d899df744ca8'
-
+app.config['DEBUG'] = True
+socketio = SocketIO(app)
 
 @app.route('/')
 def index():
@@ -74,33 +78,6 @@ def stati():
     re = sta.get_jianding()
     return render_template('stati.html', sta=re)
 
-#新页面
-@app.route('/newpage')
-def newpage():
-    return render_template('dist/chat-1.html')
-
-#地图页面
-@app.route('/roommap', methods=['GET'])
-def roommap():
-    group_id = request.args.get("rid")
-    group_id = int(group_id)
-    page = "roommap"
-    us = opt("user.db")
-    re = us.select_w("groupp", "id=%d" % group_id)
-    re = re[0]
-    group_name = re[2]
-    myuid = session.get('uid')
-    re3 = us.select_w("groupp", "aid=82 and link_kind=5 and link_id=%d" % (group_id))
-    uid = re3[0][3]
-    uid = int(uid)
-    if uid == int(myuid):
-        token = re3[0][2]
-    else:
-        token = 0
-
-    return render_template('dist/room_map.html', page=page, group_id=group_id, group_name=group_name, token=token)
-
-
 #寻找游戏页面
 @app.route('/roomp')
 def roomp():
@@ -116,9 +93,47 @@ def roomp():
     return render_template('dist/index.html', page=page, kazu=kazu, user_all=user_all,limit=limit)
 
 
-#创建人页面
+#聊天页面
+# @app.route('/roomc2', methods=['GET'])
+# def roomc():
+#     uid = session.get('uid')
+#     if not uid:
+#         return redirect(url_for('index'))
+#
+#     group_id = request.args.get("rid")
+#     if group_id:
+#         group_id = int(group_id)
+#     else:
+#         group_id = 0
+#         return render_template('error.html', message="必须要有房间id")
+#     myuid = session.get('uid')
+#     us = opt("user.db")
+#     kazu = us.select_w("plyer", "uid=%d and nid=64" % uid)
+#     user_all = us.select_w("plyer", "uid=%d and kind=1 and c_kind=1" % uid)
+#
+#     names = us.name_sel()
+#     atrr = us.atrn_sel()
+#     infoe = us.select_w("infoe","1=1")
+#
+#     re = us.select_w("groupp", "id=%d" % group_id)
+#     re = re[0]
+#     group_name = re[2]
+#     re2 = us.select_w("groupp", "link_kind=5 and link_id=%d" % group_id)
+#     group_creater = int(re[3])
+#     if group_creater == uid:
+#         page = "roomc"
+#         # 获取token
+#         re3 = us.select_w("groupp", "aid=82 and value2='%d' and link_kind=5 and link_id=%d" % (myuid, group_id))
+#         token = re3[0][2]
+#     else:
+#         page = "roomp"
+#         token = 0
+#
+#     return render_template('dist/room_c.html', page=page, kazu=kazu, user_all=user_all, group_name=group_name, names=names, atrr=atrr, infoe=infoe, group_deteil=re2, group_id=group_id, group_creater=group_creater, myuid=myuid,token=token)
+
+#聊天页面
 @app.route('/roomc', methods=['GET'])
-def roomc():
+def roomc2():
     uid = session.get('uid')
     if not uid:
         return redirect(url_for('index'))
@@ -152,7 +167,7 @@ def roomc():
         page = "roomp"
         token = 0
 
-    return render_template('dist/room_c.html', page=page, kazu=kazu, user_all=user_all, group_name=group_name, names=names, atrr=atrr, infoe=infoe, group_deteil=re2, group_id=group_id, group_creater=group_creater, myuid=myuid,token=token)
+    return render_template('dist/room_c2.html', page=page, kazu=kazu, user_all=user_all, group_name=group_name, names=names, atrr=atrr, infoe=infoe, group_deteil=re2, group_id=group_id, group_creater=group_creater, myuid=myuid,token=token)
 
 
 #新建立人物页面
@@ -209,14 +224,25 @@ def getkazu():
         if method == "mykazu":
             kazu_id = kk[0]
             kkr = kk
+            # 确认是否在线
+            uuid = uid
+            iol = us.select_w("login", "id=%d" % uuid)
+            ifonline = iol[0][8]
+
         elif method == "allkazu":
             kazu_id = int(kk[3])
+
             kkr = us.select_w("plyer", "id=%d and nid=64" % kazu_id)
             if kkr:
                 kkr = kkr[0]
+                # 确认是否在线
+                uuid = int(kkr[1])
+                iol = us.select_w("login", "id=%d" % uuid)
+                ifonline = iol[0][8]
             else:
                 us.delet_w("groupp","aid=72 and link_kind=5 and link_id=%d and value2='%s'" % (gid, kk[3]))
                 kkr = str(0)
+                ifonline = 0
                 continue
         kazu_deteils = us.select_w("plyer", "kind=1 and c_kind=1 and c_id=%d" % kazu_id)
         for ki in kazu_deteils:
@@ -225,9 +251,13 @@ def getkazu():
                 work = us.select_w("name", "id=%d" % int(work_id))
                 if not work:
                     work = str(0)
+        if not ifonline:
+            ifonline = 0
+
         r.append(kkr)
         r.append(kazu_deteils)
         r.append(work)
+        r.append(ifonline)
         re.append(r)
         r = []
     return jsonify(re)
@@ -394,17 +424,6 @@ def getkprom():
     # out = se.out_all
     return jsonify(out)
 
-
-#地图页面
-@app.route('/usermap', methods=['GET'])
-def usermap():
-    nid = request.args.get("nid")
-    aid = 63
-    us = opt("user.db")
-    img = us.select_w("infoe","nid=%d and aid=%d" % (nid, aid))
-    return render_template('usermap.html',img=img)
-
-
 @app.route('/logout')
 def logout():
     session['uid'] = False
@@ -425,25 +444,20 @@ def login():
             session['uid'] = uu.uid
             session['token'] = uu.token
             session['limit'] = uu.limit
+            session.permanent = True
             return redirect(url_for('index'))
-            if session.get('limit') == 1:
-                return render_template('manage.html')
-            return render_template('index.html')
         else:
             message = "用户名或者密码错啦！"
             return render_template('dist/signin.html', message=message)
-            # return render_template('login.html', message=message)
     else:
         message = "欢迎来到深渊小屋，我们致力于开发与制作TRPG游戏"
         return render_template('dist/signin.html', message=message)
-        # return render_template('login.html', message="克苏鲁炮团")
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        # repassword = request.form['repassword']
         code = request.form['code']
         name = username
         if code != "@dZe41jt#.7":
@@ -570,7 +584,7 @@ def man_point():
 
     return render_template('man_point.html', message=title, clss=clss, names=names, atrr=atrr, kind=kind, value=value, users=users,players=players)
 
-#kp对所有用户的操控
+#原（kp对所有用户的操控） 现在作为超级管理员可以查看玩家各类参数
 @app.route('/showallplyer', methods=['GET', 'POST'])
 def showallplyer():
     limit = session.get('limit')
@@ -596,27 +610,6 @@ def showallplyer():
     myuid = session.get('uid')
 
     return render_template('showallplyer.html', names=names, user=user, atrr=atrr, users=users, players=players, myuid=myuid, value=value, thisuid=uid)
-
-
-#kp对所有用户的操控
-@app.route('/showme', methods=['GET', 'POST'])
-def showme():
-    uid = int(session.get('uid'))
-    us = opt("user.db")
-    user = us.select_u(int(uid))
-    names = us.name_sel()
-    atrr = us.atrn_sel()
-
-    users = us.select_w("login", "1=1")
-    players = us.select_w("plyer", "1=1")
-    value = us.select_v()
-
-    myuid = uid
-
-    return render_template('showme.html', names=names, user=user, atrr=atrr, users=users, players=players, myuid=myuid, value=value)
-
-
-
 
 #色子
 @app.route('/saizi', methods=['GET', 'POST'])
@@ -685,19 +678,23 @@ def updateu():
     value = request.form['v']
     token = request.form['token']
     pid = int(pid)
+    re = update_fun(pid,value,token)
+    return re
+
+def update_fun(pid,value,token):
     myuid = int(session.get('uid'))
     us = opt("user.db")
     if token == "0":
         re = us.updata_u(pid, value, myuid)
         return str("自己")
-    row = us.select_w("plyer","id=%d" % pid)
+    row = us.select_w("plyer", "id=%d" % pid)
     if row:
         cid = row[0][7]
         tokenl = us.select_w("groupp", "value='%s'" % token)
         # 确认这个卡片的人物已经加入这个group
-        group = us.select_w("groupp", "value2='%s' and link_kind=5 and link_id=%d" % (str(cid),int(tokenl[0][5])))
+        group = us.select_w("groupp", "value2='%s' and link_kind=5 and link_id=%d" % (str(cid), int(tokenl[0][5])))
         if not group:
-            return str("group不对 你的group:%s 应该的group:%s icd:%s" % (group[0][5],tokenl[0][5],cid))
+            return str("group不对 你的group:%s 应该的group:%s icd:%s" % (group[0][5], tokenl[0][5], cid))
         if int(tokenl[0][3]) == myuid:
             re = us.updata_ua(pid, value)
             return str(1)
@@ -706,6 +703,8 @@ def updateu():
             return str("自己")
     else:
         return str("没有row")
+
+
 
 @app.route('/addgame', methods=['POST'])
 def addgame():
@@ -976,6 +975,14 @@ def add_objc():
     zhong = request.form['zhong']
     damage = request.form['damage']
     desc = request.form['desc']
+    if op.ifkey(request.form,'ifdod')==1:
+        ifdod = request.form['ifdod']  # 可否闪避
+    else:
+        ifdod = 1
+    if op.ifkey(request.form,'ifreata')==1:
+        ifreata = request.form['ifreata']  # 可否被反击
+    else:
+        ifreata = 1
     uid = request.form['uid']
     cid = request.form['cid']
     method = request.form['method']
@@ -998,6 +1005,8 @@ def add_objc():
     us.add("custom", "4, %d, %d, '%s', '%s',%d, 0" % (uid, 86, use_skill, zhong, int(lastid)))
     us.add("custom", "4, %d, %d, '%s', '%s',%d, 0" % (uid, 87, damage, "0", int(lastid)))
     us.add("custom", "4, %d, %d, '%s', '%s',%d, 0" % (uid, 88, desc, "0", int(lastid)))
+    us.add("custom", "4, %d, %d, '%s', '%s',%d, 0" % (uid, 103, ifdod, "0", int(lastid)))
+    us.add("custom", "4, %d, %d, '%s', '%s',%d, 0" % (uid, 104, ifreata, "0", int(lastid)))
     if method == "player":
         us.add_u(9,uid,79,0,lastid,1,int(cid))
     elif method == "monster":
@@ -1015,22 +1024,28 @@ def add_objt():
     cid = request.form['cid']
     toid = request.form['toid']
     obj = request.form['obj']
-    pid = int(pid)
-    kind = int(kind)
-    uid = int(uid)
-    cid = int(cid)
     toid = int(toid)
     kkind = int(kkind)
+    re = add_objt_fun(kind, pname, pid, cid, obj)
+    myuid = int(session.get('uid'))
+    re2 = send_msg(kkind, myuid, cid, toid, re)
+    return str(re2)
+
+
+def add_objt_fun(kind,pname,pid,cid,obj):
+    pid = int(pid)
+    kind = int(kind)
+    myuid = int(session.get('uid'))
+    cid = int(cid)
+
     us = opt("user.db")
     # 0预设物品 1自定义物品
     if kind == 0:
-        us.add("plyer", "%d, %d, %d, %d,'%s', %d, %d" % (uid, 4, pid, 0, '0', 1, cid))
+        us.add("plyer", "%d, %d, %d, %d,'%s', %d, %d" % (myuid, 4, pid, 0, '0', 1, cid))
     elif kind == 1:
-        us.add("plyer", "%d, %d, %d, %d,'%s', %d, %d" % (uid, 9, 79, 0, pid, 1, cid))
-    msg = pname+"捡起了 "+obj
-    re = send_msg(kkind,uid,cid,toid,msg)
-    return str(re)
-
+        us.add("plyer", "%d, %d, %d, %d,'%s', %d, %d" % (myuid, 9, 79, 0, pid, 1, cid))
+    msg = pname + "捡起了 " + obj
+    return msg
 
 #获取自定义物品
 @app.route('/get_objc', methods=['GET'])
@@ -1080,7 +1095,7 @@ def del_room_msg():
     re = us.select_w("groupp", "id=%d" % id)
     guid = re[0][3]
     if uid == int(guid):
-        us.updata_w("msg","kindid=0","kindid=5 and toid=%d" % id)
+        us.updata_w("msg","kindid=0","(kindid=5 or kindid=2) and toid=%d" % id)
         # us.delet_w("msg", "kindid=5 and toid=%d" % id)
     else:
         return str("出现迷之错误")
@@ -1447,20 +1462,20 @@ def mon_add():
     lastid = us.addla("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, aid, mon_name, "0", juben_id))
     kind2 = 1
     us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 1, mon_name, "名称", lastid))
-    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 20, "0", "力量", lastid))
-    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 21, "0", "体质", lastid))
-    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 23, "0", "敏捷", lastid))
-    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 24, "0", "外貌", lastid))
-    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 25, "0", "智力", lastid))
-    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 26, "0", "意志", lastid))
-    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 27, "0", "教育", lastid))
-    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 29, "0", "体力", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 20, "1", "力量", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 21, "1", "体质", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 23, "1", "敏捷", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 24, "1", "外貌", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 25, "1", "智力", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 26, "1", "意志", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 27, "1", "教育", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 29, "1", "体力", lastid))
     us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 30, "0", "理智", lastid))
     us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 32, "0", "魔法", lastid))
     us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind2, myuid, 50, "0", "DB", lastid))
-    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, 98, "0", "闪避", lastid))
-    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, 99, "0", "近攻", lastid))
-    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, 100, "0", "远攻", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, 98, "1", "闪避", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, 99, "1", "近攻", lastid))
+    us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, 100, "1", "远攻", lastid))
     us.add("custom", "%d, %d, %d, '%s', '%s', %d, 0" % (kind, myuid, 101, "0", "盔甲", lastid))
     return str(lastid)
 
@@ -1571,9 +1586,14 @@ def toul():
     jineng = int(request.form['jn'])
     diffi = int(request.form['diffi'])
     ppname = request.form['ppname']
+    re = toul_fun( nnid, shuxing, jineng, diffi, ppname)
+    myuid = int(session.get('uid'))
+    re2 = send_msg(kind, myuid, fromcid, toid, re, toid_p)
+    return str(re2)
 
+def toul_fun(nnid,shuxing,jineng,diffi,ppname):
     us = opt("user.db")
-    nnamei = us.select_w("name","kind=10 and id=%d" % nnid)
+    nnamei = us.select_w("name", "kind=10 and id=%d" % nnid)
     nname = nnamei[0][2]
     # 产生3个随机数
     ro1 = op.roll(100)
@@ -1583,13 +1603,13 @@ def toul():
     ro3 = op.roll(100)
     ro3 = op.reset_num(ro3)
 
-    msg = ppname+" "+nname + "检定:"
+    msg = ppname + " " + nname + "检定:"
     ms = set_secces(ro1, shuxing)
     inf1 = ms[0]
-    seccnum1 = ms[1]-7
+    seccnum1 = ms[1] - 7
     ms = set_secces(ro2, jineng)
     inf2 = ms[0]
-    seccnum2 = ms[1]-7
+    seccnum2 = ms[1] - 7
     if diffi == 0:
         ro3 = 100
         inf3 = "大失败!100"
@@ -1602,18 +1622,15 @@ def toul():
         ms = set_secces(ro3, diffi)
         inf3 = ms[0]
         seccnum3 = ms[1] - 7
-    sse = seccnum1+seccnum2
+    sse = seccnum1 + seccnum2
     mmsg = "%s + %s | %s" % (inf1, inf2, inf3)
     # mmsg = "%d/%d(%d)+%d/%d(%d) | %d/%d(%d)" % (ro1,shuxing,seccnum1,ro2,jineng,seccnum2,ro3,diffi,seccnum3)
     if sse > seccnum3:
-        msg = msg+"成功!"
+        msg = msg + "成功!"
     else:
         msg = msg + "失败!"
-    msg = "<h5 title=\""+mmsg+"\">"+msg+"</h5>"
-    myuid = int(session.get('uid'))
-    re = send_msg(kind, myuid, fromcid, toid, msg, toid_p)
+    msg = "<h5 title=\"" + mmsg + "\">" + msg + "</h5>"
     return msg
-
 
 
 @app.route('/tou', methods=['POST'])
@@ -1626,45 +1643,29 @@ def tou():
     obj = request.form['obj']
     max = request.form['max']
 
+    re = tou_fun(value, obj, max)
+    myuid = int(session.get('uid'))
+    re2 = send_msg(kind, myuid, fromcid, toid, re[0], toid_p)
+    return str(re2)
+
+def tou_fun(value,obj,max):
     value = int(value)
     max = int(max)
     ro = op.roll(max)
-    ro = op.reset_num(ro)
     if value == 0:
+        ms = []
         msg = obj + "检定:" + str(ro)
+        ms.append(msg)
+        ms.append(max)
+        ms.append(ro)
     else:
         if obj == "0":
             obj = "特殊"
         msg = obj + "检定:"
         ms = set_secces(ro, value, msg)
-        msg = ms[0]
-    myuid = int(session.get('uid'))
-    re = send_msg(kind,myuid,fromcid,toid, msg,toid_p)
-    return str(re)
+    return ms
 
-# 把伤害投出来
-@app.route('/tou_demage', methods=['POST'])
-def tou_demage():
-    kind = int(request.form['kind'])
-    toid = int(request.form['toid'])
-    fromcid = int(request.form['fromcid'])
-    damage = request.form['damage']
-    db = request.form['db']
-    obj = request.form['obj']
-    skillplu  = request.form['skillplu']
-    skillplu2 = request.form['skillplu2']
-    myuid = int(session.get('uid'))
 
-    if obj == "0":
-        obj = "特殊"
-    dama = op.roll_str2(damage,db)
-    cc = 0
-    for a in dama:
-        cc = cc+int(a)
-    title = "伤害计算:"+damage
-    dmsg = "<a title=\"%s\">%s伤害检定:%s</a>" % (title, obj, str(cc))
-    re = send_msg(kind, myuid, fromcid, toid, dmsg)
-    return str(re)
 
 # 把伤害投出来
 @app.route('/tou_demage2', methods=['POST'])
@@ -1680,18 +1681,50 @@ def tou_demage2():
     pname = request.form['pname']
     zhong = request.form['zhong']
     desctip = request.form['desc']
-    myuid = int(session.get('uid'))
 
     zhong = int(zhong)
+    re = tou_d_fun(damage, db, obj, skillname, pname, zhong, desctip)
+    myuid = int(session.get('uid'))
+    re2 = send_msg(kind, myuid, fromcid, toid, re[0], toid_p)
+    return str(re2)
+
+# yl =1 优势 2劣势 d_plus伤害倍数 times 优势/劣势次数
+def tou_d_fun(damage,db,obj,skillname,pname,zhong,desctip,times=1, yl=0, d_plus=1):
     msg = pname + " 使用" + obj + "<br />"
+    msg_y = ""
     if zhong != 0:
-        ro = op.roll(100)
-        ro = op.reset_num(ro)
+        # times次优势骰
+        if yl > 0 and times > 0:
+            number = 0
+            ro = 0
+            if yl == 1:
+                msg_y = "优势"
+            elif yl == 2:
+                msg_y = "劣势"
+            while number < times:
+                rol = op.roll(100)
+                msg_y = msg_y + str(rol) + "/"
+                if yl == 1:
+                    if ro < rol:
+                        ro = rol
+                elif yl == 2:
+                    if ro == 0:
+                        ro = rol
+                    else:
+                        if ro > rol:
+                            ro = rol
+                else:
+                    ro = rol
+                    break
+                number += 1
+
+        else:
+            ro = op.roll(100)
         if skillname == "0" or skillname == "自定义":
             skillname = "特殊"
         msg = msg + skillname + "检定:"
         ms = set_secces(ro, zhong, msg)
-        msg = ms[0]+"<br />"
+        msg = ms[0] +msg_y+ "<br />"
         seccnum = ms[1]
     else:
         seccnum = 3
@@ -1702,12 +1735,14 @@ def tou_demage2():
         ifbomb = "normal"
     elif seccnum < 7:
         ifbomb = 0
-    dama = op.roll_str2(damage,db,ifbomb)
+    dama = op.roll_str2(damage, db, ifbomb)
     cc = 0
     if dama != 0:
         for a in dama:
-            cc = cc+int(a)
-    title = "伤害计算:"+str(damage)+"| DB:"+str(db)
+            cc = cc + int(a)
+    if d_plus!=0:
+        cc = cc * d_plus
+    title = "伤害计算:" + str(damage) + "| DB:" + str(db)
     if damage != "0":
         dmsg = "<a title=\"%s\">伤害检定:%s</a>" % (title, str(cc))
         smsg = msg + dmsg
@@ -1715,9 +1750,12 @@ def tou_demage2():
         smsg = msg
 
     if ifbomb != 0 and desctip != "0":
-        smsg = smsg + "<p>效果："+desctip+"</p>"
-    re = send_msg(kind, myuid, fromcid, toid, smsg,toid_p)
-    return str(re)
+        smsg = smsg + "<p>效果：" + desctip + "</p>"
+    out = []
+    out.append(smsg)
+    out.append(seccnum)
+    out.append(cc)
+    return out
 
 # 疯狂检定
 @app.route('/tou_creacy', methods=['POST'])
@@ -1726,6 +1764,12 @@ def tou_creacy():
     toid = int(request.form['toid'])
     fromcid = int(request.form['fromcid'])
     myuid = int(session.get('uid'))
+    re = creazy_fun()
+    re2 = send_msg(kind, myuid, fromcid, toid, re)
+    return str(re2)
+
+
+def creazy_fun():
     # 获取1d10
     radnum = op.roll(10)
     # radnum = radnum
@@ -1742,11 +1786,11 @@ def tou_creacy():
             creacy_name = cr[2]
             creacy_desc = cr[3]
             msg = "<p class=\"font-weight-bold\">%s %s</p>%s" % (creacy_name, radnum, creacy_desc)
-            re = send_msg(kind, myuid, fromcid, toid, msg)
+            # re = send_msg(kind, myuid, fromcid, toid, msg)
             break
         ii += 1
 
-    return str(re)
+    return msg
 
 
 
@@ -1776,12 +1820,293 @@ def set_secces(c,value,msg=""):
         re = 12
     out.append(msg)
     out.append(re)
+    out.append(c)
     return out
 
+# 对输入的信息进行处理
+def send_sub_msg(msg):
+    re = op.changetext(msg)
+    return re
+
+# 转义去掉 '
+def change_str_marks(str):
+    str = re.sub(r'\*', '%42', str)
+    str = re.sub(r"'", "%39", str)
+    return str
+
+# 输入数据库的最后一步
 def send_msg(kind,myuid,fromcid,toid,msg,toid_p=0):
     us = opt("user.db")
     myuid = int(myuid)
     t = int(time.time())
+    msg = change_str_marks(msg)
     plus = "%d, %d, %d, %d, '%s', '%s', %d " % (kind, myuid, fromcid, toid, t, msg,toid_p)
-    re = us.add("msg", plus)
+    re = us.addla("msg", plus)
     return re
+
+
+
+
+
+
+
+
+
+# socket链接
+@socketio.on('connect', namespace='/chat')
+def test_connect():
+    print("Connected")
+    uu = user("user.db")
+    uu.online()
+
+@socketio.on('disconnect', namespace='/chat')
+def test_disconnect():
+    myuid = str(session.get('uid'))
+    print(myuid+' Client disconnected')
+    uu = user("user.db")
+    uu.offline()
+
+@socketio.on('join', namespace='/chat')
+def join(data):
+    roomid = "room_"+str(data["roomid"])
+    userid = "user_"+str(data["roomid"])+"_"+str(data["userid"])
+    join_room(roomid)
+    join_room(userid)
+    uu = user("user.db")
+    uu.online()
+    emit('mem_join', data, room=roomid)
+    print(str(data["userid"])+"加入房间:"+roomid)
+
+# 心跳包
+@socketio.on('join2', namespace='/chat')
+def join(data):
+    roomid = "room_"+str(data["roomid"])
+    userid = "user_"+str(data["roomid"])+"_"+str(data["userid"])
+    join_room(roomid)
+    join_room(userid)
+
+@socketio.on('m_join', namespace='/chat')
+def m_join(data):
+    roomid = "room_" + str(data["roomid"])
+    emit('mem_join', data, room=roomid)
+
+@socketio.on('leave', namespace='/chat')
+def on_leave(data):
+    roomid = "room_"+str(data["roomid"])
+    userid = "user_"+str(data["roomid"])+"_"+str(data["userid"])
+    leave_room(roomid)
+    leave_room(userid)
+    print(userid+"leave the room "+roomid)
+
+@socketio.on('my_event', namespace='/chat')
+def handle_my_custom_namespace_event(json):
+    ip = request.remote_addr
+    text = str(json["data"])
+    text = ip+":"+text
+    emit('my_response', {'data': text}, broadcast=True)
+
+@socketio.on('send_msg', namespace='/chat')
+def get_msg(data):
+    socket_send_msg(data)
+
+# 普通投骰子
+@socketio.on('tou_1', namespace='/chat')
+def tou_1(data):
+    value = data['data']
+    obj = data['obj']
+    max = data['max']
+    re = tou_fun( value, obj, max)
+    data["data"] = re[0]
+    socket_send_msg(data)
+
+# 投战斗骰子
+@socketio.on('tou_1f', namespace='/chat')
+def tou_1f(data):
+    value = data['data']
+    obj = data['obj']
+    max = data['max']
+    roll_t = data['roll_t']
+    re = tou_fun(value, obj, max)
+    kproom = "user_" + str(data["roomid"]) + "_" + str(data["kp"])
+    # 属性+成功等级 roll_t:"SPD"类型 s_lv:成功等级 pc_t:1怪物2玩家
+    emit('get_f_info', {"id": data['pcid'], "roll_t": data['roll_t'], "s_lv": re[1], "pc_t": data['pc_t'], "f_id": data['f_id'], "at_fromid": data['at_fromid'], "roll_value": re[2]}, room=kproom)
+    if roll_t == "ESC":
+        data["data"] = obj
+    else:
+        data["data"] = re[0]
+    socket_send_msg(data)
+
+# 投骰子(物品)附加伤害
+@socketio.on('tou_2', namespace='/chat')
+def tou_2(data):
+    obj = data['obj']
+    damage = data['damage']
+    db = data['db']
+    skillname = data['skillname']
+    pname = data['pname']
+    zhong = data['zhong']
+    desctip = data['desc']
+
+    zhong = int(zhong)
+    re = tou_d_fun(damage, db, obj, skillname, pname, zhong, desctip)
+    data["data"] = re[0]
+    socket_send_msg(data)
+
+# 投战斗骰子(物品)附加伤害
+@socketio.on('tou_2f', namespace='/chat')
+def tou_2f(data):
+    obj = data['obj']
+    damage = data['damage']
+    db = data['db']
+    skillname = data['skillname']
+    pname = data['pname']
+    if op.ifkey(data,'zhong')==0:
+        zhong = 1
+    else:
+        zhong = data['zhong']
+    desctip = data['desc']
+    d_plus = data['d_plus']
+
+    # 优势/劣势 次数
+    f_a = data['f_a']
+    # 1优势 2劣势
+    f_type = data['f_type']
+
+    zhong = int(zhong)
+    if zhong == 0:
+        zhong = 1
+    if damage == 0:
+        damage = 1
+    # 0文字 1成功等级 2伤害
+    re = tou_d_fun(damage, db, obj, skillname, pname, zhong, desctip, f_a, f_type, d_plus)
+
+    kproom = "user_" + str(data["roomid"]) + "_" + str(data["kp"])
+    # 属性+成功等级 roll_t:"SPD"类型 s_lv:成功等级 pc_t:1怪物2玩家
+    emit('get_f_info',{"id": data['pcid'], "roll_t": data['roll_t'], "s_lv": re[1], "pc_t": data['pc_t'], "f_id": data['f_id'],
+                       "at_fromid": data['at_fromid'], "roll_value": re[2], "ifdod": data['ifdod'], "ifreat": data['ifreat']}, room=kproom)
+    data["data"] = re[0]
+    socket_send_msg(data)
+
+# 投骰子 双检定
+@socketio.on('tou_3', namespace='/chat')
+def tou_3(data):
+    nnid = int(data['nnid'])
+    shuxing = int(data['sx'])
+    jineng = int(data['jn'])
+    diffi = int(data['diffi'])
+    ppname = data['ppname']
+    re = toul_fun(nnid, shuxing, jineng, diffi, ppname)
+    data["data"] = re
+    socket_send_msg(data)
+
+# 捡东西
+@socketio.on('take_so', namespace='/chat')
+def take_so(data):
+    kkind = data['kkind']
+    pname = data['myname']
+    pid = data['pid']
+    cid = data['mycid']
+    obj = data['obj']
+    re = add_objt_fun(kkind, pname, pid, cid, obj)
+    data["data"] = re
+    socket_send_msg(data)
+
+# 疯狂检定
+@socketio.on('creazy_so', namespace='/chat')
+def creazy_so(data):
+    re = creazy_fun()
+    data["data"] = re
+    socket_send_msg(data)
+
+
+def socket_send_msg(data):
+    roomid = "room_" + str(data["roomid"])
+    userid = "user_" + str(data["roomid"]) + "_" + str(data["userid"])
+    join_room(roomid)
+    join_room(userid)
+
+    myuid = session.get('uid')
+    myuid = int(myuid)
+    data["userid"] = myuid
+    data["data"] = str(data["data"])
+    # emit('my_response', {'data': data["data"]}, broadcast=True)
+    t = int(time.time())
+    data["t"] = t
+    if int(data["toidp"]) == 0:
+        kind = 5
+    else:
+        kind = data["kind"]
+
+    toidp = "user_" + str(data["roomid"]) + "_" + str(data["toidp"])
+    userid = "user_" + str(data["roomid"]) + "_" + str(data["userid"])
+    if kind == 2:
+        if toidp == userid:
+            emit('get_msg', data, room=userid)
+        else:
+            emit('get_msg', data, room=toidp)
+            if 'nosend' in data:
+                pass
+            else:
+                emit('get_msg', data, room=userid)
+    else:
+        emit('get_msg', data, room=roomid)
+
+    # emit('my_response', {'data': "无房间标记"}, broadcast=True)
+    if 'nosend' in data:
+        print("nosend:   "+data["data"])
+    else:
+        send_msg(kind, myuid, int(data['mycid']), int(data["roomid"]), data["data"], int(data["toidp"]))
+
+    print(data)
+    print(roomid+"|"+toidp+"|"+userid)
+
+
+# 修改数据
+@socketio.on('update_so', namespace='/chat')
+def update_so(data):
+    myuid = session.get('uid')
+    pid = data["pid"]
+    value = data["v"]
+    token = data["token"]
+    listid = data["listid"]
+    if token == 0 and int(myuid) != int(data["toidp"]):
+        print("更新出错")
+        print(data)
+    else:
+        toidp = "user_" + str(data["roomid"]) + "_" + str(data["toidp"])
+        update_fun(pid,value,token)
+        emit('get_change', {'listid':listid, 'value':value}, room=toidp)
+
+# 修改单个用户信息
+@socketio.on('update_so_one', namespace='/chat')
+def update_so_one(data):
+    listid = data["listid"]
+    value = data["v"]
+    token = data["token"]
+    if token == 0:
+        print("权限错误")
+        return 0
+    toidp = "user_" + str(data["roomid"]) + "_" + str(data["toidp"])
+    emit('get_change_one', {'listid': listid, 'value': value}, room=toidp)
+
+# 加入战斗
+@socketio.on('fight_join', namespace='/chat')
+def fight_join(data):
+    roomid = "room_" + str(data["roomid"])
+    value = data['spd']
+    obj = "0"
+    max = 100
+    re = tou_fun(value, obj, max)
+    print(re)
+    emit('f_join', {"userid": data['userid'], "roomid":data['roomid'], "pname":data['pname'], "hp":data['hp'], "con":data['con'], "wil":data['wil'], "spd_lv":re[1], "spd_v":re[2], "fightid":data['fightid']}, room=roomid)
+
+@socketio.on('change_v', namespace='/chat')
+def change_v(data):
+    toidp = "user_" + str(data["roomid"]) + "_" + str(data["toidp"])
+    emit('ch_v', data, room=toidp)
+
+# kp棒玩家投
+@socketio.on('reng_pi', namespace='/chat')
+def reng_pi(data):
+    toidp = "user_" + str(data["roomid"]) + "_" + str(data["toidp"])
+    emit('reng_p', data, room=toidp)

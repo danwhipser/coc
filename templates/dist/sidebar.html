@@ -578,7 +578,7 @@
                                 <div class="container-fluid py-6">
 
                                     <!-- Title -->
-                                    <h2 class="font-bold mb-6">深渊小屋&nbsp;<span class="badge badge-sm badge-pill badge-primary">Alpha1.5</span></h2>
+                                    <h2 class="font-bold mb-6">深渊小屋&nbsp;<span class="badge badge-sm badge-pill badge-primary">Alpha1.9</span></h2>
                                     <!-- Title -->
 
 
@@ -936,7 +936,11 @@
         var role_name = $("#role_name").val();
         var selev = $("#list_temp").val();
         selev = parseInt(selev);
-
+        if(!role_name){
+            alert("您必须给您的任务取名！");
+            return;
+        }
+        $("#role_create").attr("disabled","true");
         if(selev!=0 && selev!=1){
             $.post("/set_temp", {
                 tempid: selev,

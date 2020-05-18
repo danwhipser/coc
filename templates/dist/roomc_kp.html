@@ -68,13 +68,13 @@
                                                     <div class="input-group">
                                                     <input type="text" class="form-control jb_c_textt" placeholder="剧本名称">
                                                      <div class="input-group-append">
-                                                         <button onclick="sent_jbcj()" type="button" class="btn btn-secondary jb_cj_sent" title="发出">
+                                                         <button onclick="sent_jbcj()" type="button" class="btn btn-secondary btn-sm jb_cj_sent" title="发出">
                                                                     <i class="fe-corner-down-right"></i>
                                                                 </button>
-                                                         <button onclick="del_jbcj()" type="button" class="btn btn-secondary jb_cj_del" title="删除场景">
+                                                         <button onclick="del_jbcj()" type="button" class="btn btn-secondary btn-sm jb_cj_del" title="删除场景">
                                                                     <i class="fe-x"></i>
                                                                 </button>
-                                                         <button type="button" onclick="" class="btn btn-secondary jb_c_text" title="展开" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                         <button type="button" onclick="" class="btn btn-secondary btn-sm jb_c_text" title="展开" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                                                 <i class="fe-chevron-down"></i>
                                                             </button>
                                                     </div>
@@ -170,6 +170,37 @@
 
                                         <!-- 怪物管理 -->
                                         <div id="monster-list" class="tab-pane fade" role="tabpanel">
+                                            <button type="button" onclick="$('#fight_box').toggle('fast')" class="btn btn-primary btn-sm btn-block">发起战斗</button>
+                                                <div id="fight_box" style="display: none">
+                                                <p> </p>
+                                                加入战斗的怪物:
+                                                    <div id="fight_mon_jo"></div>
+                                                <p> </p>
+
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <select id="fight_sele_m" class="form-control custom-select">
+                                                            <option value="0" selected="selected">自动</option>
+                                                            <option value="1">手动</option>
+                                                        </select>
+                                                    </div>
+                                                        <select id="fight_list_mon" class="form-control custom-select">
+                                                            <option value="0" selected="selected">添加怪物</option>
+                                                        </select>
+                                                        <div class="input-group-append">
+                                                            <button onclick="join_fi_mon()" type="button" class="btn btn-primary" title="确认添加">
+                                                                <i class="fe-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                </div>
+                                                    <p> </p>
+                                                    <div class="row">
+                                                        <div class="col-6"><button type="button" onclick="reset_fi_mon()" class="btn btn-secondary btn-block">重置</button></div>
+                                                        <div class="col-6"><button type="button" onclick="fi_sub()" class="btn btn-info btn-block">确认发起</button></div>
+                                                    </div>
+
+                                                </div>
+                                            <p> </p>
                                             <nav class="list-group list-group-flush mb-n6">
                                                 <div id="list_mon">
 
@@ -211,13 +242,13 @@
                                                                     <div class="input-group">
                                                                         <input type="text" class="form-control mon_namee" placeholder="怪物名称" onchange="">
                                                                          <div class="input-group-append">
-                                                                             <button onclick="" type="button" class="btn btn-secondary mon_copy" title="复制怪物">
+                                                                             <button onclick="" type="button" class="btn btn-secondary btn-sm mon_copy" title="复制怪物">
                                                                                         <i class="fe-file-text"></i>
                                                                                     </button>
-                                                                             <button onclick="" type="button" class="btn btn-secondary mon_del" title="删除怪物">
+                                                                             <button onclick="" type="button" class="btn btn-secondary btn-sm mon_del" title="删除怪物">
                                                                                         <i class="fe-x"></i>
                                                                                     </button>
-                                                                             <button type="button" onclick="" class="btn btn-secondary mon_xl" title="展开" data-toggle="collapse" data-target="#mon_desc" aria-expanded="false" >
+                                                                             <button type="button" onclick="" class="btn btn-secondary btn-sm mon_xl" title="展开" data-toggle="collapse" data-target="#mon_desc" aria-expanded="false" >
 <!--                                                                                 aria-controls="#mon_desc"-->
                                                                                     <i class="fe-chevron-down"></i>
                                                                                 </button>
@@ -252,8 +283,8 @@
                                                                                             <select class="form-control custom-select mon_opt_skill">
                                                                                                     <option value="0" selected="selected">使用技能</option>
                                                                                                     <option value="0">自定义命中</option>
-                                                                                                    <option value="近攻">近攻</option>
-                                                                                                    <option value="远攻">远攻</option>
+                                                                                                    <option value="近战攻击">近攻</option>
+                                                                                                    <option value="远程攻击">远攻</option>
                                                                                                     <option value="闪避">闪避</option>
                                                                                             </select>
                                                                                         </div>
@@ -263,6 +294,24 @@
                                                                                 </div>
                                                                               <br />
                                                                             <div class="media align-items-center">
+                                                                                <div class="media-body">
+                                                                                    <div class="input-group">
+                                                                                        <div class="input-group-prepend">
+                                                                                            <select class="form-control custom-select mon_opt_ifdod">
+                                                                                                    <option value="1" selected="selected">可闪避</option>
+                                                                                                    <option value="0">不可闪避</option>
+                                                                                            </select>
+                                                                                        </div>
+
+                                                                                        <select class="form-control custom-select mon_opt_ifreata">
+                                                                                                    <option value="1" selected="selected">可用于反击</option>
+                                                                                                    <option value="0">不可用于反击</option>
+                                                                                            </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                                </div>
+                                                                                <br />
+                                                                                <div class="media align-items-center">
                                                                                 <div class="media-body">
                                                                                     <div class="input-group">
                                                                                         <input class="form-control mon_opt_demage" placeholder="伤害">
@@ -347,6 +396,19 @@
                                             </select>
                                             <input id="toul_diffi" type="hidden" value="50" />
                                             <p> </p>
+                                            <a id="san_cek" class="text-reset nav-link p-0 mb-6" href="#" onclick="send_sancek()">
+                                                    <div class="card card-active-listener">
+                                                        <div class="card-body">
+                                                            <div class="media">
+                                                                <div class="media-body overflow-hidden">
+                                                                    <div class="d-flex align-items-center mb-1">
+                                                                        <h6 class="text-truncate mb-0 mr-auto ttext">理智检定</h6>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
                                             <nav id="list_toulist" class="list-group list-group-flush mb-n6">
 
                                             </nav>
@@ -547,6 +609,10 @@
 
 
 <script>
+    var mon_fi = new Array();
+    var mon_fi2 =new Array();
+    var mon_lists = new Array(); //怪物参数在这里
+    var mon_fi_now = new Array();
     var tou_list_cl=0;
     var tou_list_li=0;
     $(document).ready(function() {
@@ -621,11 +687,18 @@
         $("#"+chid).attr("onclick","send_mst('"+name+"',"+nid+","+v1id+",'"+v1+"',"+v2id+",'"+v2+"')");
         $("#"+chid+" .ttext").html(ht);
     }
-
+    
+    function send_sancek() {
+        var mg = "理智检定 /aroll 理智 info 2 30 投骰子";
+        send_msg(mg);
+    }
+    
     function send_mst(name, nid, v1id, v1, v2id, v2) {
         var ht = name+" = <small>"+v1+"+"+v2+"</small>";
         var diffi = $("#toul_diffi").val();
-        var mg = ht+" <a href=\"#\" onclick=\"toul("+nid+","+v1id+","+v2id+","+diffi+")\" class=\"btn btn-info btn-sm\">投骰子</a>";
+        var intext = "投骰子"
+        var mg = ht+" /broll info "+nid+" "+v1id+" "+v2id+" "+diffi+" "+intext;
+        // var mg = ht+" <a href=\"#\" onclick=\"toul("+nid+","+v1id+","+v2id+","+diffi+")\" class=\"btn btn-info btn-sm\">投骰子</a>";
         send_msg(mg);
     }
 
@@ -931,6 +1004,7 @@
             },
             function(myData , status){
                 $("#list_monster_"+juben_id).html("");
+                $("#fight_list_mon").html('<option value="0" selected="selected">怪物</option>');
                 for(ii in myData){
                     var datas = myData[ii];
                     var did  = datas[0];
@@ -939,6 +1013,7 @@
                     var objs = datas[3];
                     set_mon_deteil("list_monster_"+juben_id,"mon_deteil",did,name,juben_id,detei,objs)
                 }
+                // console.log(mon_lists);
                 // console.log(myData);
             },"json");
     }
@@ -961,6 +1036,8 @@
             if(aid==1){
                 //名称
                 namee = value;
+                //加入战斗列表
+                $("#fight_list_mon").append('<option value="'+did+'">'+namee+'</option>');
                 $("#"+set_id+" .mon_namee").val(namee);
                 $("#"+set_id+" .mon_namee").attr("id","mon_de_"+kid);
                 $("#"+set_id+" .mon_namee").attr("onchange","mon_change("+kid+","+aid+",'name')");
@@ -974,6 +1051,7 @@
             }
             else if(aid==29){
                 //体力
+                var hp=parseInt(value);
                 $("#"+set_id+" .mon_hp").val(value);
                 $("#"+set_id+" .mon_hp_t").html(title);
                 $("#"+set_id+" .mon_hp").attr("id","mon_de_"+kid);
@@ -981,6 +1059,10 @@
             }
             else if(aid==30 || aid==32 || aid==50 || aid==101){
                 //理智,魔法,db,盔甲
+                if(aid==101){
+                    var armo=parseInt(value);
+                }
+
                 var tml = $("#"+set_id+" .mon_moli").clone(true);
                 tml.attr("id","mon_de_"+kid);
                 tml.attr("class","");
@@ -1021,6 +1103,9 @@
 
             }
         }
+        //怪物参数设定（id,类型1怪2人,名称,hp，hp满值，护甲，速度等级，roll出的速度值，是否完成本轮，攻击等级，攻击伤害，攻击方式0普通/1不可闪避，防御/反击等级，反击伤害，防御/反击方式，状态）
+        var mon_ll = {id:did,type:1,name:namee,hp:hp,hp_max:hp,armo:armo,speed:0,spd_v:0,finish:0,at_lv:0,at_v:0,at_target:0,at_type:0,de_lv:0,de_v:0,de_type:0,status:0}
+        mon_lists.push(mon_ll);
 
     //    设定添加物品
         $("#"+set_id+" .mon_optobj").attr("id","mon_optobj_"+did);
@@ -1038,6 +1123,8 @@
             obj_temp.attr("style","");
             $("#"+set_id+" .mon_objs_list").append(obj_temp);
             var obj_detei = objj[1];
+            var obj_ifdod = 1;
+            var obj_ifreat = 1;
             //一个物品列出所有属性
             for(iiii in obj_detei){
                 var obji = obj_detei[iiii];
@@ -1057,10 +1144,10 @@
                         if(obj_skill=="闪避"){
                             zhong = $("#"+set_id+" .dede_98").val();
                         }
-                        else if(obj_skill=="近攻"){
+                        else if(obj_skill=="近战攻击"){
                             zhong = $("#"+set_id+" .dede_99").val();
                         }
-                        else if(obj_skill=="远攻"){
+                        else if(obj_skill=="远程攻击"){
                             zhong = $("#"+set_id+" .dede_100").val();
                         }
                         var skillname = obj_skill;
@@ -1081,19 +1168,23 @@
                     var obj_special = value;
                     $("#mon_obj_"+obj_id+" .dt_atr_skillplu").append(obj_special);
                 }
+                else if(obj_aid==103){
+                    obj_ifdod = value;
+                    $("#mon_obj_"+obj_id+" .dt_ifdod").val(obj_ifdod);
+                }
+                else if(obj_aid==104){
+                    obj_ifreat = value;
+                    $("#mon_obj_"+obj_id+" .dt_ifreat").val(obj_ifreat);
+                }
             }
-            var dbb = $("#"+set_id+" .dede_50").val();
-            // $("#mon_obj_"+obj_id+" .dt_mingtou").attr("onclick","tou5('"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"','"+zhong+"','"+dbb+"',0,'"+obj_special+"')");
-            // $("#mon_obj_"+obj_id+" .dt_antou").attr("onclick","tou5('"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"','"+zhong+"','"+dbb+"',0,'"+obj_special+"',1)");
             $("#mon_obj_"+obj_id+" .dt_mingtou").attr("onclick","mon_tou('"+set_id+"', '"+skillname+"','"+obj_name+"','"+obj_demage+"', '"+zhong+"' ,0, '"+obj_special+"')");
             $("#mon_obj_"+obj_id+" .dt_antou").attr("onclick","mon_tou('"+set_id+"', '"+skillname+"','"+obj_name+"','"+obj_demage+"', '"+zhong+"' ,0, '"+obj_special+"',1)");
-            $("#mon_obj_"+obj_id+" .dt_jiaochu").attr("onclick","mon_reng("+obj_id+",'"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"', "+obj_zhong+",0, '"+obj_special+"')");
+            $("#mon_obj_"+obj_id+" .dt_jiaochu").attr("onclick","mon_reng("+obj_id+",'"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"', "+obj_zhong+",0, '"+obj_special+"',"+obj_ifdod+","+obj_ifreat+")");
             $("#mon_obj_"+obj_id+" .dt_deltou").attr("onclick","mon_delobj("+obj_id+","+juben_id+")");
+            $("#mon_obj_"+obj_id+" .dt_ftou").attr("onclick","mon_touf('"+set_id+"', '"+skillname+"','"+obj_name+"','"+obj_demage+"', '"+zhong+"' ,0, '"+obj_special+"',1,"+did+","+obj_ifdod+","+obj_ifreat+")");
             $("#mon_obj_"+obj_id+" .dt_mingtoum").attr("onclick","mon_tou('"+set_id+"', '"+skillname+"','"+obj_name+"','"+obj_demage+"', '"+zhong+"' ,'mobile', '"+obj_special+"')");
             $("#mon_obj_"+obj_id+" .dt_antoum").attr("onclick","mon_tou('"+set_id+"', '"+skillname+"','"+obj_name+"','"+obj_demage+"', '"+zhong+"' ,'mobile', '"+obj_special+"',1)");
-            // $("#mon_obj_"+obj_id+" .dt_mingtoum").attr("onclick","tou5('"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"','"+zhong+"','"+dbb+"','mobile','"+obj_special+"')");
-            // $("#mon_obj_"+obj_id+" .dt_antoum").attr("onclick","tou5('"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"','"+zhong+"','"+dbb+"','mobile','"+obj_special+"',1)");
-            $("#mon_obj_"+obj_id+" .dt_jiaochum").attr("onclick","mon_reng("+obj_id+",'"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"', "+obj_zhong+",'mobile', '"+obj_special+"')");
+            $("#mon_obj_"+obj_id+" .dt_jiaochum").attr("onclick","mon_reng("+obj_id+",'"+skillname+"','"+namee+"','"+obj_name+"','"+obj_demage+"', "+obj_zhong+",'mobile', '"+obj_special+"',"+obj_ifdod+","+obj_ifreat+")");
         }
 
     }
@@ -1144,6 +1235,8 @@
         var zhong  = $("#"+list+" .mon_opt_zhong").val();       //命中率
         var damage = $("#"+list+" .mon_opt_demage").val();      //伤害
         var desc   = $("#"+list+" .mon_opt_desc").val();        //特殊描述
+        var ifdo   = $("#"+list+" .mon_opt_ifdod").val();       //可否被闪避
+        var ifre   = $("#"+list+" .mon_opt_ifreata").val();     //可否用于反击
         var cid = did;
         var method = "monster";
         if(!name){
@@ -1162,6 +1255,8 @@
                     zhong: zhong,
                     damage: damage,
                     desc:desc,
+                    ifdod:ifdo,
+                    ifreata:ifre,
                     uid:0,
                     cid:cid
                 },
@@ -1188,14 +1283,15 @@
         if(skillname=="闪避"){
             zhong = $("#"+set_id+" .dede_98").val();
         }
-        else if(skillname=="近攻"){
+        else if(skillname=="近战攻击"){
             zhong = $("#"+set_id+" .dede_99").val();
         }
-        else if(skillname=="远攻"){
+        else if(skillname=="远程攻击"){
             zhong = $("#"+set_id+" .dede_100").val();
         }
         tou5(skillname,pname,obj,damage, zhong, dbb,type, desc,an);
     }
+
     function tou5(skillname="0",pname="0",obj="0",damage="0", zhong="0", db="0",type=0, desc="0",an=0){
             if(mycid==0 || mycid=="0" || !mycid){
                 alert("请至少将一个卡组加入游戏再输入");
@@ -1209,33 +1305,85 @@
                 var kind = 5;
                 var toid_p=0;
             }
-
-            $.post("/tou_demage2", {
-                kind:kind,
-                fromcid:mycid,
-                toid:"{{group_id}}",
-                damage: damage,
-                db: db,
-                obj : obj,
-                pname: pname,
-                skillname:skillname,
-                zhong : zhong,
-                desc:desc,
-                toid_p:toid_p
-            },
-            function(myData , status){
-                $("#chat-id-1-input").val("");
-                get_msg_lastid(1);
-                //设置手机界面
-                if(type=="mobile"){
-                    $('.main').attr('class','main main-visible');
-                }
-            });
+            var myname = $("#dtt_myname").val();
+            var mypic = $("#dtt_mypic").val();
+            socket.emit('tou_2', {data: "0", userid: "myid", roomid: "{{group_id}}",mycid:mycid,myname:myname,mypic:mypic,
+                kind:kind, toidp:toid_p, t:0, obj : obj,type:type,pname:pname,skillname:skillname,zhong:zhong,desc:desc, db:db,damage:damage});
 
         }
 
+        // 怪物投骰子(战斗)
+    function mon_touf(set_id, skillname="0",obj="0",damage="0", zhong="0" ,type=0, desc="0",an=0, pcid=0, ifdod=1, ifreat=1) {
+        var pname = $("#"+set_id+" .mon_namee").val();
+        var dbb = $("#"+set_id+" .dede_50").val();
+        if(skillname=="闪避"){
+            zhong = $("#"+set_id+" .dede_98").val();
+        }
+        else if(skillname=="近战攻击"){
+            zhong = $("#"+set_id+" .dede_99").val();
+        }
+        else if(skillname=="远程攻击"){
+            zhong = $("#"+set_id+" .dede_100").val();
+        }
+        tou5f(skillname,pname,obj,damage, zhong, dbb,type, desc,an,pcid, ifdod, ifreat);
+    }
+
+    function tou5f(skillname="0",pname="0",obj="0",damage="0", zhong="0", db="0",type=0, desc="0",an=0,pcid=1, ifdod=1, ifreat=1){
+        if(mycid==0 || mycid=="0" || !mycid){
+            alert("请至少将一个卡组加入游戏再输入");
+            return
+        }
+        if(an==1){
+            var kind = 2;
+            var toid_p="{{group_creater}}";
+        }
+        else{
+            var kind = 5;
+            var toid_p=0;
+        }
+        var roll_t="ATA";
+        var a_method = attack_method;
+        if(a_method==1){
+            roll_t="ATA";
+        }
+        else if(a_method==4){
+            roll_t="REA";
+            if(ifreat!=1){
+               obj=obj+"试图反击,但是似乎难以击中";
+               zhong = 1;
+            }
+            else{
+                obj=obj+"反击";
+            }
+        }
+        var f_id = fight_id_g;
+        //来自id的攻击
+        var at_fromid = attack_fromid;
+        var pc_t=1;//怪物是1
+        var myname = $("#dtt_myname").val();
+        var mypic = $("#dtt_mypic").val();
+        // cs("传送之前的formid和method"+at_fromid+roll_t);
+        socket.emit('tou_2f', {data: "0", userid: "myid", roomid: "{{group_id}}",mycid:mycid,myname:myname,mypic:mypic,
+            kind:kind, toidp:toid_p, t:0, obj : obj,type:type,pname:pname,skillname:skillname,zhong:zhong,desc:desc, db:db,damage:damage,
+        kp:"{{group_creater}}", roll_t:roll_t, pcid:pcid,pc_t:pc_t,f_id:f_id,f_a:1,f_type:0,xiala:0,
+            d_plus:1,at_fromid:at_fromid,ifdod:ifdod,ifreat:ifreat});
+        attack_method=1;//攻击方式归零
+        attack_fromid=0;//来自id归零
+        }
+    //怪物设定攻击目标
+    function mon_set_target(f_id) {
+        for(ii in mon_fi_now){
+            if (mon_fi_now[ii][0] == f_id) {
+                var len = mon_fi_now[ii][3].length;
+                var ra_n = randomNum(1,len);
+                ra_n = ra_n - 1;
+                var p = mon_fi_now[ii][3][ra_n];
+                return p;
+            }
+        }
+    }
     //交出物品
-    function mon_reng(pid, skillname="0",pname="0",obj="0",damage="0", zhong="0",type=0, desc="0") {
+    function mon_reng(pid, skillname="0",pname="0",obj="0",damage="0", zhong="0",type=0, desc="0", ifdod=1, ifreat=1) {
         var kind = 1;
         var ht = pname+'交出了 <a  class="text-muted" onclick=take('+pid+','+kind+',"'+obj+'"); href="#"><strong>'+obj+'</strong></a>';
         if(skillname!=0){
@@ -1249,6 +1397,16 @@
         }
         if(desc!=0){
             ht = ht+"<br />描述："+desc;
+        }
+        if(ifdod==0){
+           ht = ht+"<br />不可被闪避";
+        }else {
+            ht = ht+"<br />可被闪避";
+        }
+        if(ifreat==0){
+           ht = ht+"<br />不可用于反击";
+        }else {
+            ht = ht+"<br />可用于反击";
         }
         send_msg(ht);
         if(type=="mobile"){
@@ -1272,5 +1430,205 @@
                     get_mon(juben_id);
                 });
         }
+
+    //怪物加入战斗
+    function join_fi_mon() {
+        var mon_id = $("#fight_list_mon").val();
+        var mon_tx = $("#fight_list_mon").find("option:selected").text();
+        if(mon_id==0){
+            return;
+        }
+        var ifz = re_chong(mon_fi,'id',mon_id);
+        if(ifz!=0){
+            alert("不可重复加入怪物");
+            return;
+        }
+        var mon_jo = [mon_id,mon_tx];
+        var ht = mon_tx
+        $("#fight_mon_jo").append(ht+" ");
+
+        var mon_in = re_chong(mon_lists,'id',mon_id);
+        //直接计算出怪物的敏捷&成功等级
+        var spd_o = mon_find_v(mon_id,23);
+        var spd_v = randomNum(1,100);
+        var spd_lv = set_secces(spd_o,spd_v);
+        mon_in['spd_v'] = spd_v;
+        mon_in['speed'] = spd_lv;
+        mon_in['finish'] = 1;
+
+        //获取怪物是否自动战斗
+        var ifauto = $("#fight_sele_m").val();
+        mon_in['status'] = parseInt(ifauto);
+        //给怪物重新设定hp+armo
+        var mon_hp = mon_find_v(mon_id, ".mon_hp" , 1);
+        var mon_armo = mon_find_v(mon_id, 101);
+        mon_hp = parseInt(mon_hp);
+        mon_armo = parseInt(mon_armo);
+        mon_in['hp'] = mon_hp + mon_armo;
+        mon_fi.push(mon_in);
+        //id,类型,名称,体力,盔甲,敏捷检定
+    }
+
+    //放入战斗
+    function fi_sub() {
+        var ht =$("#fight_mon_jo").html();
+        if(!ht){
+            alert("还没有添加要战斗的怪物");
+            return;
+        }
+        var timestamp=new Date().getTime();
+        var radn = randomNum(100,999);
+        var sia = timestamp+radn;
+        ht = ht+" <p>进入了战斗</p>";
+        ann=" /jfight danger "+sia+" 加入战斗 战斗开始 ";
+        var ht2 = ht+ann;
+        send_msg(ht2);
+        //房间id,玩家+怪物数据,怪物数据,玩家数据,是否开始
+        var mfn = [sia,[],mon_fi,[],0,""];
+        mon_fi_now.push(mfn);
+        reset_fi_mon();
+    }
+
+    function reset_fi_mon() {
+        mon_fi = [];
+        $("#fight_mon_jo").html("");
+    }
+    function re_chong(mon_list,type=0,mon_id) {
+        for(ii in mon_list){
+            if(mon_list[ii][type]==mon_id){
+                return mon_list[ii];
+            }
+        }
+        return 0
+    }
+
+    //通过敏捷决定怪物行动顺序/怪物投闪避
+    function tou_mon_f(mon_id,type,name,pc_t,f_id) {
+        var value = 0;
+        var txt=name;
+        if(type=="SPD"){
+            value = $("#mon_deteil_"+mon_id+" .dede_23").val();
+            txt = name+' 敏捷';
+            tou2f(value,txt,1,type,mon_id,pc_t,f_id);
+        }
+        if(type=="DOD"){
+            value = $("#mon_deteil_"+mon_id+" .dede_98").val();
+            txt = name+' 闪避';
+            tou2f(value,txt,1,type,mon_id,pc_t,f_id);
+        }
+
+
+    }
+
+    //战斗时怪物行动
+    function tou_mon_attack(mon_id,f_id,name,attaordef) {
+        var mid = mon_id;
+        fight_id_g = f_id;
+        var num_atta = $("#mon_deteil_"+mid+" .mon_objs_list").children("li").length;
+        var r_atta = randomNum(1,num_atta);
+        r_atta = r_atta-1;
+        var get_atta = $("#mon_deteil_"+mid+" .mon_objs_list").children("li").eq(r_atta);
+        var gatta = get_atta.find('.dt_ftou');
+        if(attaordef=="attack"){
+        attack_method=1;
+        gatta.click();
+        }
+        else if(attaordef=="defence"){
+            //反击/闪避
+            var r_fs = randomNum(1,100);
+            if(r_fs>80){
+                //闪避
+                tou_mon_f(mon_id,"DOD",name,1,f_id);
+            }
+            else{
+                //反击
+                attack_method=4;
+                gatta.click();
+            }
+        }
+
+
+
+    }
+    //通过玩家id寻找到玩家数据
+    function get_more_fromuid(fightid, uid) {
+        var mf_list = fight_getallinfo(fightid);
+        for(il in mf_list[3]) {
+            if (mf_list[3][il]['id'] == uid) {
+                return mf_list[3][il];
+            }
+        }
+        return 0;
+    }
+    //计算成功等级
+    function set_secces(roll_o,roll_v) {
+        var se_lv=0;
+        v2 = parseInt(roll_o/2);
+        v3 = parseInt(roll_o/5);
+        if(roll_v>roll_o){
+            if(roll_v>95){
+                se_lv=0;
+            }
+            else{
+                se_lv=6;
+            }
+        }
+        else if(roll_v==1){
+            se_lv=14;
+        }
+        else if(roll_v<=roll_o && roll_v>v2){
+            se_lv=8;
+        }
+        else if(roll_v<=v2 && roll_v>v3){
+            se_lv=10;
+        }
+        else if(roll_v<=v3){
+            se_lv=12;
+        }
+        return se_lv;
+    }
+    //将成功等级转换成文字
+    function set_secces_txt(roll_v) {
+        var txt="";
+        if(roll_v==0){
+            txt = "大失败！";
+        }
+        else if(roll_v==6){
+            txt = "失败！";
+        }
+        else if(roll_v==8){
+            txt = "成功！";
+        }
+        else if(roll_v==10){
+            txt = "困难成功！";
+        }
+        else if(roll_v==12){
+            txt = "极限成功！";
+        }
+        else if(roll_v==14){
+            txt = "大成功！";
+        }
+        else {
+            txt = "迷の成功等级";
+        }
+        return txt;
+    }
+
+    //寻找参数 (力量，敏捷等等) (怪物id，参数框id) 如果attr_kind!=0那么attrid就是要找的位置（例如hp）
+    function mon_find_v(mon_id,attrid,attr_kind=0) {
+        if(attr_kind!=0){
+           var fid = attrid;
+        }
+        else {
+            var fid = ".dede_"+attrid;
+        }
+        var value = $("#mon_deteil_"+mon_id).find(fid).val();
+        return value;
+    }
+    //修改怪物参数
+    function mon_change_v(mon_id,attr,value) {
+        $("#mon_deteil_"+mon_id).find("."+attr).val(value);
+        $("#mon_deteil_"+mon_id).find("."+attr).trigger("change");
+    }
 
 </script>
