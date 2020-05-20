@@ -438,8 +438,11 @@
                                                 <input id="send_toto_id" type="hidden" value="public" />
                                                 <input id="send_toto_text" type="hidden" value="public" />
                                             </div>
-<!--                                            调查员笔记-->
-                                            <div class="modal fade" id="dnotebook" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        </div>
+                                </div>
+                                <div>
+                                    <!--                                            调查员笔记-->
+                                            <div class="modal fade" id="dnotebook" tabindex="-1" role="dialog" aria-labelledby="dnotebook" aria-hidden="true">
                                                 <div class="modal-dialog" role="document" style="z-index: 2040">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -458,7 +461,7 @@
                                                 </div>
                                             </div>
 <!--                                            图片上传-->
-                                            <div class="modal fade" id="dshowimg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="dshowimg" tabindex="-1" role="dialog" aria-labelledby="dshowimg" aria-hidden="true">
                                                 <div class="modal-dialog modal-xl" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-body">
@@ -467,7 +470,41 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+
+                                        <div class="modal fade" id="attackshow" tabindex="-1" role="dialog" aria-labelledby="attackshow" aria-hidden="true">
+                                                <div class="modal-dialog" role="document" style="z-index: 2040">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">战斗方式</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+<!--                                                            普通攻击列表-->
+                                                            <div id="show_at_list"></div>
+<!--                                                            反击列表-->
+                                                            <div id="show_at_list2"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+<!--                                                    战斗需要的模板-->
+                                                    <div style="display: none;">
+                                                        <a id="tmp_attackb" class="text-reset nav-link p-0 mb-6" href="#" onclick="">
+                                                            <div class="card card-active-listener bg-light text-dark">
+                                                                <div class="card-body">
+                                                                    <div class="media">
+                                                                        <div class="media-body overflow-hidden">
+                                                                            <div class="d-flex align-items-center mb-1">
+                                                                                <h6 class="text-truncate mb-0 mr-auto ttext">空手</h6>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
                                 </div>
 
                                     <div class="form-row align-items-center">
@@ -483,12 +520,12 @@
                                         </div>
                                             <!-- Submit button -->
                                         <div class="col-auto">
-                                            <button onclick="sub_send_msg()" class="btn btn-ico btn-primary rounded-circle" type="button">
-                                                <span class="fe-send"></span>
-                                            </button>
-<!--                                            <button id="sub_sendmsg" class="btn btn-ico btn-primary rounded-circle" type="button">-->
+<!--                                            <button onclick="sub_send_msg()" class="btn btn-ico btn-primary rounded-circle" type="button">-->
 <!--                                                <span class="fe-send"></span>-->
 <!--                                            </button>-->
+                                            <button id="sub_sendmsg" class="btn btn-ico btn-primary rounded-circle" type="button">
+                                                <span class="fe-send"></span>
+                                            </button>
                                         </div>
 
                                     </div>
@@ -613,10 +650,10 @@
                                             <li id="tp_list_rp" style="display: none;" class="list-group-item py-6">
                                                 <div class="media align-items-center">
 
-                                                    <div class="avatar mr-5 bg-primary text-white text-truncate rp_name_pt">
+                                                    <div class="avatar mr-5 bg-secondary text-white text-truncate rp_name_pt">
                                                             <span class="rp_name_p"></span>
                                                         </div>
-                                                    <div class="avatar avatar-sm mr-5 rp_pict">
+                                                    <div class="avatar avatar-offline avatar-sm mr-5 rp_pict">
                                                         <img class="avatar-img rp_pic" src="static/assets/images/avatars/3.jpg" />
                                                     </div>
 
@@ -1161,9 +1198,18 @@
             </div>
         </div>
         <!-- Modal: Invite friends -->
+<!--        缓存-->
+        <div id="temp_list" class="d-none">
 
+        </div>
 
     <script>
+        //战斗房间id
+        var fight_id_g;
+        //战斗方式
+        var attack_method;
+        //攻击来自id
+        var attack_fromid=0;
         var pids = new Array();
         var noteid=0;
         var mycid=0;
@@ -1172,6 +1218,20 @@
         var tizhi;
         var tixing;
         var yizhi;
+        var namespace = '/chat';
+        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+        socket.on('connect', function() {
+             socket.emit('join', {userid:"{{myuid}}",roomid: "{{group_id}}"});
+            {% if page=="roomp" %}
+            if(mycid && mycid!=0){
+                var toidp="{{group_creater}}";
+                var myname = $("#dtt_myname").val();
+                var mypic = $("#dtt_mypic").val();
+                var newmsg = myname+"加入游戏"
+                socket.emit('send_msg', {data: newmsg, userid: "myid", roomid: "{{group_id}}",mycid:mycid,myname:myname,mypic:mypic, kind:2, toidp:toidp, t:0, nosend:1});
+            }
+            {% endif %}
+        });
         $(document).ready(function() {
 
             $('<audio id="chatAudio"><source src="static/msg.mp3" type="audio/mpeg"></audio>').appendTo('body');
@@ -1179,9 +1239,6 @@
             get_kazu("mykazu","list_npc","tp_list_rp","list_rp_");
             get_kazu("allkazu","list_players","tp_list_rp","list_pp_");
             get_msg_lastid(1);
-            setInterval(function(){
-                get_msg_lastid();
-              }, 3000);
             // 显示右边的信息框
             $("#chat-1-info").attr("class","chat-sidebar chat-sidebar-visible");
             {% if page=="roomp" %}
@@ -1190,6 +1247,10 @@
             {% endif %}
             //获取用户数据
 
+            //心跳包
+            setInterval(function(){
+                socket.emit('join2', {userid:"{{myuid}}",roomid: "{{group_id}}"});
+            },60000);
 
             //获取显示图片列表
             show_imgs();
@@ -1212,11 +1273,148 @@
            });
 
 
-           // get_objc(13);
+
+        //    socket 聊天室
 
 
+            socket.on('disconnect', function() {
+                socket.emit('leave', {userid:"{{myuid}}",roomid: "{{group_id}}"});
+            });
 
+            socket.on('mem_join', function(msg) {
+                // console.log(msg);
+                if(msg['userid'] != "{{myuid}}"){
+                    console.log("refresh");
+                    get_kazu("allkazu","list_players","tp_list_rp","list_pp_");
+                }
+            });
 
+            socket.on('my_response', function(msg) {
+                console.log(msg);
+            });
+            socket.on('get_change', function(data) {
+                //kp修改过之后用户自动修改
+                // $("#"+data['listid']).val(data['value']);
+                get_kazu("mykazu","list_npc","tp_list_rp","list_rp_");
+            });
+            //修改一个用户的参数
+            socket.on('get_change_one', function(data) {
+                $("#"+data['listid']).val(data['value']);
+                $("#"+data['listid']).trigger("change");
+            });
+
+            socket.on('get_msg', function(data) {
+                var xiala = 0
+                var name = data['myname'];
+                var pic =data['mypic'];
+                var msga =data['data'];
+                var uid =data['userid'];
+                var kind =data['kind'];
+                xiala = data['xiala'];
+                // var toidp =data['toidp'];
+                // console.log(data);
+                var timestamp=new Date().getTime();
+                var radn = randomNum(1000,9999);
+                var sia = timestamp+radn;
+                t = data['t'];
+                if(uid == "{{myuid}}"){
+                    var mytemp = "msg_my_";
+                    var tmp_se = "msg_tp_my";
+                }
+                else if(uid == "{{group_creater}}"){
+                    var mytemp = "msg_oth_";
+                    var tmp_se = "msg_tp_kp";
+                }
+                else{
+                    var mytemp = "msg_oth_";
+                    var tmp_se = "msg_tp_other";
+                }
+                //2私信 5公共信息
+                if(kind==2){
+                    tmp_se = tmp_se+"_p"
+                }
+                set_msg_box2(sia,"msg_box",tmp_se,mytemp,name,pic,msga,uid,t,xiala);
+                if(uid!="{{myuid}}"){
+                    $('#chatAudio')[0].play();
+                }
+                else{
+                    if(data['type'] && data['type']=="mobile"){
+                        $("#chat-1-user-profile").attr("class","chat-sidebar");
+                    }
+                }
+            });
+
+            socket.on('ch_v', function(data) {
+                var sid = "0";
+                if(data["type"]=="hp"){
+                    sid = "va2_29";
+                }
+                else if(data["type"]=="san"){
+                    sid = "va2_30";
+                }
+                $("#"+sid).val(data["value"]);
+            });
+
+            //kp传送给玩家自动投的
+            socket.on('reng_p', function (data) {
+                var pid = "{{myuid}}";
+                var roll_t = data['roll_t'];
+                var pc_t = data['pc_t'];
+                var f_id = data['f_id'];
+                if(roll_t=="SPD"){
+                    tou3f('va2_23','敏捷',0,roll_t,parseInt(pid),pc_t,f_id);
+                }
+            });
+            //战斗结果数据接收
+            socket.on('get_f_info', function(data) {
+                get_f_info_fun(data);
+            });
+
+            {% if page=="roomc" %}
+            //加入战斗
+            socket.on('f_join', function(data) {
+                var fight_id = data['fightid'];
+                var join_ppl = {id:parseInt(data['userid']),type:2,name:data['pname'],hp:parseInt(data['hp']),hp_max:parseInt(data['hp']),con:parseInt(data['con']),
+                    wil:parseInt(data['wil']),armo:0,speed:parseInt(data['spd_lv']),spd_v:parseInt(data['spd_v']),finish:1,at_lv:0,at_v:0,at_target:0,at_type:0,de_lv:0,de_v:0,de_type:0,status:0};
+                for(ii in mon_fi_now){
+                    if(mon_fi_now[ii][0]==fight_id){
+                        mon_fi_now[ii][3].push(join_ppl);
+                        break;
+                    }
+                }
+                console.log(mon_fi_now);
+                //id,类型,名称,体力,盔甲,敏捷检定
+            });
+            {% endif %}
+
+            $('#sub_sendmsg').click(function() {
+                if(mycid==0 || mycid=="0" || !mycid){
+                    alert("请至少将一个卡组加入游戏再输入");
+                    return
+                }
+                var value = $("#chat-id-1-input").val();
+                if(!value){
+                    alert("请输入内容再提交");
+                    $("#chat-id-1-input").focus();
+                    return;
+                }
+                var toto = $("#send_toto_id").val();
+                var totext = $("#send_toto_text").val();
+                if(toto=="public"){
+                    var kind=5;
+                    var toidp=0;
+                }
+                else{
+                    var kind=2;
+                    var toidp=toto;
+                    value = "To "+totext+":<br/>"+value;
+                }
+                var myname = $("#dtt_myname").val();
+                var mypic = $("#dtt_mypic").val();
+
+                socket.emit('send_msg', {data: value, userid: "myid", roomid: "{{group_id}}",mycid:mycid,myname:myname,mypic:mypic, kind:kind, toidp:toidp, t:0});
+                $("#chat-id-1-input").val("");
+            });
 
         });
 
@@ -1240,7 +1438,6 @@
 
         //获取卡组
         function get_kazu(method, list, templates, mytemp) {
-            $("#"+list).html("");
             $.get("/getkazu", {
                 method: method,
                 gid:"{{group_id}}"
@@ -1249,7 +1446,12 @@
                 //     卡组首页信息
                 //     卡组具体信息
                 //     工作
-                    // console.log(myData);
+                //     console.log(myData);
+                    if(method=="allkazu"){
+                        var ht = '<option value="public" selected="selected">公共信息</option>';
+                        $("#send_toto").html(ht);
+                    }
+                    $("#temp_list").html("");
                     for(data of myData){
                         var cid = data[0][0];
                         if(cid=="0"){
@@ -1265,6 +1467,7 @@
                             var work = 0;
                             var workname = "未设定职业";
                         }
+                        var ifonline = data[3];
 
                         // 私信的地方加入玩家列表
                         if(method=="allkazu"){
@@ -1277,7 +1480,8 @@
                         cc.attr('id',mytemp+cid);
                         // cc.attr('href',"roomc?rid="+roomid);
                         cc.attr('style','');
-                        $("#"+list).append(cc);
+                        // $("#"+list).append(cc);
+                        $("#temp_list").append(cc);
                         $("#"+mytemp+cid+" .rp_name").html(pname);
                         // 设定点击查看详细信息
                         $("#"+mytemp+cid+" .rp_name").attr("onclick","show_deteils("+cid+","+uid+",'"+workname+"')");
@@ -1286,7 +1490,7 @@
                                 $("#"+mytemp+cid+" .rp_getinfo").attr("onclick","del_game("+cid+","+uid+")");
                             }
                             else if(method=="mykazu"){
-                                $("#"+mytemp+cid+" .rp_getinfo").attr("onclick","add_game("+cid+")");
+                                $("#"+mytemp+cid+" .rp_getinfo").attr("onclick","add_game("+cid+",'"+pname+"')");
                             }
                         }
                         else{
@@ -1315,17 +1519,29 @@
                                 if(dd[5]==0){
                                     $("#"+mytemp+cid+" .rp_pict").hide();
                                     $("#"+mytemp+cid+" .rp_name_p").html(pname);
+                                    if(ifonline==1){
+                                        $("#"+mytemp+cid+" .rp_name_pt").removeClass("bg-secondary");
+                                        $("#"+mytemp+cid+" .rp_name_pt").addClass("bg-primary");
+                                    }
                                 }
                                 else{
                                     $("#"+mytemp+cid+" .rp_name_pt").hide();
                                     $("#"+mytemp+cid+" .rp_pic").attr('src',dd[5]);
-                                    if(uid=="{{myuid}}"){
-                                        $("#dtt_mypic").val(dd[5]);
+                                    if(mycid){
+                                        if(uid=="{{myuid}}" && dd[7]==mycid){
+                                            $("#dtt_mypic").val(dd[5]);
+                                        }
+                                    }
+                                    if(ifonline==1){
+                                        $("#"+mytemp+cid+" .rp_pict").removeClass("avatar-offline");
+                                        $("#"+mytemp+cid+" .rp_pict").addClass("avatar-online");
                                     }
                                 }
                             }
                         }
                     }
+                    $("#"+list).html($("#temp_list").html());
+                    $("#temp_list").html("");
                 },"json");
         }
 
@@ -1399,7 +1615,8 @@
 
                     lastidd = "#"+mytemp+sia;
                 }
-                window.location.href=lastidd;
+                var scrollHeight = $('#msg_box').prop("scrollHeight");
+                $('.chat-content').animate({scrollTop:scrollHeight},0);
                 if(silence!=1){
                     $('#chatAudio')[0].play();
                 }
@@ -1434,10 +1651,53 @@
             // $("#"+mytemp+sid+" .msg_imgs").attr("href","#"+mytemp+sid);
             var showmsg = msga[6];
             showmsg = cha("img",showmsg);
+            showmsg = cha("txt",showmsg);
             showmsg = cha("dian",showmsg);
+            showmsg = cha("tou",showmsg);
             $("#"+mytemp+sid+" .msg_main").html(showmsg);
             var msg_time = currentTime(parseInt(msga[5]));
             $("#"+mytemp+sid+" .msg_time").html(msg_time);
+        }
+
+        function set_msg_box2(sid,list, templates, mytemp,name,pic,msga,uid=0,ttime=0,xiala=0){
+            var cc = $("#"+templates).clone(true);
+            cc.attr('id',mytemp+sid);
+            cc.attr('style','');
+            $("#"+list).append(cc);
+            if(pic=="0"){
+                $("#"+mytemp+sid+" .msg_imgs").hide();
+                if(uid!=0){
+                    if(uid == "{{myuid}}"){
+                        uid = "public";
+                    }
+                    $("#"+mytemp+sid+" .msg_img_p").attr("onclick", "ssent("+uid+", '"+name+"')");
+                }
+                $("#"+mytemp+sid+" .msg_img_pa").html(name);
+            }
+            else{
+                $("#"+mytemp+sid+" .msg_img_p").hide();
+                if(uid!=0){
+                    if(uid == "{{myuid}}"){
+                        uid = "public";
+                    }
+                    $("#"+mytemp+sid+" .msg_imgs").attr("onclick", "ssent('"+uid+"', '"+name+"')");
+                }
+                $("#"+mytemp+sid+" .msg_imga").attr("src",pic);
+                $("#"+mytemp+sid+" .msg_img_name").html(name);
+            }
+            // $("#"+mytemp+sid+" .msg_imgs").attr("href","#"+mytemp+sid);
+            var showmsg = msga;
+            showmsg = cha("img",showmsg);
+            showmsg = cha("txt",showmsg);
+            showmsg = cha("dian",showmsg);
+            showmsg = cha("tou",showmsg);
+            $("#"+mytemp+sid+" .msg_main").html(showmsg);
+            var msg_time = currentTime(parseInt(ttime));
+            $("#"+mytemp+sid+" .msg_time").html(msg_time);
+            if(xiala!=1){
+                var scrollHeight = $('#'+list).prop("scrollHeight");
+                $('.chat-content').animate({scrollTop:scrollHeight},0);
+            }
         }
 
         //修改私信去向
@@ -1458,7 +1718,7 @@
             }
         }
         //按发送键
-        function sub_send_msg(refri=0) {
+        function sub_send_msg() {
             var value = $("#chat-id-1-input").val();
             if(!value){
                 alert("请输入内容再提交");
@@ -1476,10 +1736,10 @@
                 var toidp=toto;
                 value = "To "+totext+":<br/>"+value;
             }
-            send_msg(value, kind, toidp,refri);
+            send_msg(value, kind, toidp);
         }
         //发送信息
-        function send_msg(v=0, kind=5, toidp=0, refri=0) {
+        function send_msg(v=0, kind=5, toidp=0, xiala=0) {
             if(mycid==0 || mycid=="0" || !mycid){
                 alert("请至少将一个卡组加入游戏再输入");
                 return
@@ -1498,22 +1758,10 @@
             if(toidp=="kp"){
                 toidp="{{group_creater}}";
             }
-            $.post("/sendmsg", {
-                kind:kind,
-                fromcid:mycid,
-                toid:"{{group_id}}",
-                toid_p:toidp,
-                msg: value
-            },
-            function(myData , status){
-                if(refri==0){
-                    $("#chat-id-1-input").val("");
-                    get_msg_lastid(1);
-                // alert("成功提交");
-                }
-
-            });
-
+            var myname = $("#dtt_myname").val();
+            var mypic = $("#dtt_mypic").val();
+            socket.emit('send_msg', {data: value, userid: "myid", roomid: "{{group_id}}",mycid:mycid,myname:myname,mypic:mypic, kind:kind, toidp:toidp, t:0, xiala:xiala});
+            $("#chat-id-1-input").val("");
         }
         //----------------------------------------------------------------message
 
@@ -1548,7 +1796,8 @@
                     $("#dt_skills_list").html("");
                     $("#dt_objs_list").html("");
                     $("#background").html("");
-
+                    $("#show_at_list").html("");
+                    $("#show_at_list2").html("");
 
                     for(data of myData){
                         var pid = data[0];
@@ -1560,9 +1809,12 @@
                             if(nid==1){
                                 var pname = value;
                                 $("#dt_name").html(value);
+                                $("#dtt_name").val(value);
 
                                 //添加空手攻击
-                                set_objj("dt_objs_list","dt_obj","dt_s_hand","空手",pname,"近战攻击","1d3+0.5db");
+                                var others_h = {"useskill":"近战攻击","damage":"1d3+0.5db","ifdod":1,"ifreat":1};
+                                set_objj("dt_objs_list","dt_obj","dt_s_hand","空手",others_h);
+
                             }
                             if(nid==75){
                                 if(value=="0"){
@@ -1610,7 +1862,7 @@
                                             yizhi = parseInt(value);
                                         }
                                         var str2="{{at.2}}";
-                                        set_ask("dt_atr_list2","dt_skill","dt_s_"+pid,str2,value,pname,0,0,nid);
+                                        set_ask("dt_atr_list2","dt_skill","dt_s_"+pid,str2,value,0,0,nid,pid);
                                         pids.push(pid);
                                     }
                                 {% endif %}
@@ -1622,18 +1874,18 @@
                                         var str2="{{at.2}}";
                                         if(nid==29){
                                             var tili=parseInt((tizhi+60)/10);
-                                            set_ask("dt_atr_list1","dt_skill2","dt_s_"+pid,str2,value,pname,tili);
+                                            set_ask("dt_atr_list1","dt_skill2","dt_s_"+pid,str2,value,tili,0,nid,pid);
                                         }
                                         else if(nid==30){
                                             var lizhi = yizhi;
-                                            set_ask("dt_atr_list1","dt_skill2","dt_s_"+pid,str2,value,pname,lizhi);
+                                            set_ask("dt_atr_list1","dt_skill2","dt_s_"+pid,str2,value,lizhi,0,nid,pid);
                                         }
                                         else if(nid==32){
                                             var mofa = parseInt(yizhi/5);
-                                            set_ask("dt_atr_list1","dt_skill2","dt_s_"+pid,str2,value,pname,mofa);
+                                            set_ask("dt_atr_list1","dt_skill2","dt_s_"+pid,str2,value,mofa,0,nid,pid);
                                         }
                                         else{
-                                            set_ask("dt_atr_list1","dt_skill2","dt_s_"+pid,str2,value,pname);
+                                            set_ask("dt_atr_list1","dt_skill2","dt_s_"+pid,str2,value,0,0,0,pid);
                                         }
 
                                         pids.push(pid);
@@ -1648,10 +1900,10 @@
                                     if(nid=={{at.0}}){
                                         //加入db
                                         var db=get_db(liliang,tizhi);
-                                        set_ask("dt_atr_list1","dt_skill3","dt_s_db","DB",db,pname);
+                                        set_ask("dt_atr_list1","dt_skill3","dt_s_db","DB",db,0,0,0,pid);
                                         //加入金钱
                                         var str2="{{at.2}}";
-                                        set_ask("dt_objs_list","dt_skill4","dt_s_"+pid,str2,value,pname,1);
+                                        set_ask("dt_objs_list","dt_skill4","dt_s_"+pid,str2,value,1,0,0,pid);
                                         pids.push(pid);
 
                                     }
@@ -1665,10 +1917,15 @@
                                 if(nid=="{{name.0}}"){
                                     var str2="{{name.2}}";
                                     if(parseInt(value)>10){
-                                        set_ask("dt_skills_list","dt_skill","dt_s_"+pid,str2,value,pname,0,nid);
+                                        set_ask("dt_skills_list","dt_skill","dt_s_"+pid,str2,value,0,nid,0,pid);
                                         pids.push(pid);
                                     }
-
+                                    // if(nid==125){
+                                    //     var attack_txt = "闪避: <small class='text-muted'>"+value+"</small>";
+                                    //     var atack_b = $("#tmp_attackb").clone(true);
+                                    //     atack_b.attr("id","atta_shan");
+                                    //     $("#atta_shan .ttext").html(attack_txt);
+                                    // }
                                 }
                             {% endfor %}
                         }
@@ -1681,6 +1938,8 @@
                                     var useskill=0;
                                     var skillplu=0;
                                     var skillplu2=0;
+                                    var ifdod = 1; //能否闪避
+                                    var ifreat = 1;  //能否反击
                                     var str2="{{name.2}}";
                                     {% for in in infoe %}
                                         {% if in.2==8 %}
@@ -1696,16 +1955,26 @@
                                             skillplu = "{{in.4}}";
                                             skillplu2 = "{{in.5}}";
                                         }
+                                        {% elif in.2==103 %}
+                                        if(nid=="{{in.1}}"){
+                                            ifdod = "{{in.4}}";
+                                        }
+                                        {% elif in.2==104 %}
+                                        if(nid=="{{in.1}}"){
+                                            ifreat = "{{in.4}}";
+                                        }
                                         {% endif %}
                                     {% endfor %}
-                                    set_objj("dt_objs_list","dt_obj","dt_s_"+pid,str2,pname,useskill,damage,skillplu,skillplu2,pid,nid);
+                                    var others = {"useskill":useskill,"damage":damage,"pid":pid,"nid":nid,"ifdod":ifdod,"ifreat":ifreat}
+                                    set_objj("dt_objs_list","dt_obj","dt_s_"+pid,str2,others);
+
                                 }
                             {% endfor %}
                         }
                         else if(kind==9){
                             if(nid==79){
                                 var ccid = parseInt(value);
-                                get_objc(ccid, pname);
+                                get_objc(ccid);
                             }
                         }
                     }
@@ -1716,7 +1985,7 @@
         }
 
         //修改用户信息的框框
-        function set_ask(list,temp,col,name,value,pname=0,apend=0,nid=0,aid=0){
+        function set_ask(list,temp,col,name,value,apend=0,nid=0,aid=0,pid=0){
             var cc = $("#"+temp).clone(true);
             cc.attr('id',col);
             cc.attr('style','');
@@ -1733,31 +2002,63 @@
             $("#"+col+" .dt_atr_name").html(name);
             $("#"+col+" .dt_atr_value").val(value);
 
-
-            if(pname==0){
-                pname="";
-            }
-            else{
-                pname = pname+" "
-            }
-            $("#"+col+" .dt_mingtou").attr("onclick","tou2("+value+",'"+pname+name+"')");
-            $("#"+col+" .dt_mingtoum").attr("onclick","tou2("+value+",'"+pname+name+"',100,'mobile')");
-            $("#"+col+" .dt_antou").attr("onclick","tou2("+value+",'"+pname+name+"',100,0,1)");
-            $("#"+col+" .dt_antoum").attr("onclick","tou2("+value+",'"+pname+name+"',100,'mobile',1)");
-
             //骰子 和 参数的nid
             if(nid!=0){
-                $("#"+col+" .dt_atr_value").attr("id","va_"+nid);
+                var listidd = "va_"+nid;
+                $("#"+col+" .dt_atr_value").attr("id",listidd);
                 $("#"+col+" .dt_mingtou").attr("id","touzi_"+nid);
+                $("#"+col+" .dt_atr_value").attr("onchange","change_an("+pid+",'va_"+nid+"')");
+
             }
             if(aid!=0){
-                $("#"+col+" .dt_atr_value").attr("id","va2_"+aid);
+                var listidd = "va2_"+aid;
+                $("#"+col+" .dt_atr_value").attr("id",listidd);
+                $("#"+col+" .dt_atr_value").attr("onchange","change_an("+pid+",'va2_"+aid+"')");
+
             }
+
+            $("#"+col+" .dt_mingtou").attr("onclick","tou3('"+listidd+"','"+name+"')");
+            $("#"+col+" .dt_mingtoum").attr("onclick","tou3('"+listidd+"','"+name+"',100,'mobile')");
+            $("#"+col+" .dt_antou").attr("onclick","tou3('"+listidd+"','"+name+"',100,0,1)");
+            $("#"+col+" .dt_antoum").attr("onclick","tou3('"+listidd+"','"+name+"',100,'mobile',1)");
+
+
 
         }
 
-        //物品信息的框框 (列出物品的列表, 物品条的模板, 物品条的id, 物品名称, 人物名称, 使用技能, 伤害, 技能加成, 技能加成参数, 物品id, 类型(预设/自定义),描述 )
-        function set_objj(list,temp,col,name,pname=0,useskill="0",damage="0",skillplu="0",skillplu2="0",pid="0",nid="0", zhong="0", kind="0",desc="0"){
+        //修改人物属性
+        function change_an(pid,listid) {
+            var fromuid = $("#dtt_uid").val();
+            var value = $("#"+listid).val();
+            socket.emit('update_so', {pid: pid, roomid: "{{group_id}}", token:"{{token}}", v: value, toidp:fromuid,listid:listid});
+        }
+
+        //物品信息的框框 (列出物品的列表, 物品条的模板, 物品条的id, 物品名称, 使用技能, 伤害,  物品id, 类型(预设/自定义),描述, 其他)
+        function set_objj(list,temp,col,name="0",others="0"){
+             // 使用技能, 伤害,  物品id, 类型(预设/自定义),描述,是否可闪避，是否可反击
+            var useskill=damage=pid=nid=zhong=kind=desc="0";
+            var ifdod=ifreat=1;
+            if(others!="0"){
+                if(others['useskill']!=undefined)
+                    useskill=others['useskill'];
+                if(others['damage']!=undefined)
+                    damage=others['damage'];
+                if(others['pid']!=undefined)
+                    pid=others['pid'];
+                if(others['nid']!=undefined)
+                    nid=others['nid'];
+                if(others['zhong']!=undefined)
+                    zhong=others['zhong'];
+                if(others['kind']!=undefined)
+                    kind=others['kind'];
+                if(others['desc']!=undefined)
+                    desc=others['desc'];
+                if(others['ifdod']!=undefined)
+                    ifdod=others['ifdod'];
+                if(others['ifreat']!=undefined)
+                    ifreat=others['ifreat'];
+            }
+
             var cc = $("#"+temp).clone(true);
             var useskillid=0;
             cc.attr('id',col);
@@ -1767,7 +2068,7 @@
             $("#"+col+" .dt_atr_name").attr("title",name);
             //显示伤害,使用技能等等
             $("#"+col+" .dt_atr_sdlist").html("");
-            if(useskill=="0" && damage=="0" && skillplu=="0" && desc=="0"){
+            if(useskill=="0" && damage=="0" && desc=="0"){
                 var strr='<a class="dropdown-item dt_atr_other">特殊道具</a>';
                 $("#"+col+" .dt_atr_sdlist").append(strr);
             }
@@ -1795,18 +2096,6 @@
                 $("#"+col+" .dt_atr_sdlist").append(strr);
                 $("#"+col+" .dt_atr_name").attr("title","伤害:"+damage);
             }
-            if(skillplu!="0"){
-                if(skillplu2!="0"){
-                    var skplu = skillplu+'|'+skillplu2;
-                }
-                else{
-                    var skplu = skillplu;
-                }
-                // var skplu = skillplu;
-
-                var strr='<a class="dropdown-item dt_atr_skillplu">技能加成:'+skplu+'</a>';
-                $("#"+col+" .dt_atr_sdlist").append(strr);
-            }
 
             if(desc!="0"){
                 var strr='<a style="white-space: pre-wrap;\n' +
@@ -1814,26 +2103,18 @@
                     'max-width: 100%;" class="dropdown-item dt_atr_objcd">描述:'+desc+'</a>';
                 $("#"+col+" .dt_atr_sdlist").append(strr);
             }
-
-            if(pname==0){
-                pname="";
-            }
-            else{
-                pname = pname+" "
-            }
+            $("#"+col+" .dt_dt_ifdod").val(ifdod);
+            $("#"+col+" .dt_ifreat").val(ifreat);
 
 
+            $("#"+col+" .dt_mingtou").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+name+"','"+damage+"','"+zhong+"',0,'"+desc+"')");
+            $("#"+col+" .dt_mingtoum").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+name+"','"+damage+"','"+zhong+"','mobile','"+desc+"')");
 
-            // $("#"+col+" .dt_mingtou").attr("onclick","tou3("+useskillid+",'"+pname+name+"','"+damage+"','"+skillplu+"','"+skillplu2+"')");
-            // $("#"+col+" .dt_mingtoum").attr("onclick","tou3("+useskillid+",'"+pname+name+"','"+damage+"','"+skillplu+"','"+skillplu2+"','mobile')");
-            $("#"+col+" .dt_mingtou").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"',0,'"+desc+"')");
-            $("#"+col+" .dt_mingtoum").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"','mobile','"+desc+"')");
+            $("#"+col+" .dt_antou").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+name+"','"+damage+"','"+zhong+"',0,'"+desc+"',1)");
+            $("#"+col+" .dt_antoum").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+name+"','"+damage+"','"+zhong+"','mobile','"+desc+"',1)");
 
-            $("#"+col+" .dt_antou").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"',0,'"+desc+"',1)");
-            $("#"+col+" .dt_antoum").attr("onclick","tou4("+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"','mobile','"+desc+"',1)");
-
-            $("#"+col+" .dt_jiaochu").attr("onclick","reng('"+pid+"','"+nid+"','"+kind+"',"+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"',0,'"+desc+"')");
-            $("#"+col+" .dt_jiaochum").attr("onclick","reng('"+pid+"','"+nid+"','"+kind+"',"+useskillid+",'"+useskill+"','"+pname+"','"+name+"','"+damage+"','"+zhong+"','mobile','"+desc+"')");
+            $("#"+col+" .dt_jiaochu").attr("onclick","reng('"+pid+"','"+nid+"','"+kind+"',"+useskillid+",'"+useskill+"','"+name+"','"+damage+"','"+zhong+"',0,'"+desc+"',"+ifdod+","+ifreat+")");
+            $("#"+col+" .dt_jiaochum").attr("onclick","reng('"+pid+"','"+nid+"','"+kind+"',"+useskillid+",'"+useskill+"','"+name+"','"+damage+"','"+zhong+"','mobile','"+desc+"',"+ifdod+","+ifreat+")");
             // console.log(pid);
             if(pid!="0"){
                 $("#"+col+" .dt_deltou").attr("onclick","delobj("+pid+",'"+kind+"')");
@@ -1844,6 +2125,35 @@
                 $("#"+col+" .dt_jiaochum").remove();
             }
 
+
+            //设置攻击时的按钮
+            var attack_txt = name+"<br/>";
+            var usk = "";
+            var zho = "";
+            if(useskill!="0"){
+                usk = "<small class='text-muted'>使用技能:"+useskill+" | </small>";
+            }
+            if(zhong!="0"){
+                zho = "<small class='text-muted'>命中率:"+zhong+" | </small>";
+            }
+            var dam = "<small class='text-muted'>伤害:"+damage+" | </small>";
+            attack_txt = attack_txt+usk+zho+dam;
+
+            var atack_b1 = $("#tmp_attackb").clone(true);
+            atack_b1.attr("id","atta_1"+col);
+            var atack_b2 = $("#tmp_attackb").clone(true);
+            atack_b2.attr("id","atta_2"+col);
+
+            var usrid = parseInt($("#dtt_uid").val());
+
+            atack_b1.attr("onclick","tou4f("+useskillid+",'"+useskill+"','"+name+"','"+damage+"','"+zhong+"','"+desc+"',0,"+usrid+",2, "+ifdod+", "+ifreat+")");
+            atack_b2.attr("onclick","tou4f("+useskillid+",'"+useskill+"','"+name+"','"+damage+"','"+zhong+"','"+desc+"',0,"+usrid+",2, "+ifdod+", "+ifreat+")");
+            $("#show_at_list").append(atack_b1);
+            if(ifreat==1){
+                $("#show_at_list2").append(atack_b2);
+            }
+            $("#atta_1"+col+" .ttext").html(attack_txt);
+            $("#atta_2"+col+" .ttext").html(attack_txt);
 
         }
 
@@ -1888,23 +2198,10 @@
 
         //修改用户信息
         function send_ask() {
-            for(pid of pids){
-                var value = $("#dt_s_"+pid+" .dt_atr_value").val();
-                var name = $("#dt_s_"+pid+" .dt_atr_name").html();
-                $.post("/updateu", {
-                    pid: pid,
-                    gid: "{{group_id}}",
-                    token:"{{token}}",
-                    v: value
-                },
-                function(myData , status){
-                    var ccid=$("#dtt_cid").val();
-                    var uuid=$("#dtt_uid").val();
-                    var jobbnm=$("#dtt_jobname").val();
-                    show_deteils(ccid,uuid,jobbnm);
-                    // alert("成功修改");
-                });
-            }
+            var ccid=$("#dtt_cid").val();
+            var uuid=$("#dtt_uid").val();
+            var jobbnm=$("#dtt_jobname").val();
+            show_deteils(ccid,uuid,jobbnm);
             alert("成功修改");
 
         }
@@ -1930,25 +2227,14 @@
                 alert("请至少将一个卡组加入游戏再投");
                 return
             }
-            $.post("/tou_creacy", {
-                kind:5,
-                fromcid:mycid,
-                toid:"{{group_id}}",
-                },
-            function(myData , status){
-                // console.log(myData);
-                if(myData==""){
-                    alert("出现迷之错误")
-                }
-                $("#chat-id-1-input").val("");
-                get_msg_lastid(1);
-                // get_msg();
-            });
+            var myname = $("#dtt_myname").val();
+            var mypic = $("#dtt_mypic").val();
+            socket.emit('creazy_so', {data: 0, userid: "myid", roomid: "{{group_id}}",mycid:mycid,myname:myname,mypic:mypic, kind:5, toidp:0, t:0});
         }
         //----------------------------------------------------------------人物卡
 
         //用户加入游戏
-        function add_game(cid) {
+        function add_game(cid,pname) {
             $.post("/addgame", {
                 cid: cid,
                 gid: "{{group_id}}"
@@ -1957,6 +2243,7 @@
                 get_kazu("allkazu","list_players","tp_list_rp","list_pp_");
                 $("#wanjialiebiao").click();
                 mycid = cid;
+                socket.emit('m_join', {userid: "{{myuid}}", roomid:"{{group_id}}"});
             });
 
         }
@@ -1970,6 +2257,8 @@
             function(myData , status){
                 get_kazu("allkazu","list_players","tp_list_rp","list_pp_");
                 $("#wanjialiebiao").click();
+                mycid = 0;
+                socket.emit('m_join', {userid: "{{myuid}}", roomid:"{{group_id}}"});
             });
         }
 
@@ -2037,71 +2326,74 @@
 
         function tou2(value=0,obj=0,max=100,type=0,an=0) {
             if(mycid==0 || mycid=="0" || !mycid){
-                alert("请至少将一个卡组加入游戏再投");
+                alert("请至少将一个卡组加入游戏或点开一个人物卡再输入");
                 return
             }
             if(an==1){
+                //是否暗投
                 var kind = 2;
                 var toid_p="{{group_creater}}";
             }
             else{
+                //是否私信
                 var kind = 5;
                 var toid_p=0;
             }
-            $.post("/tou", {
-                kind:kind,
-                fromcid:mycid,
-                toid:"{{group_id}}",
-                value: value,
-                obj : obj,
-                max : max,
-                toid_p:toid_p
-            },
-            function(myData , status){
-                $("#chat-id-1-input").val("");
-                get_msg_lastid(1);
-                // get_msg();
-                //设置手机界面
-                if(type=="mobile"){
-                    $("#chat-1-user-profile").attr("class","chat-sidebar");
-                }
-            });
+            //设置名称
+            var pname = $("#dtt_name").val();
+
+            obj2 = pname+obj;
+            var myname = $("#dtt_myname").val();
+            var mypic = $("#dtt_mypic").val();
+            socket.emit('tou_1', {data: value, userid: "myid", roomid: "{{group_id}}",mycid:mycid,myname:myname,mypic:mypic,
+            kind:kind, toidp:toid_p, t:0, obj : obj2,max : max,type:type});
         }
 
-        function tou3(touziid=0,obj="0",damage="0",skillplu="0",skillplu2="0",type=0){
+        //值,头部显示的,是否暗骰,战斗类型(SPD),人/怪物id,怪物还是人(1怪物2人),战斗房间id
+        function tou2f(value=0,obj=0,an=0,roll_t=0,pcid=0,pc_t=0,f_id=0) {
             if(mycid==0 || mycid=="0" || !mycid){
-                alert("请至少将一个卡组加入游戏再输入");
+                alert("请至少将一个卡组加入游戏或点开一个人物卡再输入");
                 return
             }
-            if(touziid!=0){
-                touziid="touzi_"+touziid;
-                $("#"+touziid).click();
+            if(an==1){
+                //是否暗投
+                var kind = 2;
+                var toid_p="{{group_creater}}";
             }
-            var db=$("#dt_s_db .dt_atr_value").val();
-            $.post("/tou_demage", {
-                kind:5,
-                fromcid:mycid,
-                toid:"{{group_id}}",
-                damage: damage,
-                db: db,
-                obj : obj,
-                skillplu : skillplu,
-                skillplu2: skillplu2
-            },
-            function(myData , status){
-                // console.log(myData);
-                $("#chat-id-1-input").val("");
-                get_msg();
-                //设置手机界面
-                if(type=="mobile"){
-                    $("#chat-1-user-profile").attr("class","chat-sidebar");
-                }
-            });
+            else{
+                //是否私信
+                var kind = 5;
+                var toid_p=0;
+            }
+            //设置名称
+            if("{{group_creater}}"=="{{myuid}}"){
+                var pname = "";
+            }
+            else{
+                var pname = $("#dtt_name").val();
+            }
+            //从id来的攻击
+            var at_fromid = attack_fromid;
+            obj2 = pname+obj;
+            var myname = $("#dtt_myname").val();
+            var mypic = $("#dtt_mypic").val();
+            socket.emit('tou_1f', {data: value, userid: "myid", roomid: "{{group_id}}",mycid:mycid,myname:myname,mypic:mypic,
+            kind:kind, toidp:toid_p, t:0, obj : obj2,max : 100,type:0, kp:"{{group_creater}}", roll_t:roll_t, pcid:pcid,pc_t:pc_t,f_id:f_id,xiala:1,at_fromid:at_fromid});
+            attack_fromid=0;//来自id归零
+        }
+
+        function tou3(listid=0,obj=0,max=100,type=0,an=0){
+            var value = $("#"+listid).val();
+            tou2(value,obj,max,type,an);
+        }
+        function tou3f(listid=0,obj=0,an=0,roll_t=0,pcid=0,pc_t=0,f_id=0){
+            var value = $("#"+listid).val();
+            tou2f(value,obj,an,roll_t,pcid,pc_t,f_id);
 
         }
 
-
-        function tou4(skillid=0,skillname="0",pname="0",obj="0",damage="0", zhong="0",type=0, desc="0",an=0){
+        //物品骰子+伤害
+        function tou4(skillid=0,skillname="0",obj="0",damage="0", zhong="0",type=0, desc="0",an=0){
             if(mycid==0 || mycid=="0" || !mycid){
                 alert("请至少将一个卡组加入游戏再输入");
                 return
@@ -2121,32 +2413,89 @@
                 var kind = 5;
                 var toid_p=0;
             }
+            //设置名称
+            var pname = $("#dtt_name").val();
 
             var db=$("#dt_s_db .dt_atr_value").val();
-            $.post("/tou_demage2", {
-                kind:kind,
-                fromcid:mycid,
-                toid:"{{group_id}}",
-                damage: damage,
-                db: db,
-                obj : obj,
-                pname: pname,
-                skillname:skillname,
-                zhong : zhong,
-                desc:desc,
-                toid_p:toid_p
-            },
-            function(myData , status){
-                // console.log(myData);
-                $("#chat-id-1-input").val("");
-                get_msg_lastid(1);
-                // get_msg();
-                //设置手机界面
-                if(type=="mobile"){
-                    $("#chat-1-user-profile").attr("class","chat-sidebar");
-                }
-            });
 
+            var myname = $("#dtt_myname").val();
+            var mypic = $("#dtt_mypic").val();
+            socket.emit('tou_2', {data: "0", userid: "myid", roomid: "{{group_id}}",mycid:mycid,myname:myname,mypic:mypic,
+                kind:kind, toidp:toid_p, t:0, obj : obj,type:type,pname:pname,skillname:skillname,zhong:zhong,desc:desc, db:db,damage:damage});
+        }
+
+        //战斗时 物品骰子+伤害  (使用技能id,技能名称,头部显示,伤害,命中率,描述,暗投, 人/怪物id, 怪物还是人(1怪物2人),ifdod是否可闪避 ifreat是否可反击)
+        function tou4f(skillid=0,skillname="0",obj="0",damage="0", zhong="0", desc="0",an=0,pcid=0,pc_t=0,ifdod=1,ifreat=1){
+            var f_id = fight_id_g;
+            var a_method = attack_method;
+            var roll_t="ATA";
+            var f_a=1;  //优势/劣势 次数
+            var f_type=0;  //1优势 2劣势
+            if(a_method==1){
+                roll_t="ATA";
+            }
+            else if(a_method==2){
+                roll_t="ATA";
+                f_type=1;
+                f_a = 2;
+            }
+            else if(a_method==3){
+                roll_t="ATA";
+                f_type=2;
+                f_a = 2;
+            }
+            else if(a_method==4){
+                roll_t="REA";
+                if(ifreat!=1){
+                   obj=obj+"试图反击,但是似乎难以击中";
+                   zhong = 1;
+                }
+                else{
+                    obj=obj+"反击";
+                }
+            }
+            if(mycid==0 || mycid=="0" || !mycid){
+                alert("请至少将一个卡组加入游戏再输入");
+                return
+            }
+            if(zhong=="0"){
+                if(skillid!=0){
+                    skillid="va_"+skillid;
+                    zhong = $("#"+skillid).val();
+                    // $("#"+touziid).click();
+                }
+            }
+            if(an==1){
+                var kind = 2;
+                var toid_p="{{group_creater}}";
+            }
+            else{
+                var kind = 5;
+                var toid_p=0;
+            }
+            //设置名称
+            var pname = $("#dtt_name").val();
+
+            var db=$("#dt_s_db .dt_atr_value").val();
+
+            //从id来的攻击
+            var at_fromid = attack_fromid;
+
+            var d_plus=1;
+            var jobname = $("#dtt_jobname").val();
+            if(jobname=="格斗家" && skillname=="空手"){
+                d_plus=2;
+            }
+
+            var myname = $("#dtt_myname").val();
+            var mypic = $("#dtt_mypic").val();
+            socket.emit('tou_2f', {data: "0", userid: "myid", roomid: "{{group_id}}",mycid:mycid,myname:myname,mypic:mypic,
+                kind:kind, toidp:toid_p, t:0, obj : obj,type:0,pname:pname,skillname:skillname,zhong:zhong,desc:desc, db:db,damage:damage,
+                kp:"{{group_creater}}", roll_t:roll_t, pcid:pcid,pc_t:pc_t,f_id:f_id,f_a:f_a,f_type:f_type,xiala:1,
+                d_plus:d_plus,at_fromid:at_fromid,ifdod:ifdod,ifreat:ifreat});
+            $('#attackshow').modal('hide');
+            attack_method=1;//攻击方式归零
+            attack_fromid=0;//来自id归零
         }
 
         //属性和技能的联合骰子(最终技能id，属性id，技能id)
@@ -2160,7 +2509,7 @@
             if(!jineng){
                 jineng=10;
             }
-            var ppname = $("#dtt_myname").val();
+            var ppname = $("#dtt_name").val();
             if(!shuxing){
                 alert("请点击一个人物卡之后再进行检定！");
                 return
@@ -2173,27 +2522,14 @@
                 var kind = 5;
                 var toid_p=0;
             }
-            $.post("/toul", {
-                kind:kind,
-                fromcid:mycid,
-                toid:"{{group_id}}",
-                toid_p:toid_p,
-                nnid:nnid,
-                sx:shuxing,
-                jn:jineng,
-                ppname:ppname,
-                diffi:diffi
-            },
-            function(myData , status){
-                // console.log(myData);
-                $("#chat-id-1-input").val("");
-                get_msg_lastid(1);
-                // get_msg();
-            });
+            var myname = $("#dtt_myname").val();
+            var mypic = $("#dtt_mypic").val();
+            socket.emit('tou_3', {data: "0", userid: "myid", roomid: "{{group_id}}",mycid:mycid,myname:myname,mypic:mypic,
+                kind:kind, toidp:toid_p, t:0, nnid : nnid,sx:shuxing,jn:jineng,ppname:ppname,diffi:diffi});
         }
 
         //交出物品
-        function reng(pid,nid,kind,skillid=0,skillname="0",pname="0",obj="0",damage="0", zhong="0",type=0, desc="0") {
+        function reng(pid,nid,kind,skillid=0,skillname="0",obj="0",damage="0", zhong="0",type=0, desc="0", ifdod=1, ifreat=1) {
             if(kind!=0){
                 kind=1;
                 var ppid = pid;
@@ -2201,6 +2537,9 @@
             else{
                 var ppid = nid;
             }
+            //设置名称
+            var pname = $("#dtt_name").val();
+
             var ht = pname+'交出了 <a  class="text-muted" onclick=take('+ppid+','+kind+',"'+obj+'"); href="#"><strong>'+obj+'</strong></a>';
             if(skillname!=0){
                 ht = ht+"<br />技能使用："+skillname;
@@ -2214,6 +2553,16 @@
             if(desc!=0){
                 ht = ht+"<br />描述："+desc;
             }
+            if(ifdod==0){
+               ht = ht+"<br />不可被闪避";
+            }else {
+                ht = ht+"<br />可被闪避";
+            }
+            if(ifreat==0){
+               ht = ht+"<br />不可用于反击";
+            }else {
+                ht = ht+"<br />可用于反击";
+            }
             send_msg(ht);
             if(type=="mobile"){
                 $("#chat-1-user-profile").attr("class","chat-sidebar");
@@ -2222,26 +2571,12 @@
 
         function take(pid,kind,obj){
             var uid = $("#dtt_uid").val();
-            var mycid = $("#dtt_cid").val();
             var myname = $("#dtt_myname").val();
             var jobbnm=  $("#dtt_jobname").val();
-            $.post("/add_objt", {
-                    kkind:5,
-                    pid: pid,
-                    kind: kind,
-                    toid:"{{group_id}}",
-                    pname: myname,
-                    uid:uid,
-                    cid:mycid,
-                    obj:obj
-                },
-                function(myData , status){
-                    show_deteils(mycid,uid,jobbnm);
-                    $("#chat-id-1-input").val("");
-                    get_msg_lastid(1);
-                    // get_msg();
-                });
-
+            var mypic = $("#dtt_mypic").val();
+            socket.emit('take_so', {data: "0", userid: "myid", roomid: "{{group_id}}",mycid:mycid,myname:myname,mypic:mypic,
+                kind:5, toidp:0, t:0, obj : obj,kkind:kind,pid:pid});
+            show_deteils(mycid,uid,jobbnm);
         }
         //----------------------------------------------------------------物品相关
         function add_obj() {
@@ -2318,6 +2653,8 @@
             var zhong  = $("#objc_zhong").val();      //命中率
             var damage = $("#objc_damage").val();     //伤害
             var desc   = $("#objc_desc").val();       //特殊描述
+            var ifdod  = $("#objc_ifdod").val();       //可否被闪避
+            var ifrea  = $("#objc_ifreata").val();     //可否反击
             var uid = $("#dtt_uid").val();
             var cid = $("#dtt_cid").val();
             var jobbnm=  $("#dtt_jobname").val();
@@ -2338,6 +2675,8 @@
                     zhong: zhong,
                     damage: damage,
                     desc:desc,
+                    ifdod:ifdod,
+                    ifreata:ifrea,
                     uid:uid,
                     cid:cid
                 },
@@ -2354,17 +2693,20 @@
         }
         
         //显示自定义物品
-        function get_objc(id, pname) {
+        function get_objc(id) {
             $.get("/get_objc", {
                     id:id
                 },
                 function(myData , status){
                     var pid = id;
 
+                    var ifdod = 1;
+                    var ifreat = 1;
                     for(data of myData){
                         var aid = data[3];
                         var v   = data[4];
                         var v2  = data[5];
+
                         if(aid=="90"){
                             var name = v;
                         }
@@ -2378,9 +2720,16 @@
                         else if(aid=="88"){
                             var desc = v;
                         }
+                        else if(aid=="103"){
+                            ifdod = v; //是否可闪避
+                        }
+                        else if(aid=="104"){
+                            ifreat = v; //是否可反击
+                        }
                     }
-                    set_objj("dt_objs_list","dt_obj","dt_sc_"+pid,name,pname,useskill,damage,"0","0",pid,"0", zhong,"custom",desc);
-                    // console.log(myData);
+
+                    var others = {"useskill":useskill,"damage":damage,"pid":pid,"zhong":zhong,"kind":"custom","desc":desc,"ifdod":ifdod,"ifreat":ifreat}
+                    set_objj("dt_objs_list","dt_obj","dt_sc_"+pid,name,others);
                 },"json");
         }
         
@@ -2465,7 +2814,7 @@
 
                     this.on("success", function(file, responseText) {
                         // 回传信息 可以使用其他方法 只是测试用
-                        console.log(responseText);
+                        // console.log(responseText);
                     });
                 }
             });
@@ -2598,6 +2947,778 @@
                 return false;
             }
         });
+
+
+
+
+
+        ///----------------------------------------------------------------战斗相关
+        //获取结果参数 f_id:战斗房间id type:1怪物/2玩家 iid:怪物/玩家uid roll_t:类型 s_lv:扔骰等级 roll_value:骰子值
+        function get_f_info_fun(data) {
+            var f_id = parseInt(data['f_id']);
+            var type = parseInt(data['pc_t']);
+            var iid = parseInt(data['id']);
+            var roll_t = data['roll_t'];
+            var s_lv = parseInt(data['s_lv']);
+            var roll_value = parseInt(data['roll_value']);
+            var ifdod = data['ifdod']; //是否可闪避
+            var ifreat = data['ifreat']; //是否可反击
+            for(ii in mon_fi_now){
+                if(mon_fi_now[ii][0]==f_id){
+                    var finish_coun=0;
+                    for(iii in mon_fi_now[ii][1]){
+                        var mtype = mon_fi_now[ii][1][iii]['type'];
+                        var mid = mon_fi_now[ii][1][iii]['id'];
+                        if(mtype==type && mid==iid){
+                            //决定顺序阶段
+                            if(roll_t=="SPD"){
+                                mon_fi_now[ii][1][iii]['speed']=s_lv;
+                                mon_fi_now[ii][1][iii]['spd_v']=roll_value;
+                                mon_fi_now[ii][1][iii]['finish']=1;
+                            }
+                            else if(roll_t=="DOD" || roll_t=="REA"){
+                                //de_type 1 闪避 2 反击
+                                mon_fi_now[ii][1][iii]['de_lv']=s_lv;
+                                //攻击者信息
+                                var attack_fromid = parseInt(data['at_fromid']);
+                                var attacker_info_iii = fight_get_l(f_id,attack_fromid); //输出是iii
+                                var attacker_info =mon_fi_now[ii][1][attacker_info_iii];
+                                var attacker_lv = attacker_info['at_lv'];
+                                var attacker_av = attacker_info['at_v'];
+                                var attacker_type = attacker_info['at_type']; //1是不可闪避，0是可以闪避
+                                var attacker_name = attacker_info['name'];
+                                var ht="<h5>战况:</h5>";
+                                var ht_s="";
+                                if(roll_t=="DOD"){
+                                    //闪避的情况
+                                    mon_fi_now[ii][1][iii]['de_type']=1;
+                                    mon_fi_now[ii][1][iii]['de_v']=0;
+                                    if(attacker_lv<=6){
+                                        //未命中
+                                        ht = ht + " /ita " +attacker_name+" 未命中 /ita "+mon_fi_now[ii][1][iii]['name']+" ";
+                                    }
+                                    else if(attacker_lv>s_lv || attacker_type==1){
+                                        //闪避失败
+                                        mon_fi_now[ii][1][iii]['hp'] = mon_fi_now[ii][1][iii]['hp'] - attacker_av;
+                                        ht = ht +" /ita " +attacker_name+" 击中了 /ita "+mon_fi_now[ii][1][iii]['name']+" 并造成了" +
+                                            " <span class=\"text-success font-weight-bold\">"+attacker_av+"</span>点伤害！";
+                                        var ht1 = fight_reduhp(ii,iii);
+                                        ht = ht +ht1;
+                                        ht_s = ht;
+                                    }
+                                    else {
+                                        //闪避成功
+                                        ht = ht + " /ita "+mon_fi_now[ii][1][iii]['name']+" 成功闪避了 /ita " +attacker_name+" 的攻击！";
+                                    }
+
+                                }
+                                else if(roll_t=="REA"){
+                                    //反击的情况
+                                    mon_fi_now[ii][1][iii]['de_type']=2;
+                                    mon_fi_now[ii][1][iii]['de_v']=roll_value;
+                                    if(attacker_lv<s_lv && s_lv>6 && attacker_type!=1){
+                                        //攻击者被反击击中
+                                        attacker_info['hp']=attacker_info['hp'] - roll_value;
+                                        ht = ht + " /ita " +attacker_name+" 试图攻击 /ita "+mon_fi_now[ii][1][iii]['name']+" ，但是受到了反击，并损失了" +
+                                            "<span class=\"text-success font-weight-bold\">"+roll_value+"</span> 点体力！";
+                                        var ht1 = fight_reduhp(ii,attacker_info_iii);
+                                        ht = ht +ht1;
+                                        ht_s = ht;
+                                    }
+                                    else if(attacker_lv>6 && (attacker_lv>=s_lv || attacker_type==1)){
+                                        //反击失败并被打中
+                                        mon_fi_now[ii][1][iii]['hp'] = mon_fi_now[ii][1][iii]['hp'] - attacker_av;
+                                        ht = ht + " /ita "+mon_fi_now[ii][1][iii]['name']+" 试图反击, 但是反击失败了,受到 /ita " +attacker_name+" " +
+                                            " 的<span class=\"text-success font-weight-bold\">"+attacker_av+"</span>点伤害！";
+                                        var ht1 = fight_reduhp(ii,iii);
+                                        ht = ht +ht1;
+                                        ht_s = ht;
+                                    }
+                                    else{
+                                        //两边打醉拳
+                                        ht = ht + " /ita " +attacker_name+" 和 /ita "+mon_fi_now[ii][1][iii]['name']+" 都未命中对方！";
+                                    }
+                                }
+                                send_msg(ht);
+                                if(ht_s!=""){
+                                    mon_fi_now[ii][5]=mon_fi_now[ii][5]+"<p> </p>"+ht_s;
+                                }
+                                cs("战况总结：");
+                                cs(mon_fi_now);
+                                fight_continue(f_id);
+                                break;
+                            }
+                            else if(roll_t=="ATA"){ //攻击
+                                mon_fi_now[ii][1][iii]['at_lv']=s_lv;
+                                mon_fi_now[ii][1][iii]['at_v']=roll_value;
+                                if(ifdod==0){
+                                    mon_fi_now[ii][1][iii]['at_type']=1;
+                                }
+                                else {
+                                    mon_fi_now[ii][1][iii]['at_type']=0;
+                                }
+                                mon_fi_now[ii][1][iii]['finish']=1;
+                                var mpname = mon_fi_now[ii][1][iii]['name'];
+                                if(mtype==1){//怪物
+                                    if(mon_fi_now[ii][1][iii]['status']==1){
+                                        var target_id = mon_fi_now[ii][1][iii]['at_target'];
+                                        if(target_id ==0){
+                                            var target = mon_set_target(f_id);
+                                        }
+                                        else {
+                                            var target = get_more_fromuid(f_id,target_id);
+                                        }
+                                    }
+                                    else{
+                                        var target = mon_set_target(f_id);
+                                    }
+                                    var targetid = target['id'];
+                                    var targetname = target['name'];
+                                    var ply_hp = target['hp'];
+                                    var ply_status = target['status'];
+                                    fight_d_player_give(f_id,targetid,targetname,iid,mpname,ply_hp,ply_status);
+                                }
+                                else if(mtype==2){//玩家
+                                    var target = ply_set_target(f_id)
+                                    var targetid = target['id'];
+                                    var targetname = target['name'];
+                                    fight_d_mon(f_id,targetid,targetname,iid,mpname);
+                                }
+                                else {
+                                    cs("异常提示：mtype:"+mtype);
+                                    return;
+                                }
+                                break;
+                            }
+                            else if(roll_t=="ESC"){ //撤离战斗
+                                mon_fi_now[ii][1].splice(iii,1);
+                                var iil = fight_get_l(f_id,iid ,3);
+                                mon_fi_now[ii][3].splice(iil,1);
+                                fight_continue(f_id);
+                                break;
+                            }
+                        }
+                        var iffinish = mon_fi_now[ii][1][iii]['finish'];
+                        finish_coun = finish_coun+iffinish;
+
+                    }
+                    mon_fi_now[ii][1].sort(pcompare("speed",false));
+                    console.log(mon_fi_now[ii]);
+                    break;
+                }
+            }
+        }
+        //根据战斗房间id找到那一条数据
+        function fight_getallinfo(fightid) {
+           for(ii in mon_fi_now) {
+               if (mon_fi_now[ii][0] == fightid) {
+                   return mon_fi_now[ii];
+               }
+           }
+        }
+        // 加入战斗
+        function fight_join(fightid){
+            var myname = $("#dtt_myname").val();
+            close_b(".button_join");
+            var ht = myname+" 加入了战斗";
+            var hp = $("#va2_29").val();
+            var con = $("#va2_26").val(); //体质
+            var wil = $("#va2_21").val(); //意志
+            var spd = $("#va2_23").val(); //敏捷
+
+            socket.emit('fight_join', {userid: "{{myuid}}", roomid:"{{group_id}}", pname:myname, hp:hp, con:con, wil:wil, spd:spd, fightid:fightid});
+            send_msg(ht,0,0,1);
+            open_b(".button_join");
+        }
+        //战斗开始
+        function fight_begin(fightid){
+            for(ii in mon_fi_now){
+                if(mon_fi_now[ii][0]==fightid){
+                    var a = mon_fi_now[ii][2];
+                    var b = mon_fi_now[ii][3];
+                    mon_fi_now[ii][1] = a.concat(b);
+                    for(iii in mon_fi_now[ii][1]){
+                        var iid = mon_fi_now[ii][1][iii]['id'];
+                        var type = mon_fi_now[ii][1][iii]['type'];
+                        var mname = mon_fi_now[ii][1][iii]['name'];
+                        if(type==1){
+                            //敏捷值
+                            tou_mon_f(iid,"SPD",mname,type,fightid);
+                        }
+                        else if(type==2){
+                            socket.emit('reng_pi', {toidp: iid, roomid:"{{group_id}}", roll_t:"SPD",pc_t:type,f_id:fightid});
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        //真~战斗开始
+        function fight_begin2(fightid){
+            close_b(".button_begin");
+            for(ii in mon_fi_now){
+                if(mon_fi_now[ii][0]==fightid){
+                    if(mon_fi_now[ii][4]!=0){
+                        alert("战斗已经开始");
+                        return;
+                    }
+                    mon_fi_now[ii][4]=1; //开始标记
+                    //合并怪物和人，然后排序
+                    var a = mon_fi_now[ii][2];
+                    var b = mon_fi_now[ii][3];
+                    if(b.length == 0){
+                        alert("没有玩家加入，无法开始战斗！");
+                        $(".button_begin").attr("disabled",false);
+                        return;
+                    }
+                    mon_fi_now[ii][1] = a.concat(b);
+                    mon_fi_now[ii][1].sort(pcompare("speed",false));
+                    //决定顺序阶段
+                    // var ht="<h5>战斗行动:</h5><p><small class=\"text-muted\">请在一轮战斗中分别扔一个战斗骰和一个闪避或反击骰,系统将自动结算</small></p><span>/attackb "+f_id+"</span>"
+                    // send_msg(ht);
+                    var ht1 = "行动顺序为:<br />";
+                    for(iii in mon_fi_now[ii][1]){
+                        mon_fi_now[ii][1][iii]['finish']=0;
+                        var name = mon_fi_now[ii][1][iii]['name'];
+                        var spd_v = mon_fi_now[ii][1][iii]['spd_v'];
+                        var spd_lv = mon_fi_now[ii][1][iii]['speed'];
+                        var spd_lvt = set_secces_txt(spd_lv);
+                        ht1=ht1+name+"<small class='text-muted'>("+spd_lvt+spd_v+")</small> -> ";
+                    }
+                    ht1 = ht1+"结束";
+                    ht2 = ht1+" /queren "+fightid;
+                    send_msg(ht2);
+                    mon_fi_now[ii][5]=ht1+"<br />"; //最终输出文字
+                }
+            }
+            open_b(".button_begin");
+        }
+        //在大家看到战斗顺序之后确认开始
+        function fight_begin3(fightid,listid=0){
+            close_b(".button_fbg");
+            for(ii in mon_fi_now) {
+                if (mon_fi_now[ii][0] == fightid) {
+                    //人还是怪
+                    var p_m_type = mon_fi_now[ii][1][listid]['type'];
+                    var iid = mon_fi_now[ii][1][listid]['id'];
+                    var name = mon_fi_now[ii][1][listid]['name'];
+                    var status = mon_fi_now[ii][1][listid]['status'];
+                    if(p_m_type==1){
+                        //怪物status=0是自动托管，1是手动
+                        if(status==1){
+                            fight_kp_mon_give(fightid,iid,name);
+                        }
+                        else{
+                            fight_a_mon(fightid,iid,name);
+                        }
+                    }
+                    else if(p_m_type==2){
+                        var hp = mon_fi_now[ii][1][listid]['hp'];
+                        fight_a_player_give(fightid,iid,name,hp,status);
+                    }
+                }
+            }
+            open_b(".button_fbg");
+        }
+        //战斗继续
+        function fight_continue(fightid) {
+             for(ii in mon_fi_now) {
+                 if (mon_fi_now[ii][0] == fightid) {
+                     //结束战斗的情况
+                     if(mon_fi_now[ii][2].length==0 || mon_fi_now[ii][3]==0){
+                         if(mon_fi_now[ii][2].length==0) {
+                             var ht = "<h5>所有参加战斗的敌人都被消灭光了！</h5>";
+                         }
+                         else if(mon_fi_now[ii][3].length==0){
+                             var ht = "<h5>所有参加战斗的玩家都被消灭光了！</h5>";
+                         }
+                         send_msg(ht);
+                         fight_end(fightid);
+                         return;
+                     }
+                     for(iii in mon_fi_now[ii][1]){
+                         var finish = mon_fi_now[ii][1][iii]['finish'];
+                         if(finish==0){
+                             fight_begin3(fightid,iii);
+                             return;
+                         }
+                     }
+                     //一个轮回结束以后把finish清零,然后重新开始
+                     for(iil in mon_fi_now[ii][1]){
+                         mon_fi_now[ii][1][iil]['finish']=0;
+                     }
+                     fight_continue(fightid);
+                     return;
+                 }
+             }
+
+        }
+        //kp决定怪物战斗目标
+        function fight_kp_mon_give(fightid,iid,name) {
+            var ht = "请kp决定 "+name+" 的目标！ /mfocus "+fightid+" 0 自动目标 0 "+iid+" "+name;
+            var mf_list = fight_getallinfo(fightid);
+            for(il in mf_list[3]){
+                ht = ht + " /mfocus "+fightid+" "+mf_list[3][il]['id']+" "+mf_list[3][il]['name']+" "+mf_list[3][il]['hp']+" "+iid+" "+name;
+            }
+            send_msg(ht, 2, "kp");
+        }
+        //对目标uid做标记，并扔出战斗骰子
+        function fight_kp_mon_t(fightid,uid,mid,mname) {
+            var mf_list = fight_getallinfo(fightid);
+            for(il in mf_list[3]){
+                if(mf_list[3][il]['id'] == mid){
+                    mf_list[3][il]['at_target']=uid;
+                    break;
+                }
+            }
+            tou_mon_attack(mid,fightid,mname,"attack");
+        }
+        //kp决定给玩家的骰子
+        function fight_kp_player_give(fightid,iid,name,hp,status) {
+            var ht = "请kp决定给 "+name+" 的骰子！"
+
+        }
+        //怪物的战斗选项
+        function fight_a_mon(fightid,iid,name) {
+            tou_mon_attack(iid,fightid,name,"attack");
+        }
+        //怪物的防御选项
+        function fight_d_mon(fightid,iid,name,fromid,fromname) {
+            attack_fromid = fromid;
+            tou_mon_attack(iid,fightid,name,"defence");
+        }
+        //给玩家发送战斗选项(战斗房间，用户的id，用户名称)
+        function fight_a_player_give(fightid,uid,name,p_hp,p_status) {
+            var ht1 = name+"进行战斗";
+            send_msg(ht1);
+            var ht2="<h5>战斗行动:</h5><p><small class=\"text-muted\">请投一个攻击方式，攻击目标一般是按照敌人的战斗顺序排列，先攻击速度最快的敌人，然后依次攻击其他敌人。</small></p>";
+            var ht_a = "";
+            var ht_b = "<span>/attackb "+fightid+"</span>";
+            if(p_hp<=0){
+                p_hp=1;
+            }
+            if(p_hp<=4){
+                ht_a = "<h4 class=\"text-danger\">您的体力仅剩"+p_hp+"，请小心行动！</h4>";
+            }
+            if(p_status==2){
+                ht_a = "<h4 class=\"text-danger\">您已受到重伤，并且体力仅剩"+p_hp+"，请小心行动！</h4>";
+            }
+            ht2=ht2+ht_a+ht_b;
+            send_msg(ht2, 2, uid);
+        }
+        //给玩家发送防御选项(战斗房间，用户的id，用户名称)
+        function fight_d_player_give(fightid,uid,name,fromid,fromname,p_hp,p_status) {
+            var ht1 = name+" 受到 "+fromname+" 的攻击！";
+            send_msg(ht1);
+            var ht2="<h5>防御行动:</h5><p><small class=\"text-muted\">防御行动时证明您已经受到了攻击，可以选择闪避或者反击，" +
+                "闪避时若成功等级与敌方相同或更高则成功，而反击时必须高于敌方成功等级。</small></p>";
+            var ht_a = "";
+            var ht_b = "<span>/defenceb "+fightid+" "+fromid+"</span>";
+            if(p_hp<=0){
+                p_hp=1;
+            }
+            if(p_hp<=4){
+                ht_a = "<h4 class=\"text-danger\">您的体力仅剩"+p_hp+"，请小心行动！</h4>";
+            }
+            if(p_status==2){
+                ht_a = "<h4 class=\"text-danger\">您已受到重伤，并且体力仅剩"+p_hp+"，请小心行动！</h4>";
+            }
+            ht2=ht2+ht_a+ht_b;
+            send_msg(ht2, 2, uid);
+        }
+        //玩家/怪物扣血 (给出人和怪血扣到0以下的情况)
+        function fight_reduhp(ii,iii) {
+            var fightid = mon_fi_now[ii][0];
+            var list_info = mon_fi_now[ii][1][iii];
+            var s_id = list_info['id'];
+            var type = list_info['type'];
+            var s_hp = list_info['hp'];
+            var name = list_info['name'];
+            var ht="";
+            //晕厥鉴定
+            if(type==2 && s_hp<3 && list_info['status']!=4 && list_info['status']!=2){
+                var wil_r = randomNum(1,100);
+                var p_wil = list_info['wil'];
+                if(wil_r>p_wil){
+                    ht = " /ita "+name+" 受伤过重失去意识 <small class='text-muted'>(意志"+wil_r+"/"+p_wil+")</small> ，退出了战斗！";
+                    socket.emit('update_so_one', {roomid: "{{group_id}}", token:"{{token}}", v: s_hp, toidp:s_id,listid:"va2_29"});
+                    mon_fi_now[ii][1].splice(iii,1);
+                    var iil = fight_get_l(fightid,s_id ,3);
+                    mon_fi_now[ii][3].splice(iil,1);
+
+                    return ht;
+                }
+                else {
+                    ht = " /ita "+name+" 受了严重的伤，但是随即从晕厥中清醒 <small class='text-muted'>(意志"+wil_r+"/"+p_wil+")";
+                    list_info['status'] = 4;
+                }
+            }
+            if(s_hp<=0){
+                if(type==1){
+                //怪物
+                    s_hp=0;
+                    mon_change_v(s_id,"mon_hp",s_hp);
+                    mon_fi_now[ii][1].splice(iii,1);
+                    var iil = fight_get_l(fightid,s_id ,2);
+                    mon_fi_now[ii][2].splice(iil,1);
+                    ht=" /ita "+name+" 失去战斗能力，退出了战斗！";
+                }
+                else if(type==2){
+                //人濒死
+                    var p_con = list_info['con'];
+                    var p_status = list_info['status'];
+                    if(p_status!=2){
+                        //晕厥,濒死的情况
+                        s_hp=0;
+                        var con_r =randomNum(1,100);
+                        if(con_r>p_con){
+                            //体质没有通过
+                            ht="/ita "+name+" 受伤过重死亡！ <small class='text-muted'>(体质"+con_r+"/"+p_con+")";
+                            mon_fi_now[ii][1].splice(iii,1);
+                            var iil = fight_get_l(fightid,s_id ,3);
+                            mon_fi_now[ii][3].splice(iil,1);
+                            socket.emit('update_so_one', {roomid: "{{group_id}}", token:"{{token}}", v: s_hp, toidp:s_id,listid:"va2_29"});
+                        }
+                        else {
+                            //体质通过
+                            s_hp=1;
+                            list_info['status'] = 2;
+                            ht="/ita "+name+" 受伤严重，但是通过强壮的体质坚持了下来。 <small class='text-muted'>(体质"+con_r+"/"+p_con+")";
+                        }
+                        socket.emit('update_so_one', {roomid: "{{group_id}}", token:"{{token}}", v: s_hp, toidp:s_id,listid:"va2_29"});
+                    }
+                    else {
+                        ht="/ita "+name+" 受伤过重死亡！(已有旧伤)";
+                        mon_fi_now[ii][1].splice(iii,1);
+                        var iil = fight_get_l(fightid,s_id ,3);
+                        mon_fi_now[ii][3].splice(iil,1);
+                        socket.emit('update_so_one', {roomid: "{{group_id}}", token:"{{token}}", v: s_hp, toidp:s_id,listid:"va2_29"});
+                    }
+                }
+            }
+            else {
+                if(type==1){
+                    mon_change_v(s_id,"mon_hp",s_hp);
+                }
+                else if(type==2){
+                    socket.emit('update_so_one', {roomid: "{{group_id}}", token:"{{token}}", v: s_hp, toidp:s_id,listid:"va2_29"});
+                }
+            }
+            ht = "<span class=\"text-danger\">"+ht+"</span>";
+            return ht;
+
+        }
+        //根据id获取玩家/怪物信息
+        function fight_get_l(fightid,iid,w_list=1) {
+            for(il in mon_fi_now) {
+                if (mon_fi_now[il][0] == fightid) {
+                    for(iil in mon_fi_now[il][w_list]) {
+                        if(mon_fi_now[il][w_list][iil]['id']==iid){
+                            return iil;
+                        }
+                    }
+                }
+            }
+        }
+        //玩家设定目标
+        function ply_set_target(f_id) {
+            for(ii in mon_fi_now){
+                if (mon_fi_now[ii][0] == f_id) {
+                    var p = mon_fi_now[ii][2][0];
+                    return p;
+                }
+            }
+        }
+        //战斗结算
+        function fight_sub(ii,show_msg=0) {
+            if(show_msg==0){
+                show_msg="<h5>本轮战斗结算:</h5>";
+            }
+            for(iii in mon_fi_now[ii][1]){
+                if(mon_fi_now[ii][1][iii]['finish']==0){
+                    continue;
+                }
+                var midi = mon_fi_now[ii][1][iii]['id'];
+                var namei = mon_fi_now[ii][1][iii]['name'];
+                var typei = mon_fi_now[ii][1][iii]['type']; //怪物还是人
+                var statusi = mon_fi_now[ii][1][iii]['status'];
+                var hpi = mon_fi_now[ii][1][iii]['hp'];
+                var armoi = mon_fi_now[ii][1][iii]['armo'];
+
+                var at_lvi = mon_fi_now[ii][1][iii]['at_lv']; //杀伤等级
+                var at_v = mon_fi_now[ii][1][iii]['at_v']; //杀伤值
+                mon_fi_now[ii][1][iii]['finish'] = 0;
+                if(typei==1){
+                    //怪物行动轮
+                    //怪物行动 1 先确定打的人
+                    var players_n = mon_fi_now[ii][3].length;
+                    var plys_r = randomNum(1,players_n);
+                    plys_r = plys_r-1;
+                    var ply_b = mon_fi_now[ii][3][plys_r]; //选定的人
+                    if(at_lvi<=6){
+                        //6以下就未命中
+                        show_msg = show_msg+namei+" 对 "+ply_b['name']+" 发动攻击,但是未命中目标!";
+                        show_msg = show_msg+"<br />";
+                        continue;
+                    }
+                    else{
+                        //命中的情况
+                        if(ply_b['de_type']==1){
+                            //玩家选择闪避
+                            if(at_lvi>ply_b['de_lv']){
+                                ply_b['hp'] = ply_b['hp']-at_v;
+                                show_msg = show_msg+namei+" 对 "+ply_b['name']+" 造成"+at_v+"点伤害";
+                            }
+                            else{
+                                show_msg = show_msg+ply_b['name']+" 闪避了 "+namei+" 的攻击";
+                            }
+                        }
+                        else{
+                            //玩家选择反击
+                            if(at_lvi<ply_b['de_lv']){
+                                if(armoi>0){
+                                    //有盔甲
+                                    mon_fi_now[ii][1][iii]['armo'] = armoi - ply_b['de_v'];
+                                    show_msg = show_msg+ply_b['name']+" 对 "+namei+" 进行反击并造成"+ply_b['de_v']+"点伤害! ";
+                                    if(mon_fi_now[ii][1][iii]['armo']<=0){
+                                        show_msg = show_msg+" 使其盔甲碎裂!";
+                                    }
+                                }
+                                else{
+                                    //没有盔甲
+                                    mon_fi_now[ii][1][iii]['hp'] = hpi - ply_b['de_v'];
+                                    show_msg = show_msg+ply_b['name']+" 对 "+namei+" 进行反击并造成"+ply_b['de_v']+"点伤害! ";
+                                }
+                                if(mon_fi_now[ii][1][iii]['hp']<=0){
+                                    //被打死
+                                    show_msg = show_msg+namei+"失去战斗能力!";
+                                    mon_fi_now[ii][1].splice(iii,1);
+                                    return fight_sub(ii,show_msg);
+                                }
+                            }
+                            else{
+                                ply_b['hp'] = ply_b['hp']-at_v;
+                                show_msg = show_msg+ply_b['name']+" 反击失败, "+namei+" 对 "+ply_b['name']+" 造成"+at_v+"点伤害";
+                            }
+                        }
+                        //判定玩家是否重伤
+                        if(ply_b['hp']<3){
+                            //如果伤害太重
+                            if(ply_b['hp']<=0){
+                                if(ply_b['status']==2){
+                                    //如果重伤则直接死亡
+                                    ply_b['hp'] = 0;
+                                    ply_b['status'] = 10;
+                                    show_msg = show_msg+"<br />"+ply_b['name']+" 已濒死!所以直接死亡!(剩余hp:"+ply_b['hp']+")";
+                                }
+                                else{
+                                    var rcon = randomNum(1,100);
+                                    if(rcon>ply_b['con']){
+                                        //体质检定失败
+                                        ply_b['hp'] = 0;
+                                        ply_b['status'] = 10;
+                                        show_msg = show_msg+"<br />"+ply_b['name']+" 死亡!(体质:"+rcon+"/"+ply_b['con']+"; 剩余hp:"+ply_b['hp']+")";
+                                    }
+                                    else {
+                                        //体质检定成功
+                                        ply_b['hp'] = 1;
+                                        var rwil = randomNum(1,100);
+                                        if(rwil>ply_b['wil']){
+                                            ply_b['status'] = 3; //重伤且晕厥
+                                            show_msg = show_msg+"<br />"+ply_b['name']+" 濒死且晕厥(体质:"+rcon+"/"+ply_b['con']+"; 意志:"+rwil+"/"+ply_b['wil']+"; 剩余hp:"+ply_b['hp']+")";
+                                        }
+                                        else{
+                                            ply_b['status'] = 2; //重伤
+                                            show_msg = show_msg+"<br />"+ply_b['name']+" 濒死,并从晕厥中苏醒! (体质:"+rcon+"/"+ply_b['con']+"; 意志:"+rwil+"/"+ply_b['wil']+"; 剩余hp:"+ply_b['hp']+")";
+                                        }
+                                    }
+                                }
+                            }
+                            else{
+                                if(ply_b['status'] != 2 && ply_b['status'] != 4){
+                                    //仅晕厥
+                                    var rwil = randomNum(1,100);
+                                    if(rwil>ply_b['wil']){
+                                        ply_b['status'] = 1; //晕厥
+                                        show_msg = show_msg+"<br />"+ply_b['name']+" 晕厥!(意志:"+rwil+"/"+ply_b['wil']+"; 剩余hp:"+ply_b['hp']+")";
+                                    }
+                                    else{
+                                        ply_b['status'] = 4; //晕厥后恢复
+                                        show_msg = show_msg+"<br />"+ply_b['name']+" 从晕厥中恢复理智!(意志:"+rwil+"/"+ply_b['wil']+"; 剩余hp:"+ply_b['hp']+")";
+                                    }
+                                }
+
+                            }
+                            //如果晕厥或者死亡退出战斗
+                            if(ply_b['status']==1 || ply_b['status']==3 || ply_b['status']==10){
+                                var c_hp = ply_b['hp'];
+                                var c_id = ply_b['id'];
+                                show_msg = show_msg+"<br />"+ply_b['name']+" 已退出战斗!";
+                                socket.emit('update_so_one', {roomid: "{{group_id}}", token:"{{token}}", v: c_hp, toidp:c_id,listid:"va2_29"});
+                                mon_fi_now[ii][3].splice(plys_r,1);
+                                return fight_sub(ii,show_msg);
+                            }
+                        }
+                    }
+                    // de_type 1 闪避 2 反击
+                }
+                else {
+                    // 玩家行动轮
+                    var mon_b = mon_fi_now[ii][2][0]; //打头的怪物
+                    if(at_lvi<=6){
+                        //6以下就未命中
+                        show_msg = show_msg+namei+" 对 "+mon_b['name']+" 发动攻击,但是未命中目标!";
+                        show_msg = show_msg+"<br />";
+                        continue;
+                    }
+                    else{
+                        //命中的情况
+                        if(mon_b['de_type']==1){
+                            //怪物选择闪避
+                            if(at_lvi>mon_b['de_lv']){
+                                mon_b['hp'] = mon_b['hp']-at_v;
+                                show_msg = show_msg+namei+" 对 "+mon_b['name']+" 造成"+at_v+"点伤害";
+                            }
+                            else{
+                                show_msg = show_msg+mon_b['name']+" 闪避了 "+namei+" 的攻击";
+                            }
+                        }
+                        else{
+                            //怪物选择反击
+                            if(at_lvi<mon_b['de_lv']){
+                                if(armoi>0){
+                                    //有盔甲
+                                    mon_fi_now[ii][1][iii]['armo'] = armoi - mon_b['de_v'];
+                                    show_msg = show_msg+mon_b['name']+" 对 "+namei+" 进行反击并造成"+mon_b['de_v']+"点伤害! ";
+                                    if(mon_fi_now[ii][1][iii]['armo']<=0){
+                                        show_msg = show_msg+" 使其盔甲碎裂!";
+                                    }
+                                }
+                                else{
+                                    //没有盔甲
+                                    mon_fi_now[ii][1][iii]['hp'] = hpi - mon_b['de_v'];
+                                    show_msg = show_msg+mon_b['name']+" 对 "+namei+" 进行反击并造成"+mon_b['de_v']+"点伤害! ";
+                                }
+                                if(mon_fi_now[ii][1][iii]['hp']<=0){
+                                    //被打死
+                                    show_msg = show_msg+namei+"失去战斗能力!";
+                                    var c_hp = mon_fi_now[ii][1][iii]['hp'];
+                                    var c_id = mon_fi_now[ii][1][iii]['id'];
+                                    socket.emit('update_so_one', {roomid: "{{group_id}}", token:"{{token}}", v: c_hp, toidp:c_id,listid:"va2_29"});
+                                    mon_fi_now[ii][1].splice(iii,1);
+                                    return fight_sub(ii,show_msg);
+                                }
+                            }
+                            else{
+                                mon_b['hp'] = mon_b['hp']-at_v;
+                                show_msg = show_msg+" "+namei+" 对 "+mon_b['name']+" 造成"+at_v+"点伤害("+mon_b['name']+" 反击失败)";
+                            }
+                        }
+                    }
+                    if(mon_b['hp']<=0){
+                        show_msg = show_msg+"<br />"+mon_b['name']+" 失去战斗能力!";
+                        var c_hp = mon_fi_now[ii][1][iii]['hp'];
+                        var c_id = mon_fi_now[ii][1][iii]['id'];
+                        socket.emit('update_so_one', {roomid: "{{group_id}}", token:"{{token}}", v: c_hp, toidp:c_id,listid:"va2_29"});
+                        mon_fi_now[ii][2].splice(0,1);
+                        return fight_sub(ii,show_msg);
+
+                    }
+                }
+                show_msg = show_msg+"<br />";
+            }
+            console.log(mon_fi_now[ii]);
+            return show_msg;
+        }
+        //怪物选择玩家
+        function get_at_player(list) {
+            for(ii in list){
+
+            }
+            var players_n = list.length;
+
+        }
+        //攻击阶段 attack_method = 1普通攻击 2优势攻击 3劣势攻击
+        function fight_attack(f_id, method){
+            fight_id_g = f_id;
+            attack_method = method;
+            $('#show_at_list2').hide();
+            $('#show_at_list').show();
+            $('#attackshow').modal('show');
+        }
+        //防御阶段 attack_method = 4反击
+        function fight_defence(f_id, method, fromid) {
+            attack_fromid = fromid;
+            if(method==2){
+                fight_id_g = f_id;
+                attack_method = 4;
+                //反击
+                $('#show_at_list').hide();
+                $('#show_at_list2').show();
+                $('#attackshow').modal('show');
+            }
+            else if(method==1){
+                //闪避
+                var uid = $('#dtt_uid').val();
+                tou3f('va_125','闪避',0,"DOD",parseInt(uid),2,f_id);
+            }
+
+        }
+        //逃跑阶段
+        function fight_escape(f_id) {
+            var uid = $('#dtt_uid').val();
+            var name = $('#dtt_name').val();
+
+            var ht = "撤离战斗!";
+            tou3f('va_125',ht,0,"ESC",parseInt(uid),2,f_id);
+        }
+        //战斗结束
+        function fight_end(f_id) {
+            for(ii in mon_fi_now){
+                if(mon_fi_now[ii][0]==f_id){
+                    var ht="<h5>战斗结束!</h5>"
+                    send_msg(ht);
+                    var txt = "<h5>战斗总结：</h5>"+mon_fi_now[ii][5];
+                    send_msg(txt);
+                    mon_fi_now.splice(ii,1);
+
+                }
+            }
+
+        }
+        //重启本轮
+        function fight_re_lun(f_id){
+            for(ii in mon_fi_now){
+                if(mon_fi_now[ii][0]==f_id){
+                    for(iii in mon_fi_now[ii][1]){
+                        mon_fi_now[ii][1][iii]['finish']=0;
+                    }
+                    var ht="<h5>本轮战斗重启!</h5><span>/attackb "+f_id+"</span>";
+                    send_msg(ht);
+                }
+            }
+
+        }
+
+        //根据某个值排序 rev=false降序
+        function pcompare(prop,rev) {
+            // 第二个参数没有传递，默认升序排序
+            if(rev === undefined) {
+                rev = 1;
+            }else {
+                rev = rev ? 1: -1;
+            }
+            return function(obj1,obj2) {
+                // 方括号也是访问对象属性的一种方式，优点是可以通过变量访问。
+                // 常规写法是 var val1 = obj1.prop;var val2 = obj2.prop;,但是这种不支持变量写法，所有这里不适用
+                var val1 = obj1[prop],
+                    val2 = obj2[prop];
+
+                // 若是升序排序，此时rev=1,rev*-1=-1,等价于return val1 < val2 ? -1 : 1,，即val1<val2时，val1放在val2前面，否则放后面
+                // 若是降序排序，下面句子等价于return val1 < val2 ? 1 : -1，即val1<val2时，val1放在val2后面，否则放在val2前面
+                return val1 < val2 ? rev*(-1) : rev*1;
+            }
+        }
         </script>
     </body>
 </html>

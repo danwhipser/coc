@@ -74,9 +74,12 @@
                                 <div>
                                     <input type="hidden" id="dtt_mycid" value="0" />
                                     <input type="hidden" id="dtt_myuid" value="0" />
+                                    <input type="hidden" id="dtt_myname" value="0" />
+                                    <input type="hidden" id="dtt_mypic" value="0" />
                                     <input type="hidden" id="dtt_myjobname" value="0" />
                                     <input type="hidden" id="dtt_cid" value="0" />
                                     <input type="hidden" id="dtt_uid" value="0" />
+                                    <input type="hidden" id="dtt_name" value="0" />
                                     <input type="hidden" id="dtt_jobname" value="0" />
                                   <h4 id="dt_shuxing">属性点数:</h4>
 <!--                                技能属性点数-->
@@ -141,12 +144,12 @@
                                                             <option value="0" selected="selected">使用技能</option>
                                                             {% for nn in names %}
                                                                 {% if nn.1==3 %}
-                                                                <option value="{{nn.0}}">{{nn.2}}</option>
+                                                                <option value="{{nn.2}}">{{nn.2}}</option>
                                                                 {% endif %}
                                                             {% endfor %}
                                                         </select>
                                                     </div>
-                                                    <input style="display: none" id="objc_zhong" class="form-control" placeholder="命中率">
+                                                    <input id="objc_zhong" class="form-control" placeholder="命中率">
                                                 </div>
                                             </div>
                                             </div>
@@ -166,7 +169,27 @@
                                                 </div>
                                             </div>
                                             </div>
-                                          <br />
+                                          <a href="#" onclick="$('#obj_opt_more').toggle('fast');">高级选项</a>
+                                          <div id="obj_opt_more" style="display: none">
+                                          <div class="media align-items-center">
+                                            <div class="media-body">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <select class="form-control custom-select objc_ifdod">
+                                                                <option value="1" selected="selected">可闪避</option>
+                                                                <option value="0">不可闪避</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <select class="form-control custom-select objc_ifreata">
+                                                                <option value="1" selected="selected">可用于反击</option>
+                                                                <option value="0">不可用于反击</option>
+                                                        </select>
+                                                </div>
+                                            </div>
+                                            </div>
+                                              <br />
+                                          </div>
                                         <div class="media align-items-center">
                                             <div class="media-body">
                                                 <button onclick="add_objc()" type="button" class="btn btn-primary form-control">添加自定义物品</button>
@@ -199,11 +222,12 @@
                                                          <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_mingtoum d-xl-none d-block" type="button" title="明骰">
                                                             <i class="fe-slack"></i>
                                                         </button>
-                                                         {% if page=="roomc" %}
-                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_antou" type="button" title="暗骰">
+                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_antou d-none d-xl-block" type="button" title="暗骰">
                                                             <i class="fe-x-square"></i>
                                                         </button>
-                                                         {% endif %}
+                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_antoum d-xl-none d-block" type="button" title="暗骰">
+                                                            <i class="fe-x-square"></i>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -233,11 +257,12 @@
                                                          <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_mingtoum d-xl-none d-block" type="button" title="明骰">
                                                             <i class="fe-slack"></i>
                                                         </button>
-                                                         {% if page=="roomc" %}
-                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_antou" type="button" title="暗骰">
+                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_antou d-none d-xl-block" type="button" title="暗骰">
                                                             <i class="fe-x-square"></i>
                                                         </button>
-                                                         {% endif %}
+                                                         <button onclick="" class="btn btn-ico btn-secondary btn-minimal dt_antoum d-xl-none d-block" type="button" title="暗骰">
+                                                            <i class="fe-x-square"></i>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -285,7 +310,7 @@
                                             <a href="javascript:;" class="text-reset dt_atr_name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                                title="伤害"
                                             >物品名称</a>
-                                                    <div class="dropdown-menu dt_atr_sdlist">
+                                                    <div class="dropdown-menu dt_atr_sdlist" style="max-width:80%;">
                                                         <a class="dropdown-item dt_atr_useskill">使用技能:</a>
                                                         <div class="dropdown-divider"></div>
                                                         <a class="dropdown-item dt_atr_damage">伤害:</a>
@@ -293,13 +318,18 @@
                                                         <a class="dropdown-item dt_atr_skillplu">技能加成:</a>
                                                     </div>
                                             </div>
+                                            <input type="hidden" class="dt_ifdod" value="1" />
+                                            <input type="hidden" class="dt_ifreat" value="1" />
                                             <a href="javascript:;" class="dt_mingtou d-none d-xl-block" title="明骰"><i class="fe-slack"></i></a>
-                                        {% if page=="roomc" %}
                                             &nbsp;&nbsp;&nbsp;&nbsp;
                                             <a href="javascript:;" class="dt_antou d-none d-xl-block" title="暗骰"><i class="fe-x-square"></i><a>
-                                        {% endif %}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <a href="javascript:;" class="dt_jiaochu d-none d-xl-block" title="交出"><i class="fe-external-link"></i></a>
+
                                             &nbsp;&nbsp;&nbsp;&nbsp;
                                             <a href="javascript:;" class="dt_deltou d-none d-xl-block" title="删除"><i class="fe-trash-2"></i><a>
+
+                                                <a href="javascript:;" class="dt_ftou d-none" title="自动骰"><i class="fe-x-square"></i><a>
 
                                             <span class="nav-item list-inline-item d-xl-none d-block">
                                                 <div class="dropdown">
@@ -310,11 +340,13 @@
                                                         <a class="dt_mingtoum dropdown-item d-flex align-items-center" href="#!">
                                                             明骰 <span class="ml-auto pl-5 fe-slack"></span>
                                                         </a>
-                                                        {% if page=="roomc" %}
-                                                        <a class="dt_antou dropdown-item d-flex align-items-center" href="#!">
+                                                        <a class="dt_antoum dropdown-item d-flex align-items-center" href="#!">
                                                             暗骰 <span class="ml-auto pl-5 fe-x-square"></span>
                                                         </a>
-                                                        {% endif %}
+                                                        <a class="dt_jiaochum dropdown-item d-flex align-items-center" href="#!">
+                                                            交出 <span class="ml-auto pl-5 fe-external-link"></span>
+                                                        </a>
+
                                                         <a class="dt_deltou dropdown-item d-flex align-items-center" href="#" data-chat-sidebar-toggle="#chat-1-info">
                                                             删除 <span class="ml-auto pl-5 fe-trash-2"></span>
                                                         </a>
@@ -334,7 +366,7 @@
                             <div class="border-top py-7">
                                 <div class="container-fluid">
 
-                                    <button onclick="send_ask()" class="btn btn-lg btn-block btn-primary d-flex align-items-center" type="submit">
+                                    <button onclick="send_ask()" class="btn btn-lg btn-block btn-primary d-flex align-items-center" type="button">
                                         修改参数
                                         <span class="fe-edit ml-auto"></span>
                                     </button>
@@ -346,165 +378,4 @@
                     <!-- User's details -->
 
 
-
-                    <div id="chat-2-info" class="chat-sidebar" >
-                        <div class="d-flex h-100 flex-column">
-
-                            <!-- Header -->
-                            <div class="border-bottom py-4 py-lg-6">
-                                <div class="container-fluid">
-
-                                    <ul class="nav justify-content-between align-items-center">
-                                        <!-- Close sidebar -->
-                                        <li class="nav-item list-inline-item">
-                                            <a class="nav-link text-muted px-0" href="#" data-chat-sidebar-close="">
-                                                <i class="icon-md fe-chevron-left"></i>
-                                            </a>
-                                        </li>
-
-                                        <!-- Title(mobile) -->
-                                        <li class="text-center d-block d-lg-none">
-<!--                                            <h6 class="mb-n2">Bootstrap Themes</h6>-->
-<!--                                            <small class="text-muted">Chat Details</small>-->
-                                        </li>
-
-                                        <li class="nav-item list-inline-item">
-                                            <a class="nav-link text-muted px-0" href="#" data-chat-sidebar-toggle="#chat-1-info">
-                                                <i class="icon-md fe-chevron-right"></i>
-                                            </a>
-                                        </li>
-
-                                    </ul>
-
-                                </div>
-                            </div>
-                            <!-- Header -->
-
-                            <!-- Body -->
-                            <div class="hide-scrollbar flex-fill">
-
-                                <div class="border-bottom text-center py-9 px-10">
-                                    <!-- map的 dropzone上传  -->
-                                    <div id="dropzone-map-1" class="dropzone-map-js" data-dz-url="{{ url_for('upload_map') }}">
-
-                                        <button id="map-upload-btn-1" class="btn btn-primary btn-lg dropzone-button-js" type="button">上传图片</button>
-
-                                        <div class="container-xxl">
-                                            <div class="dropzone-previews-js form-row py-4"></div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <!-- Navs -->
-                                <ul class="nav nav-tabs nav-justified bg-light rounded-0" role="tablist">
-                                    <!-- <li class="nav-item">
-                                        <a href="#chat-id-1-members" class="nav-link active" data-toggle="tab" role="tab" aria-selected="true">Members</a>
-                                    </li> -->
-                                    <li class="nav-item">
-                                        <a id="chat-id-1-files-tab" href="#chat-id-1-files" class="nav-link" data-toggle="tab" role="tab">已上传文件</a>
-                                    </li>
-                                </ul>
-                                <!-- Navs -->
-
-                                <div class="tab-content">
-                                    <!-- Members -->
-<!--                                    <div id="chat-id-1-members" class="tab-pane fade show active">-->
-
-<!--                                    </div>-->
-                                    <!-- Members -->
-
-                                    <!-- Files -->
-                                    <div id="chat-id-1-files" class="tab-pane fade show active">
-                                        <ul class="list-group list-group-flush list-group-no-border-first map_list">
-
-                                        </ul>
-                                    </div>
-                                    <!-- Files -->
-                                </div>
-                            </div>
-                            <!-- Body -->
-
-                        </div>
-                    </div>
-
-
-
-
-        <!-- DropzoneJS: Template -->
-        <div id="dropzone-template-js">
-            <div class="col-lg-4 my-3">
-                <div class="card bg-light">
-                    <div class="card-body p-3">
-                        <div class="media align-items-center">
-
-                            <div class="dropzone-file-preview">
-                                <div class="avatar avatar rounded bg-secondary text-basic-inverse d-block mr-5">
-                                    <i class="fe-paperclip"></i>
-                                </div>
-                            </div>
-
-                            <div class="dropzone-image-preview">
-                                <div class="avatar avatar mr-5">
-                                    <img src="#" class="avatar-img rounded" data-dz-thumbnail="" alt="">
-                                </div>
-                            </div>
-
-                            <div class="media-body overflow-hidden">
-                                <h6 class="text-truncate small mb-0" data-dz-name></h6>
-                                <p class="extra-small" data-dz-size></p>
-                            </div>
-
-                            <div class="ml-5">
-                                <a href="#" class="btn btn-sm btn-link text-decoration-none text-muted" data-dz-remove>
-                                    <i class="fe-x"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- DropzoneJS: Template -->
-
-
-        <!-- 文件显示列表：Template -->
-        <div id="file-list-template" class="d-none">
-            <li id="file-list-template-0" class="list-group-item py-6">
-                <div class="media">
-
-                    <div class="icon-shape bg-primary text-white mr-5">
-                        <i class="fe-paperclip"></i>
-                    </div>
-
-                    <div class="media-body align-self-center overflow-hidden">
-                        <h6 class="text-truncate mb-0">
-                            <a href="#" class="text-reset map_name" title="file-list-template-filename">file-list-template-filename</a>
-                        </h6>
-                    </div>
-
-                    <div class="align-self-center ml-5">
-                        <div class="dropdown">
-                            <a href="#" class="btn btn-sm btn-ico btn-link text-muted w-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fe-more-vertical"></i>
-                            </a>
-                            <div imgurl="file-list-template-imgurl" class="dropdown-menu map_showu">
-                                <div class="file-list-template-display">
-                                     <a class="dropdown-item d-flex align-items-center map_showh" onclick="" href="#" data-toggle="modal" data-target="#dshowimg">
-                                     display <span class="ml-auto fe-map"></span>
-                                     </a>
-                                 </div>
-                                 <div class="file-list-template-delete">
-                                     <a class="dropdown-item d-flex align-items-center"  href="#">
-                                     Delete <span class="ml-auto fe-trash-2"></span>
-                                     </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </li>
-
-        </div>
 
