@@ -8,6 +8,7 @@
         var skillpoint = 0;
         var quicke = 0;
         var skill_allid = new Array();
+        var myworkid;
     </script>
     <body>
 
@@ -152,14 +153,14 @@
 
 
                                                         {% for n in atrr %}
-                                                        {% if n.1 == 1 and n.0<20 and n.0!=2 %}
+                                                        {% if n.1 == 1 and n.0<20 and n.0!=2 and n.0!=15 and n.0!=18 %}
                                                             {% if n.0 == 9 %}
                                                             <div class="form-group">
                                                                  <label class="small" for="profile-name">{{n.2}}</label>
-                                                                  <select id="n_{{n.0}}" onblur="get_winfo({{n.0}});" class="form-control">
+                                                                  <select id="n_{{n.0}}" onchange="get_winfo({{n.0}});" class="form-control">
                                                                           <option  value = "0">选择职业</option >
                                                                           {% for n1 in names %}
-                                                                          {% if n1.1 == 2 %}
+                                                                          {% if n1.1 == 2 and n1.0>50 %}
                                                                               {% for u in user %}
                                                                                 {% if u.3==9 and u.2 ==1 %}
                                                                                   {% set vv=u.5 | int %}
@@ -167,6 +168,7 @@
                                                                                   <option selected= selected value = "{{n1.0}}">{{n1.2}}</option >
                                                                                     <script>
                                                                                         var workk = "{{n1.0}}";
+                                                                                        myworkid="{{n.0}}";
                                                                                     </script>
                                                                                   {% endif %}
                                                                                 {% endif %}
@@ -175,7 +177,7 @@
                                                                           {% endfor %}
 
                                                                           {% for n1 in names %}
-                                                                          {% if n1.1 == 2 and n1.0!=127 %}
+                                                                          {% if n1.1 == 2 and n1.0 > 50 %}
                                                                           <option value = "{{n1.0}}">{{n1.2}}</option >
                                                                           {% endif %}
                                                                           {% endfor %}
@@ -189,6 +191,7 @@
                                                             <div class="form-group">
                                                                  <label class="small" for="profile-name">{{n.2}}</label>
                                                                   <select id="n_{{n.0}}" class="form-control">
+                                                                      {% for u in user %}{% if u.3 == 17 and u.2 ==1 %}{% set vv=u.5 %}<option  value = "{{ vv }}">{{ vv }}</option >{% endif %}{% endfor %}
                                                                             <option  value = "男">男</option >
                                                                             <option  value = "女">女</option >
                                                                             <option  value = "不明">不明</option >
@@ -243,17 +246,28 @@
 
                                             <div id="profile-settings-security" class="collapse" data-parent="#profile-settings">
                                                 <div class="card-body">
+                                                    <button type="button" onclick="$('#opt_shuxing').toggle('fast')" class="btn btn-secondary btn-sm btn-block">
+                                                        自定义属性上限
+                                                    </button>
+                                                    <p> </p>
+                                                  <div id="opt_shuxing" style="display: none">
+                                                      <input id="opt_shuxings" onchange="resetscore();" class="form-control form-control-lg" type="text" placeholder="自定义上限（数字）">
+                                                      <p> </p>
+                                                      <p> </p>
+                                                  </div>
+
+
                                                     <form action="#">
 
                                                         {% for n in atrr %}
-                                                            {% if n.1 == 1 and n.0>19 and n.0<28 %}
+                                                            {% if n.1 == 1 and n.0>19 and n.0<28 and n.0!=22 %}
 
                                                         <div class="col">
                                                             <h3 align="center">{{n.2}}:&nbsp;&nbsp;
                                                             <a onclick="reduce({{n.0}},5)" href="javascript:;"  class="btn btn-ico btn-primary btn-sm rounded-circle">
                                                                 <span>-</span>
                                                             </a>
-                                                                <span id="s_{{n.0}}">50</span>
+                                                                <span id="s_{{n.0}}">60</span>
                                                                 <script>
                                                                     rr2.push({{n.0}});
                                                                 </script>
@@ -283,7 +297,6 @@
                                                         </div>
                                                             {% endif %}
                                                         {% endfor %}
-                                                        <p>&nbsp;</p>
                                                         <button onclick="add_s(rr2,1);" class="btn btn-lg btn-primary btn-block d-none" type="button">
                                                             提交属性
                                                         </button>
@@ -317,7 +330,7 @@
                                                 <div class="card-body">
                                                     <form action="#">
                                                         <div class="form-group">
-                                                        <textarea id="n_48" class="form-control" rows="10">{% for u in user %}{% if u.3 == 48 %}{{u.5}}{% endif %}{% endfor %}</textarea>
+                                                        <textarea id="n_48" class="form-control" rows="8">{% for u in user %}{% if u.3 == 48 %}{{u.5}}{% endif %}{% endfor %}</textarea>
                                                         </div>
                                                         <button onclick="add_o(48);" class="btn btn-lg btn-primary btn-block d-none" type="button">
                                                             提交背景
@@ -362,9 +375,8 @@
                                         </div>
                                         <!-- Card模板 -->
                                         </div>
-                                    <button id="sub_basic" onclick="add_s(rr);add_s(rr2,1);add_o(48);" class="btn btn-lg btn-primary btn-block" type="button">提交基本资料</button>
+<!--                                    <button id="sub_basic" onclick="add_basic();" class="btn btn-lg btn-primary btn-block" type="button">提交基本资料</button>-->
                                 </div>
-                                <p>&nbsp;</p>
 <!--                                技能点数-->
                                 <div class="accordion modified-accordion mb-n6 mb-lg-8" id="point-settings">
                                      <!-- Card职业点数 -->
@@ -401,16 +413,16 @@
                                                     <tbody id="work_skill_list">
                                                     </tbody>
                                                 </table>
-                                                    <table id="option_skill" class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col">可选技能(可选<span id="work_skill_artn"></span>项)</th>
-                                                            <th scope="col"><p align="center">点数</p></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="work_skill_list2">
-                                                    </tbody>
-                                                </table>
+<!--                                                    <table id="option_skill" class="table">-->
+<!--                                                    <thead>-->
+<!--                                                        <tr>-->
+<!--                                                            <th scope="col">可选技能(可选<span id="work_skill_artn"></span>项)</th>-->
+<!--                                                            <th scope="col"><p align="center">点数</p></th>-->
+<!--                                                        </tr>-->
+<!--                                                    </thead>-->
+<!--                                                    <tbody id="work_skill_list2">-->
+<!--                                                    </tbody>-->
+<!--                                                </table>-->
 <!--                                                        <button class="btn btn-lg btn-primary btn-block" type="button">提交职业技能</button>-->
                                                 </form>
                                             </div>
@@ -453,21 +465,28 @@
                                                     </thead>
                                                     <tbody>
                                                     {% for name in names %}
-                                                        {% if name.1==3 and name.0!=128 %}
+                                                        {% if name.1==3 and name.0>50 %}
 <!--                                                    去掉自定义-->
                                                         <tr>
                                                         <th scope="row">{{name.2}}:</th>
                                                             {% if name.0==125 %}
-                                                            <td class="d-none d-xl-block"><span id="skill_begin_{{name.0}}" class="quit">0</span></td>
+                                                            <td class="d-none d-xl-block">
+                                                                <span id="skill_begin_{{name.0}}" class="quit">30</span>
+                                                                <input id="skill_beginh_{{name.0}}" class="quit2" type="hidden" value="30">
+                                                            </td>
                                                             {% else %}
                                                                 {% for vv in value %}
                                                                 {% if vv.1==name.0 %}
-                                                            <td class="d-none d-xl-block"><span id="skill_begin_{{name.0}}">{{vv.4}}</span></td>
+                                                            <td class="d-none d-xl-block">
+                                                                <span id="skill_begin_{{name.0}}">{{vv.4}}</span>
+                                                                <input id="skill_beginh_{{name.0}}" type="hidden" value="{{vv.4}}">
+                                                            </td>
                                                                 {% endif %}
                                                                 {% endfor %}
                                                             {% endif %}
 
                                                             <td align="center">
+                                                            {% if name.0!=126 %}
                                                             <a onclick="reduce_i({{name.0}},5)" href="javascript:;"  class="btn btn-ico btn-primary btn-sm rounded-circle">
                                                             <span>-</span>
                                                             </a>
@@ -477,9 +496,14 @@
                                                             <a onclick="plus_i({{name.0}},5)" href="javascript:;"  class="btn btn-ico btn-primary btn-sm rounded-circle">
                                                             <span>+</span>
                                                             </a>
+                                                            {% else %}
+                                                                &nbsp;
+                                                                <span id="skill_in_{{name.0}}" style="width: 50px;">0</span>
+                                                                &nbsp;
+                                                            {% endif %}
                                                             </td>
                                                             {% if name.0==125 %}
-                                                            <td class="d-none d-xl-block"><span id="skill_total_{{name.0}}" class="quit">0</span></td>
+                                                            <td class="d-none d-xl-block"><span id="skill_total_{{name.0}}" class="quit">30</span></td>
 
                                                             {% else %}
                                                                 {% for vv in value %}
@@ -502,7 +526,7 @@
                                             </div>
                                         </div><!-- .collapse -->
                                     <!-- Card -->
-                                        <button id="sub_skill" onclick="add_ws(skill_allid,'skill_total_','html')" class="btn btn-lg btn-primary btn-block" type="button">提交技能</button>
+<!--                                        <button id="sub_skill" onclick="add_ws(skill_allid,'skill_total_','html')" class="btn btn-lg btn-primary btn-block" type="button">提交技能</button>-->
                                 </div>
 
 
@@ -514,7 +538,7 @@
                                                     <!-- Title -->
                                                     <div class="col">
                                                         <h5>技能汇总列表</h5>
-<!--                                                        <p>兴趣技能剩余:</p>-->
+                                                        <p>技能点数总和:<span id="totalkk">0</span></p>
                                                     </div>
                                                     <!-- Icon -->
                                                     <div class="col-auto">
@@ -528,7 +552,7 @@
 
                                         <div id="profile-settings-result" class="collapse" data-parent="#point-settings">
                                             <div class="card-body">
-
+                                                <button onclick="reskill();" class="btn btn-danger btn-block" type="button">重置技能</button>
                                                 <form action="#">
                                                     <table class="table">
                                                     <thead>
@@ -539,7 +563,7 @@
                                                     </thead>
                                                     <tbody>
                                                     {% for name in names %}
-                                                        {% if name.1==3 %}
+                                                        {% if name.1==3 and name.0>50 %}
                                                         <tr>
                                                         <th scope="row">{{name.2}}:</th>
                                                         <td><input id="result_{{name.0}}" class="form-control form-control-lg" name="profile-name" type="text"
@@ -552,9 +576,9 @@
                                                     </tbody>
                                                 </table>
 
+                                                    <input id="ifskill" type="hidden" value="0">
 
-
-                                                    <button onclick="add_ws(skill_allid,'result_','value')" class="btn btn-lg btn-primary btn-block" type="button">修改技能</button>
+<!--                                                    <button onclick="add_ws(skill_allid,'result_','value');" class="btn btn-lg btn-primary btn-block" type="button">修改技能</button>-->
                                                 </form>
                                             </div>
                                         </div><!-- .collapse -->
@@ -768,21 +792,52 @@
         var totalskill=0;
         // 总共的点数
         var allpoints = 460;
+        var allpointsb = 460;
         //物品
         var objs=[];
+
+        var totalkk=0;
+
+        var suba=new Array();
+        // 职业属性id+次数+名称
+        var worksi=new Array();
+        // 职业技能id+名称
+        var worksi2 = new Array();
+
         $(document).ready(function() {
-
-
+            get_winfo(9);
+            getskills();
             var skillpoint = co_skillpoint();
             scoremax = allpoints-skillpoint;
             $("#restd").html(scoremax);
 
-            $(".quit").html(quicke);
-            getworkskill();
+            if(quicke!=0){
+                $(".quit").html(quicke);
+                $(".quit2").val(quicke);
+            }
+            // getworkskill();
 
             //标签显示
             $('[data-toggle="popover"]').popover()
         });
+
+        //重新计算属性上限
+        function resetscore() {
+            var rescore = $("#opt_shuxings").val();
+            if(!rescore){
+                rescore = 0;
+            }
+            rescore = parseInt(rescore);
+            if(rescore==0){
+                allpoints = allpointsb;
+            }
+            else{
+                allpoints = rescore;
+            }
+            var skillpoint = co_skillpoint();
+            scoremax = allpoints-skillpoint;
+            $("#restd").html(scoremax);
+        }
 
         // 计算技能点数综合
         function co_skillpoint(){
@@ -812,6 +867,13 @@
             }
             $("#restd").html(scoremax);
             $("#s_"+nid).html(v);
+            setworkskill();
+            //设定闪避
+            if(nid=="23"){
+                var quit = parseInt(v/2);
+                $(".quit").html(quit);
+                $(".quit2").val(quit);
+            }
         }
         function reduce(nid,num){
             var v = $("#s_"+nid).html();
@@ -831,6 +893,13 @@
             }
             $("#restd").html(scoremax);
             $("#s_"+nid).html(v);
+            setworkskill();
+            //设定闪避
+            if(nid=="23"){
+                var quit = parseInt(v/2);
+                $(".quit").html(quit);
+                $(".quit2").val(quit);
+            }
         }
 
         //加减职业技能
@@ -956,25 +1025,22 @@
                 var nid = list_id[r];
                 if(frm==1){
                     var v = $("#s_"+nid).html();
-                    if(nid==23){
-                        quicke = parseInt(v);
-                        quicke = quicke/2;
-                        $(".quit").html(quicke);
-                    }
+                    // if(nid==23){
+                    //     quicke = parseInt(v);
+                    //     quicke = quicke/2;
+                    //     $(".quit").html(quicke);
+                    // }
                 }
                 else{
                     var v = $("#n_"+nid).val();
                 }
-
                 if(!v){
-                    alert("此处所有信息都必填！并按照自己希望的人设填写。");
-                    return;
+                    v="未知";
                 }
-
                 // console.log(nid+":"+v);
                 add_user(1,nid,0,v);
             }
-            getworkskill();
+            // getworkskill();
             // alert("完成提交!");
             // console.log("成功提交！");
         }
@@ -982,58 +1048,80 @@
         function add_o(nid){
             var v = $("#n_"+nid).val();
             add_user(1,nid,0,v);
-            alert("完成提交!");
+            // alert("完成提交!");
         }
 
-        //提交技能  kind=3 aid=5
+        //传送技能  kind=3 aid=5
         function add_ws(list_id, getid, method){
-            var result = confirm('是否完成点数分配?');
-            if(result){
-                for (idd of list_id){
-                if(method=="html"){
-                    v = $("#"+getid + idd).html();
-                    v = parseInt(v);
-                }
-                else if(method == "value"){
-                    v = $("#"+getid + idd).val();
-                    v = parseInt(v);
-                }
-                add_user(3,idd,5,v);
-                // console.log("id:"+idd+"|value:"+v);
-                }
-                getworkskill();
-                $("#skills_social").hide();
-                $("#skills_works").hide();
-                $("#skills_result").show();
+            for (idd of list_id){
+            if(method=="html"){
+                v = $("#"+getid + idd).html();
+                v = parseInt(v);
             }
-            else{
-                return;
+            else if(method == "value"){
+                v = $("#"+getid + idd).val();
+                v = parseInt(v);
             }
-
-
+            add_user(3,idd,5,v);
+            // console.log("id:"+idd+"|value:"+v);
+            }
+            // getworkskill();
+            // $("#skills_social").hide();
+            // $("#skills_works").hide();
+            // $("#skills_result").show();
         }
 
         //发送用户信息
         function add_user(kind,nid,aid,v){
-            $.post("/addu", {
-                        // id:0,
-                        kind: kind,
-                        nid: nid,
-                        aid:aid,
-                        v:v,
+            var aa = [kind,nid,aid,v];
+            var subb=new Array();
+            var check=0;
+            for(a of suba){
+                var va;
+                if(a[0]==kind && a[1]==nid && a[2]==aid){
+                    va = aa;
+                    check=1;
+                }
+                else{
+                    va = a;
+                }
+                subb.push(va);
+            }
+            suba=subb;
+            if(check==0){
+                suba.push(aa);
+            }
+        }
+
+        function sub_add(ary) {
+            var datas = JSON.stringify(ary);
+            $.post("/addu3", {
+                        ary: datas,
                         cid:"{{cid}}"
                       },
                     function(myData , status){
+                        console.log(myData);
                         if(status!="success"){
                             alert("提交失败!"+status);
                         }
-                    });
+                    },"json");
         }
 
         //获取职业描述
         function get_winfo(id){
             var value = $("#n_"+id).val();
-            // alert(value);
+            if(value==0){
+                $("#work_desc").html("");
+                $("#work_skill_list").html("");
+                totalskill = 0;
+                $("#work_skill_rest").html(totalskill);
+                return;
+            }
+            // 0 职业技能id+名称
+            // 1 职业特殊
+            // 2 职业属性id+次数+名称
+            // 3 信誉
+            // 4 列出所有技能
             $.get("/getwinfo", {
                 nid : value,
               },
@@ -1043,41 +1131,80 @@
                         // console.log(myData);
                         var str = "<small>本职技能: ";
                         for(w_atr of myData[0]){
-                            str = str+w_atr+" ";
-                        }
-                        if(myData[1]){
-                            str = str+" 可选技能: ";
-                            for(w_atrk of myData[1]){
-                                str = str+w_atrk+" ";
-                            }
+                            str = str+w_atr[1]+" ";
                         }
                         if(myData[2]){
-                            str = str+"</small><br /><small>特殊互动: ";
+                            str = str+"<br />职业属性: ";
                             for(w_atrk of myData[2]){
-                                str = str+w_atrk+" ";
+                                str = str+w_atrk[2]+" ";
                             }
+                            str = str+"（职业技能点数取决于这几个属性）";
                         }
+                        if(myData[1]){
+                            str = str+"</small><br /><small>特殊互动: "+myData[1];
+                        }
+                        worksi = myData[2];
+                        worksi2 = myData[0];
+                        $("#work_skill_list").html("");
+                        for(ww of myData[0]){
+                            var ht = '<tr><th scope="col">'+ww[1]+'</th>' +
+                                '<td align="center"><a onclick="reduce_w('+ww[0]+',5)" href="javascript:;" class="btn btn-ico btn-primary btn-sm rounded-circle">\n' +
+                                '<span>-</span>\n' +
+                                '</a>&nbsp;&nbsp;<span id="w_'+ww[0]+'">0</span>&nbsp;&nbsp;<a onclick="plus_w('+ww[0]+',5)" href="javascript:;" class="btn btn-ico btn-primary btn-sm rounded-circle">\n' +
+                                '<span>+</span>\n' +
+                                '</a></td></tr>';
+                            $("#work_skill_list").append(ht);
+                        }
+                        setworkskill();
+                        var geld = myData[3];
+                        $("#geld_wp").val(geld);
                         str = str+"</small>";
                         $("#work_desc").html(str);
 
-                        // console.log(str);
+                        var skilllist = myData[4];
+                        for(ssl of skilllist){
+                            var sid = ssl[0];
+                            if(sid==13){
+                                continue;
+                            }
+                            var pluval = $("#skill_in_"+sid).html();
+                            var begval = $("#skill_beginh_"+sid).val();
+                            pluval = parseInt(pluval);
+                            begval = parseInt(begval);
+                            toval = pluval+begval;
+                            $("#skill_begin_"+sid).html(begval);
+                            $("#skill_total_"+sid).html(toval);
+                        }
+                        // console.log(skilllist);
                     }
             },"json");
         }
 
-        //获取工作技能点数
-        function getworkskill(){
-            var cid = Request["c"];
-            $.get("/getwork", {
-                kind: 1,
-                c :cid
-              },
-                function(myData , status){
-                    var v = parseInt(myData);
-                    if(myData!=0){
-                        getskills(v);
+        function setworkskill() {
+            ws = worksi;
+            if(!ws){
+                return;
+            }
+            totalskill = 0;
+            for(ww of ws){
+                var wid = ww[0];
+                var py = ww[1];
+                var vv = $("#s_"+wid).html();
+                vv = parseInt(vv);
+                py = parseInt(py);
+                var ss = vv*py;
+                ss = parseInt(ss/10)*5;
+                totalskill = totalskill+ss;
+                //总点数减去点过的点数
+                if(worksi2){
+                    for(w of worksi2){
+                        var skillv= $("#w_"+w[0]).html();
+                        skillv = parseInt(skillv);
+                        totalskill = totalskill-skillv;
                     }
-            });
+                }
+            }
+            $("#work_skill_rest").html(totalskill);
         }
 
         //将物品放入购物框
@@ -1128,10 +1255,21 @@
                 }
                 var rest_geld = $("#set_wp").html();
                 add_user(1,55,0,rest_geld);
-                alert("提交成功");
+                // alert("提交成功");
                 $("#objs_wst").hide();
             }
 
+        }
+
+        //重置技能
+        function reskill(){
+            var result = confirm('您确定要重置技能吗?');
+            if(result){
+                $("#ifskill").val(0);
+                $("#skills_social").show();
+                $("#skills_works").show();
+                $("#skills_result").hide();
+            }
         }
 
         //最终完成提交
@@ -1140,21 +1278,38 @@
             if(!result){
                 return;
             }
-            add_ob();
-            $("#sub_skill").click();
+            var job=$("#n_9").val();
+            if(job==0){
+                alert("您没填职业，没有职业是不可以的!");
+                return;
+            }
+            add_s(rr);
+            add_s(rr2,1);
+            add_o(48);
+            var ifskill=$("#ifskill").val();
+            if(ifskill==0){
+                add_ws(skill_allid,'skill_total_','html');
+                var kesulu= $("#skill_total_126").html();
+                kesulu= parseInt(kesulu);
+            }
+            else if (ifskill==1){
+                add_ws(skill_allid,'result_','value');
+                var kesulu= $("#result_126").val();
+            }
 
+            var lilag = $("#s_20").html();
             var tizhi = $("#s_21").html();
-            var tixin = $("#s_22").html();
-            var kesulu= $("#result_126").val();
             var yizhi = $("#s_26").html();
-            if(!tizhi || !tixin || !kesulu || !yizhi){
+            if(!lilag || !tizhi || !kesulu || !yizhi){
                 alert("参数不全,请填完所有数据后再提交!");
                 return;
             }
             // 体力
             tizhi= parseInt(tizhi);
-            tixin= parseInt(tixin);
-            var tili = (tizhi+tixin)/10;
+            lilag= parseInt(lilag);
+            // tixin= parseInt(tixin);
+            // var tili = parseInt((tizhi+tixin)/10);
+            var tili = parseInt((60+tizhi)/10);
             // 理智
             yizhi = parseInt(yizhi);
             var maxval = 99 - parseInt(kesulu);
@@ -1163,110 +1318,43 @@
             var lucky = randomNum(1,6)+randomNum(1,6)+randomNum(1,6);
             lucky = lucky*5;
             // 魔法
-            magic = yizhi/5;
+            magic = parseInt(yizhi/5);
 
             add_user(1,29,0,tili);  // 29	体力
             add_user(1,30,0,san);   // 30	理智
             add_user(1,31,0,lucky); // 31	幸运
             add_user(1,32,0,magic); // 32	魔法
             add_user(1,52,0,"这里放入调查员笔记"); // 52	调查员笔记
+            // console.log(suba);
+            var geld = $("#geld_wp").val();
+            geld=parseInt(geld)*5;
+            add_user(1,55,0,geld); // 55	金钱
+            sub_add(suba);
             alert("成功提交用户信息!");
             window.location.href="roomp";
         }
 
-        function getskills(id){
-            // 0:总共的职业技能点数
-            // 1:各个职业技能
-            // 2:可选技能个数
-            // 3:各个可选技能
-            // 4:职业金钱
-            // 5:剩余金钱
-            // 6:技能点数
-            // 7:购买的物品
+        function getskills(){
             $.get("/getworkskill", {
-                wid: id,
                 cid: "{{cid}}"
               },
                 function(myData , status){
                 // console.log(myData);
-                if(myData==0){
-                    return 0;
-                }
-                // 初始化初始资金
-                var geld = 0;
-                var havegeld = myData[5];
-                if(havegeld==0){
-                    geld = myData[4];
-                }
-                else {
-                    geld = havegeld;
-                }
-                $("#set_wp").html(geld);
-                $("#geld_wp").val(geld);
 
                 //如果没有技能才显示技能选择
-                var s = myData[6];
+                var s = myData;
                 if(s!=0){
                     $("#skills_social").hide();
                     $("#skills_works").hide();
                     $("#skills_result").show();
                     for(ss of s){
                         $("#result_"+ss[3]).val(ss[5]);
+                        totalkk = totalkk+parseInt(ss[5]);
                     }
-
-                }
-                else{
-                    totalskill = myData[0];
-                    $("#work_skill_rest").html(myData[0]);
-                    $("#work_skill_list").html("");
-                    var d = new Array();
-                    //必选技能
-                    for(d of myData[1]){
-                        if(d[0]){
-                            var ht = '<tr><th scope="col">'+d[0][2]+'</th>' +
-                                '<td align="center"><a onclick="reduce_w('+d[0][0]+',5)" href="javascript:;" class="btn btn-ico btn-primary btn-sm rounded-circle">\n' +
-                                '<span>-</span>\n' +
-                                '</a>&nbsp;&nbsp;<span id="w_'+d[0][0]+'">0</span>&nbsp;&nbsp;<a onclick="plus_w('+d[0][0]+',5)" href="javascript:;" class="btn btn-ico btn-primary btn-sm rounded-circle">\n' +
-                                '<span>+</span>\n' +
-                                '</a></td></tr>';
-                            $("#work_skill_list").append(ht);
-                        }
-                    }
-                    // 可选技能
-                    if(myData[2]!=0){
-                        $("#work_skill_artn").html(myData[2]);
-
-                        //可选技能
-                        for(d of myData[3]){
-                            if(d[0]){
-                                var ht = '<tr><th scope="col">'+d[0][2]+'</th>' +
-                                    '<td align="center"><a onclick="reduce_w('+d[0][0]+',5)" href="javascript:;" class="btn btn-ico btn-primary btn-sm rounded-circle">\n' +
-                                    '<span>-</span>\n' +
-                                    '</a>&nbsp;&nbsp;<span id="w_'+d[0][0]+'">0</span>&nbsp;&nbsp;<a onclick="plus_w('+d[0][0]+',5)" href="javascript:;" class="btn btn-ico btn-primary btn-sm rounded-circle">\n' +
-                                    '<span>+</span>\n' +
-                                    '</a></td></tr>';
-                                $("#work_skill_list2").append(ht);
-
-                            }
-                        }
-                    }
-                    else{
-                        $("#option_skill").hide();
-
-                    }
+                    $("#totalkk").html(totalkk);
+                    $("#ifskill").val(1);
                 }
 
-                var o = myData[7];
-                if(o!=0){
-                    $("#objs_wst").hide();
-                }
-
-
-
-
-
-
-                // console.log(myData);
             },"json");
         }
 

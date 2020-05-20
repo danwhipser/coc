@@ -4,18 +4,108 @@
 <script>
     var page = "{{page}}";
     $(document).ready(function(){
+        autosize($('textarea'));
         if(page == "user"){
             $("#cont_user").click();
 
         }
     });
+    function cs(log) {
+        console.log(log);
+    }
 
     function cha(method, str){
         if(method=="img"){
-            var objRegExp= /img\s(.+)$/;
-            var repla = "<div class=\"col\"><img class=\"img-fluid rounded\" src=\"$1\" data-action=\"zoom\" alt=\"\"></div>"
+            var objRegExp= /img\s([^\s]+)($|\s)/g;
+            var repla = "<div class=\"col\"><img class=\"img-fluid rounded\" src=\"$1\" data-action=\"zoom\" alt=\"\"></div>";
             str = str.replace(objRegExp, repla);
             return str;
         }
+        else if(method=="txt"){
+            var objRegExp= /\/sm\s([a-zA-Z0-9_\u4e00-\u9fa5]+)($|\s)/g;
+            var repla = "<small class='text-muted'>$1</small>";
+            var objRegExp2= /\/ita\s([a-zA-Z0-9_\u4e00-\u9fa5]+)($|\s)/g;
+            var repla2 = "<span class=\"font-italic font-weight-bold\">$1</span>";
+            var objRegExp3= /\/fbl\s([a-zA-Z0-9_\u4e00-\u9fa5]+)($|\s)/g;
+            var repla3 = "<span class=\"font-weight-bold\">$1</span>";
+            str = str.replace(objRegExp, repla);
+            str = str.replace(objRegExp2, repla2);
+            str = str.replace(objRegExp3, repla3);
+            return str;
+        }
+        else if(method=="dian"){
+            var objRegExp= /@d/g;
+            var repla = "\'";
+            str = str.replace(objRegExp, repla);
+            str = str.replace(/\n/g,'<br/>');
+            return str;
+        }
+        else if(method=="tou"){
+            //普通投骰子
+            var objRegExp= /\/aroll\s([a-zA-Z0-9_\u4e00-\u9fa5]+)\s([a-z]+)\s(\d)\s(\d{2})\s([a-zA-Z0-9_\u4e00-\u9fa5]+)/g;
+            var repla = "<a href=\"#\" onclick=\"tou3('va$3_$4','$1')\" class=\"btn btn-$2 btn-sm\">$5</a>";
+            //联合检定
+            var objRegExp2= /\/broll\s([a-z]+)\s(\d+)\s(\d+)\s(\d+)\s(\d+)\s([a-zA-Z0-9_\u4e00-\u9fa5]+)/g;
+            var repla2 = "<a href=\"#\" onclick=\"toul($2, $3, $4, $5)\" class=\"btn btn-$1 btn-sm\">$6</a>";
+            //加入战斗
+            var objRegExp3= /\/jfight\s([a-z]+)\s(\d+)\s([a-zA-Z0-9_\u4e00-\u9fa5]+)\s([a-zA-Z0-9_\u4e00-\u9fa5]+)/g;
+            {% if page=="roomc" %}
+            var repla3 = "<button onclick=\"fight_begin2('$2')\" class=\"btn btn-$1 btn-sm btn-block button_begin\"><i class=\"fe-zap mr-4\"></i>$4</button>";
+            {% else %}
+            var repla3 = "<button onclick=\"fight_join('$2')\" class=\"btn btn-$1 btn-sm btn-block button_join\"><i class=\"fe-zap mr-4\"></i>$3</buttonl>";
+            {% endif %}
+            //开始战斗按钮
+            var f_begin= /\/queren\s(\d+)/g;
+            {% if page=="roomc" %}
+            var f_begin_r = "<h5>kp是否确认？</h5><button onclick=\"fight_begin3('$1')\" class=\"btn btn-info btn-sm btn-block button_fbg\"><i class=\"fe-check mr-4\"></i>确认</button>" +
+                "<a href=\"#\" onclick=\"fight_end('$1')\" class=\"btn btn-danger btn-sm btn-block\"><i class=\"fe-check-square mr-4\"></i>结束战斗</a>";
+            {% else %}
+            var f_begin_r = "";
+            {% endif %}
+
+            //攻击/防御按钮
+            var kp_plus = "kp可以决定:<a href=\"#\" onclick=\"fight_re_lun('$1')\" class=\"btn btn-info btn-sm btn-block\"><i class=\"fe-corner-up-left mr-4\"></i>重启本轮</a>" +
+                // "<a href=\"#\" onclick=\"fight_re_lun('$1')\" class=\"btn btn-info btn-sm btn-block\"><i class=\"fe-corner-up-left mr-4\"></i>结束本轮</a>" +
+                "<a href=\"#\" onclick=\"fight_end('$1')\" class=\"btn btn-danger btn-sm btn-block\"><i class=\"fe-check-square mr-4\"></i>结束战斗</a>";
+            var f_a_player= /\/attackb\s(\d+)/g;
+            var f_a_player_r = "<div class=\"btn-group btn-block\"><a href=\"#\" onclick=\"fight_attack('$1',1)\" class=\"btn btn-danger btn-sm btn\"><i class=\"fe-zap mr-4\"></i>攻击</a> " +
+                    "<a href=\"#\" onclick=\"fight_escape('$1')\" class=\"btn btn-info btn-sm btn\"><i class=\"fe-log-out mr-4\"></i>逃跑</a></div><p> </p>" +
+                    "<div class=\"btn-group btn-block\"><a href=\"#\" onclick=\"fight_attack('$1',2)\" class=\"btn btn-success btn-sm btn\">优势攻击</a> " +
+                    "<a href=\"#\" onclick=\"fight_attack('$1',3)\" class=\"btn btn-light btn-sm btn\">劣势攻击</a></div><p> </p>";
+
+            var f_d_player= /\/defenceb\s(\d+)\s(\d+)/g;
+            var f_d_player_r = "<div class=\"btn-group btn-block\"><a href=\"#\" onclick=\"fight_defence('$1',1,$2)\" class=\"btn btn-info btn-sm btn\"><i class=\"fe-twitter mr-4\"></i>闪避</a> " +
+                    "<a href=\"#\" onclick=\"fight_defence('$1',2,$2)\" class=\"btn btn-success btn-sm btn\"><i class=\"fe-umbrella mr-4\"></i>反击</a></div><p> </p>"+
+                    "<a href=\"#\" onclick=\"fight_escape('$1')\" class=\"btn btn-info btn-sm btn-block\"><i class=\"fe-log-out mr-4\"></i>逃跑</a><p> </p>";
+            {% if page=="roomc" %}
+            f_a_player_r = f_a_player_r+kp_plus;
+            f_d_player_r = f_d_player_r+kp_plus;
+            {% endif %}
+            //kp给怪物设定攻击目标(f_id,uid,name,hp)
+            var f_a_m_target=/\/mfocus\s(\d+)\s(\d+)\s([a-zA-Z0-9_\u4e00-\u9fa5]+)\s(\d+)\s(\d+)\s([a-zA-Z0-9_\u4e00-\u9fa5]+)/g;
+            var f_a_m_target_r="<button onclick=\"fight_kp_mon_t($1,$2,$5,'$6')\" class=\"btn btn-info btn-sm\">$3(hp:$4)</button>";
+
+            str = str.replace(objRegExp, repla);
+            str = str.replace(objRegExp2, repla2);
+            str = str.replace(objRegExp3, repla3);
+            str = str.replace(f_begin, f_begin_r);
+            str = str.replace(f_a_player, f_a_player_r);
+            str = str.replace(f_d_player, f_d_player_r);
+            str = str.replace(f_a_m_target, f_a_m_target_r);
+            return str;
+        }
+    }
+
+    //锁定按钮
+    function close_b(idclass) {
+        $(idclass).attr("disabled",true);
+    }
+    //一定时间后开启按钮（默认10秒）
+    function open_b(idclass,time=10) {
+        var t = time*1000;
+        setTimeout(function(){
+            $(idclass).attr("disabled",false);
+        }, t);
+
     }
 </script>

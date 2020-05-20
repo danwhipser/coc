@@ -4,7 +4,7 @@
                 <!-- Brand -->
                 <a href="/" class="d-none d-xl-block mb-6">
                     <div class="avatar avatar-lg">
-                            <img class="avatar-img" src="static/logo.jpeg" alt="">
+                            <img class="avatar-img" src="static/logo2.png" alt="">
                         </div>
 <!--                    <img src="static/logo.jpeg" class="mx-auto fill-primary" data-inject-svg="" alt="" style="height: 46px;">-->
                 </a>
@@ -28,7 +28,7 @@
 
                     <!-- Chats -->
                     <li class="nav-item mt-xl-9">
-                        <a id="cont_chat" class="nav-link position-relative p-0 py-xl-3 {% if page == 'roomp' or page=='roommap' %}active{% endif %}" data-toggle="tab" href="#tab-content-dialogs" title="寻找游戏" role="tab">
+                        <a id="cont_chat" class="nav-link position-relative p-0 py-xl-3" data-toggle="tab" href="#tab-content-dialogs" title="寻找游戏" role="tab">
                             <i class="icon-lg fe-message-square"></i>
 <!--                            <div class="badge badge-dot badge-primary badge-bottom-center"></div>-->
                         </a>
@@ -36,10 +36,25 @@
 
                     <!-- Create group -->
                     <li class="nav-item mt-xl-9">
-                        <a id="cont_game" class="nav-link position-relative p-0 py-xl-3 {% if page == 'roomc' %}active{% endif %}" data-toggle="tab" href="#tab-content-create-chat" title="创建游戏" role="tab">
+                        <a id="cont_game" class="nav-link position-relative p-0 py-xl-3" data-toggle="tab" href="#tab-content-create-chat" title="创建游戏" role="tab">
                             <i class="icon-lg fe-edit"></i>
                         </a>
                     </li>
+
+                     <!-- Manage group -->
+                    {% if page == 'roomc' %}
+                    <li class="nav-item mt-xl-9">
+                        <a id="cont_thegame" class="nav-link position-relative p-0 py-xl-3 active" data-toggle="tab" href="#tab-content-control-chat" title="守密人工具台" role="tab">
+                            <i class="icon-lg fe-edit-3"></i>
+                        </a>
+                    </li>
+                    {% elif page == 'roomp' %}
+                    <li class="nav-item mt-xl-9">
+                        <a id="cont_thegamep" class="nav-link position-relative p-0 py-xl-3 active" data-toggle="tab" onclick="$('.main').attr('class','main main-visible')" href="#" title="游戏界面" role="tab">
+                            <i class="icon-lg fe-edit-3"></i>
+                        </a>
+                    </li>
+                    {% endif %}
 
 
                     <!-- Friend -->

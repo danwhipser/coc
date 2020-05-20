@@ -3,7 +3,7 @@
                 <div class="tab-content h-100" role="tablist">
 
 <!--                    建立游戏-->
-                    <div class="tab-pane fade h-100 {% if page == 'roomc' %}show active{% endif %}" id="tab-content-create-chat" role="tabpanel">
+                    <div class="tab-pane fade h-100" id="tab-content-create-chat" role="tabpanel">
                         <div class="d-flex flex-column h-100">
 
                             <div class="hide-scrollbar">
@@ -115,6 +115,9 @@
 
                         </div>
                     </div>
+                    {% if page == 'roomc' %}
+                    {% include 'dist/roomc_kp.html' %}
+                    {% endif %}
 
                     <div class="tab-pane fade h-100" id="tab-content-friends" role="tabpanel">
                         <div class="d-flex flex-column h-100">
@@ -575,7 +578,7 @@
                                 <div class="container-fluid py-6">
 
                                     <!-- Title -->
-                                    <h2 class="font-bold mb-6">深渊小屋&nbsp;<span class="badge badge-sm badge-pill badge-primary">Alpha1.2.5</span></h2>
+                                    <h2 class="font-bold mb-6">深渊小屋&nbsp;<span class="badge badge-sm badge-pill badge-primary">Alpha1.9</span></h2>
                                     <!-- Title -->
 
 
@@ -655,10 +658,11 @@
                                     <h2 class="font-bold mb-6">玩家卡组</h2>
                                     <!-- Title -->
 
-                                     添加新人物
+                                    <label class="small">添加新人物</label>
+
                                     <a href="#" data-toggle="collapse" data-target="#show_xinrentishi" aria-expanded="false" aria-controls="show_xinrentishi"><small>新人提示</small></a>
                                     <div class="collapse" id="show_xinrentishi">
-                                        <div>
+                                        <div class="small">
                                             下面的下拉菜单可以选择为新人准备的模板人物
                                         </div>
                                     </div>
@@ -676,34 +680,29 @@
                                     <div class="mb-6">
                                                 <select id="list_temp" class="custom-select custom-select-lg" onchange="set_myname()">
                                                     <option value="0" selected>自创人物</option>
-                                                    <option value="1">怪物(kp专用)</option>
+<!--                                                    <option value="1">怪物(kp专用)</option>-->
                                                 </select>
                                                 <div id="list_temp_hide" class="d-none"></div>
                                             </div>
-                                     人物卡组列表
 
-                                    <!-- 卡组 -->
-                                    {% for k in kazu %}
-                                        <div id="ka_{{k.0}}" class="card mb-6">
+                                    <label class="small" for="list_kazu1">人物卡组列表</label>
+                                    <div id="list_kazu1">
+
+                                    </div>
+
+                                    <div id="temp_kazu1" style="display: none;" class="card mb-6">
                                             <div class="card-body">
 
                                                 <div class="media">
-                                                    {% for user in user_all %}
-                                                        {% if user.7==k.0 and user.3==75 %}
-                                                            {% if user.5=="0" %}
-                                                            <div class="avatar mr-5 bg-primary text-white text-truncate">
-                                                                <span>{{k.5}}</span>
+                                                            <div class="avatar mr-5 bg-primary text-white text-truncate tk1_picnk">
+                                                                <span class="tk1_picn">图片名称</span>
                                                             </div>
-                                                            {% else %}
-                                                            <div class="avatar mr-5">
-                                                                <img class="avatar-img" src="{{user.5}}" alt="{{k.5}}" />
+                                                            <div class="avatar mr-5 tk1_pick">
+                                                                <img class="avatar-img tk1_pic" src="图片地址" alt="图片" />
                                                             </div>
-                                                            {% endif %}
-                                                        {% endif %}
-                                                    {% endfor %}
 
                                                     <div class="media-body align-self-center">
-                                                        <h6 class="mb-0">{{k.5}}</h6>
+                                                        <h6 class="mb-0 tk1_name">名称</h6>
 <!--                                                        <small class="text-muted">Online</small>-->
                                                     </div>
 
@@ -713,10 +712,10 @@
                                                                 <i class="fe-more-vertical"></i>
                                                             </a>
                                                             <div class="dropdown-menu">
-                                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                                <a class="dropdown-item d-flex align-items-center tk1_link" href="#">
                                                                     设置 <span class="ml-auto fe-edit-2"></span>
                                                                 </a>
-                                                                <a onclick="del_role('{{k.0}}');" class="dropdown-item d-flex align-items-center" href="javascript:;">
+                                                                <a onclick="del_role('删除的id');" class="dropdown-item d-flex align-items-center tk1_del" href="javascript:;">
                                                                     删除 <span class="ml-auto fe-trash-2"></span>
                                                                 </a>
                                                             </div>
@@ -726,13 +725,10 @@
                                                 </div>
 
                                                 <!-- Link -->
-                                                <a href="setting?c={{k.0}}" class="stretched-link"></a>
+                                                <a href="setting?c=cid" class="stretched-link tk1_link"></a>
 
                                             </div>
                                         </div>
-                                    {% endfor %}
-                                        <!-- 卡组 -->
-
 
                                 </div>
                             </div>
@@ -784,12 +780,14 @@
             </div>
             <!-- Sidebar -->
 
-
             <script>
                 var roomlastid=0;
+
                 $(document).ready(function() {
+                    get_siderall();
+
                     //列出模板人物
-                    list_temp();
+                    // list_temp();
 
                     //提交房间信息
                     $("#game_room_sub").click(function() {
@@ -835,57 +833,50 @@
                                 $("#game_room_ppl").val("");
                                 $("#game_room_desc").val("");
                                 $("#game_room_photo").val("");
-                                get_rooms("myroom","list_createroom","t_showedroom", "myroom_");
-                                get_rooms("allroom","list_showedroom","t_showedroom", "allroom_");
-                                $("#game_find").click();
+                                // get_rooms("myroom","list_createroom","t_showedroom", "myroom_");
+                                // get_rooms("allroom","list_showedroom","t_showedroom", "allroom_");
+                                window.location.href="roomc?rid="+lastid;
+                                // $("#game_find").click();
                             }
                         });
                     });
 
-                    //列表的id,模板id,创建新快的id
-                    get_rooms("myroom","list_createroom","t_showedroom", "myroom_");
-                    get_rooms("allroom","list_showedroom","t_showedroom", "allroom_");
                 });
 
-                function get_rooms(method,list,templates,mytemp) {
+                function get_rooms(myData,list,templates,mytemp) {
                     $("#"+list).html("");
-                    $.get("/get_rooms", {
-                        method: method,
-                      },
-                        function(myData , status){
-                            // console.log(myData)
-                            for(data of myData){
-                                var roomid = data[0][0];
-                                var roomname = data[0][2];
-                                var cc = $("#"+templates).clone(true);
-                                cc.attr('id',mytemp+roomid);
-                                cc.attr('href',"roomc?rid="+roomid);
-                                cc.attr('style','');
-                                $("#"+list).append(cc);
-                                $("#"+mytemp+roomid+" .room_name").html(roomname);
-                                for(dd of data[1]){
-                                    if(dd[1]=='74'){
-                                        if(dd[2]==0){
-                                            $("#"+mytemp+roomid+" .room_pict").hide();
-                                            $("#"+mytemp+roomid+" .room_name_p").html(roomname);
-                                        }
-                                        else{
-                                            $("#"+mytemp+roomid+" .room_name_pt").hide();
-                                            $("#"+mytemp+roomid+" .room_pic").attr('src',dd[2]);
-                                        }
-                                    }
-                                    else if(dd[1]=='70'){
-                                        $("#"+mytemp+roomid+" .room_type").html("最大人数:"+dd[2]);
-                                    }
-                                    else if(dd[1]=='71'){
-                                        $("#"+mytemp+roomid+" .room_desc").html(dd[2]);
-                                        $("#"+mytemp+roomid).attr("title","描述:"+dd[2]);
-                                    }
-
+                    for(data of myData){
+                        var roomid = data[0][0];
+                        var roomname = data[0][2];
+                        var cc = $("#"+templates).clone(true);
+                        cc.attr('id',mytemp+roomid);
+                        cc.attr('href',"roomc?rid="+roomid);
+                        cc.attr('style','');
+                        $("#"+list).append(cc);
+                        $("#"+mytemp+roomid+" .room_name").html(roomname);
+                        for(dd of data[1]){
+                            if(dd[1]=='74'){
+                                if(dd[2]==0){
+                                    $("#"+mytemp+roomid+" .room_pict").hide();
+                                    $("#"+mytemp+roomid+" .room_name_p").html(roomname);
+                                }
+                                else{
+                                    $("#"+mytemp+roomid+" .room_name_pt").hide();
+                                    $("#"+mytemp+roomid+" .room_pic").attr('src',dd[2]);
                                 }
                             }
-                        },"json");
+                            else if(dd[1]=='70'){
+                                $("#"+mytemp+roomid+" .room_type").html("最大人数:"+dd[2]);
+                            }
+                            else if(dd[1]=='71'){
+                                $("#"+mytemp+roomid+" .room_desc").html(dd[2]);
+                                $("#"+mytemp+roomid).attr("title","描述:"+dd[2]);
+                            }
+
+                        }
+                    }
                 }
+
 
                 function sent_room_info(method, aid, v1, v2, lk=0, li=0){
                     $.post("/add_room", {
@@ -945,7 +936,11 @@
         var role_name = $("#role_name").val();
         var selev = $("#list_temp").val();
         selev = parseInt(selev);
-
+        if(!role_name){
+            alert("您必须给您的任务取名！");
+            return;
+        }
+        $("#role_create").attr("disabled","true");
         if(selev!=0 && selev!=1){
             $.post("/set_temp", {
                 tempid: selev,
@@ -986,7 +981,7 @@
               },
                 function(myData , status){
                     if(status=="success"){
-                        $("#ka_"+id).hide();
+                        $("#mykazu1_"+id).hide();
                     }
                     else{
                         alert("删除人物失败");
@@ -995,20 +990,42 @@
     }
 
     //列出模板人物
-    function list_temp() {
-        var method = "list";
-        $.get("/gettemplates", {
-                method:method
-              },
-                function(myData , status){
-                    // console.log(myData);
-                    for(data of myData){
-                        var html='<option value="'+data[0]+'">'+data[2]+'('+data[1]+')</option>';
-                        var html2='<input type="hidden" id="hidet_'+data[0]+'" value="'+data[1]+'">';
-                        $("#list_temp").append(html);
-                        $("#list_temp_hide").append(html2);
-                    }
-            },"json");
+    function list_tempe(myData) {
+        for(data of myData){
+            var html='<option value="'+data[0]+'">'+data[2]+'('+data[1]+')</option>';
+            var html2='<input type="hidden" id="hidet_'+data[0]+'" value="'+data[1]+'">';
+            $("#list_temp").append(html);
+            $("#list_temp_hide").append(html2);
+        }
+    }
+
+    //列出我的卡组
+    function list_kazu1(myData,list,templates,mytemp) {
+        // console.log(myData);
+        $("#"+list).html("");
+        for(data of myData){
+            var pid = data[0][0];
+            var name = data[0][5];
+            // console.log(name);
+            var pic = data[1][5];
+            var cc = $("#"+templates).clone(true);
+            cc.attr('id',mytemp+pid);
+            cc.attr('style','');
+            $("#"+list).append(cc);
+            $("#"+mytemp+pid+" .tk1_link").attr('href','setting?c='+pid);
+            if(pic=="0"){
+                $("#"+mytemp+pid+" .tk1_pick").hide();
+                $("#"+mytemp+pid+" .tk1_picn").html(name);
+            }
+            else{
+                $("#"+mytemp+pid+" .tk1_picnk").hide();
+                $("#"+mytemp+pid+" .tk1_pic").attr('src',pic);
+            }
+            $("#"+mytemp+pid+" .tk1_name").html(name);
+            $("#"+mytemp+pid+" .tk1_del").attr('onclick',"del_role('"+pid+"')");
+
+        }
+        
     }
     //获取id
     function set_myname() {
@@ -1022,4 +1039,35 @@
             $("#role_name").val("");
         }
     }
-            </script>
+
+    // # 0:列出所有房间| 1:列出自己的房间| 2:列出所有模板人物| 3:列出自己所有卡组(名字,头像)
+    function get_siderall() {
+        $.get("/set_index", {
+              },
+                function(myData , status){
+                    // console.log(myData);
+                    // var name = myData[0][0];
+                    // var attr = myData[0][1];
+                    var list_allroom = myData[0];
+                    var list_myroom = myData[1];
+                    var list_tempp = myData[2];
+                    var list_kazu = myData[3];
+                    list_tempe(list_tempp);
+                    get_rooms(list_myroom,"list_createroom","t_showedroom", "myroom_");
+                    get_rooms(list_allroom,"list_showedroom","t_showedroom", "allroom_");
+                    list_kazu1(list_kazu,"list_kazu1","temp_kazu1","mykazu1_");
+            },"json");
+    }
+
+    function list_na(vall, kind){
+        var list = new Array();
+        for(vv of vall){
+            if(vv[1]==kind){
+                // console.log(vv);
+                list.push(vv)
+            }
+        }
+        return list;
+    }
+
+</script>
